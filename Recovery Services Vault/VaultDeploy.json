@@ -1,0 +1,76 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "projectName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the project. This string will be used to name all resources required."
+            }
+        },
+        "environmentName": {
+            "type": "string",
+            "defaultValue": "dev",
+            "allowedValues": [
+                "dev",
+                "staging",
+                "prod",
+                "DEV",
+                "STAGING",
+                "PROD"
+            ],
+            "metadata": {
+                "description": "The environment of the resources to backup. This string will be used to name all resources required."
+            }
+        },
+        "resourceTags": {
+            "type": "object",
+            "metadata": {
+                "description": "Tags to add to each resource created."
+            }
+        }
+    },
+    "functions": [
+        {
+            "namespace": "env",
+            "members": {
+                "transform": {
+                    "parameters": [
+                        {
+                            "name": "env",
+                            "type": "string"
+                        }
+                    ],
+                    "output": {
+                        "type": "string",
+                        "value": "[if(equals(toUpper(parameters('env')), 'PROD'), '', concat('-', toUpper(parameters('env'))))]"
+                    }
+                }
+            }
+        }
+    ],
+    "variables": {
+        "vault_name": "[concat(parameters('projectName') , env.transform(parameters('environmentName')), '-RecoveryVault')]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.RecoveryServices/vaults",
+            "apiVersion": "2018-01-10",
+            "name": "[variables('vault_name')]",
+            "location": "canadacentral",
+            "tags": "[parameters('resourceTags')]",
+            "sku": {
+                "name": "RS0",
+                "tier": "Standard"
+            },
+            "properties": {
+            }
+        }
+    ],
+    "outputs": {
+        "vaultID": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.RecoveryServices/vaults', variables('vault_name'))]"
+        }
+    }
+}
