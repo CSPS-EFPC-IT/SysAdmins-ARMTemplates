@@ -27,7 +27,8 @@
             "type": "object",
             "metadata": {
                 "description": "Tags to add to each resource created."
-            }
+            },
+            "defaultValue": {"Project": "Testing"}
         }
     },
     "functions": [
