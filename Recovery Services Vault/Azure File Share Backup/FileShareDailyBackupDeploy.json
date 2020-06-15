@@ -77,7 +77,7 @@
         "vault_name": "[concat(parameters('projectName') , env.transform(parameters('environmentName')), '-RecoveryVault')]",
         "policy_name": "[concat(parameters('policyName') , env.transform(parameters('environmentName')), '-DailyFSPolicy')]",
         "protection_containers": ["[concat('storagecontainer;storage;', parameters('storageAccountRGName'), ';', parameters('storageAccountName'))]"],
-        "protected_items": ["[concat('azurefileshare', parameters('fileShareName'))]"],
+        "protected_items": ["[concat('azurefileshare;', parameters('fileShareName'))]"],
         "source_resource_ids": ["[concat('/subscriptions/', parameters('storageAccountSubID'), '/resourceGroups/', parameters('storageAccountRGName'), '/providers/Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"]
     },
     "resources": [
