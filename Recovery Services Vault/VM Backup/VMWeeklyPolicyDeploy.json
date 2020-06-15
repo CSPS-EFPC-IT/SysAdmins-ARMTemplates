@@ -35,6 +35,13 @@
             "metadata": {
                 "description": "Number of weeks to retain weekly backups."
             }
+        },
+        "instantRpRetentionRangeInDays": {
+            "type": "int",
+            "defaultValue": 5,
+            "metadata": {
+                "description": "Number of days (1-5) to keep instant recovery snapshots."
+            }
         }
     },
     "functions": [
@@ -58,7 +65,7 @@
     ],
     "variables": {
         "vault_name": "[concat(parameters('projectName') , env.transform(parameters('environmentName')), '-RecoveryVault')]",
-        "policy_name": "[concat(parameters('policyName') , env.transform(parameters('environmentName')), '-WeeklyFSPolicy')]"
+        "policy_name": "[concat(parameters('policyName') , env.transform(parameters('environmentName')), '-WeeklyVMPolicy')]"
     },
     "resources": [
         {
@@ -66,8 +73,7 @@
             "apiVersion": "2016-12-01",
             "name": "[concat(variables('vault_name'), '/', variables('policy_name'))]",
             "properties": {
-                "backupManagementType": "AzureStorage",
-                "WorkloadType": "AzureFileShare",
+                "backupManagementType": "AzureIaasVM",
                 "schedulePolicy": {
                     "scheduleRunFrequency": "Weekly",
                     "scheduleRunDays": [
@@ -97,7 +103,10 @@
                     "yearlySchedule": null,
                     "retentionPolicyType": "LongTermRetentionPolicy"
                 },
-                "timeZone": "Eastern Standard Time"
+                "timeZone": "Eastern Standard Time",
+                "instantRpRetentionRangeInDays": "[parameters('instantRpRetentionRangeInDays')]",
+                "instantRPDetails": {
+                }
             }
         }
     ],

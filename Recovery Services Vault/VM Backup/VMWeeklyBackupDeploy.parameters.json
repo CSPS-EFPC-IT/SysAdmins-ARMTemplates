@@ -11,8 +11,14 @@
         "environmentName": {
             "value": "DEV"
         },
-        "weeklyBackupsRetention": {
-            "value": 12
+        "vmName": {
+            "value": "testingdev-VM"
+        },
+        "vmRGName": {
+            "value": "testingdev-RG"
+        },
+        "vmSubID": {
+            "value": "*Enter the subscription ID here.*"
         }
     }
 }
