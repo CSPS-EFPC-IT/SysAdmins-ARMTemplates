@@ -72,7 +72,7 @@
         "policy_name": "[concat(parameters('policyName') , env.transform(parameters('environmentName')), '-DailyVMPolicy')]",
         "protection_containers": ["IaasVMContainer", "iaasvmcontainerv2", "[parameters('vmRGName')]", "[parameters('vmName')]"],
         "protected_items": ["vm","iaasvmcontainerv2","[parameters('vmRGName')]", "[parameters('vmName')]"],
-        "source_resource_ids": ["[concat('/subscription/', parameters('vmSubID'), '/resourceGroups/', parameters('vmRGName'), '/providers/Microsoft.Compute/virtualMachines/', parameters('vmName'))]"]
+        "source_resource_ids": ["[concat('/subscriptions/', parameters('vmSubID'), '/resourceGroups/', parameters('vmRGName'), '/providers/Microsoft.Compute/virtualMachines/', parameters('vmName'))]"]
     },
     "resources": [
         {
