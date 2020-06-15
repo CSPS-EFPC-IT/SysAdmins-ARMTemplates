@@ -38,9 +38,9 @@
         },
         "instantRpRetentionRangeInDays": {
             "type": "int",
-            "defaultValue": 7,
+            "defaultValue": 5,
             "metadata": {
-                "description": "Number of days to keep instant recovery snapshots."
+                "description": "Number of days (1-5) to keep instant recovery snapshots."
             }
         }
     },

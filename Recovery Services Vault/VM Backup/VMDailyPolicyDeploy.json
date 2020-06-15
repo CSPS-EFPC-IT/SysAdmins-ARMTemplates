@@ -40,7 +40,7 @@
             "type": "int",
             "defaultValue": 5,
             "metadata": {
-                "description": "Number of days to keep instant recovery snapshots."
+                "description": "Number of days (1-5) to keep instant recovery snapshots."
             }
         }
     },
