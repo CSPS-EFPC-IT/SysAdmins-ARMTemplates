@@ -99,7 +99,7 @@
     "outputs": {
         "policyID": {
             "type": "string",
-            "value": "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', variables('policy_name'))]"
+            "value": "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', variables('vault_name'), variables('policy_name'))]"
         }
     }
 }
