@@ -70,7 +70,7 @@
     "variables": {
         "vault_name": "[concat(parameters('projectName') , env.transform(parameters('environmentName')), '-RecoveryVault')]",
         "policy_name": "[concat(parameters('policyName') , env.transform(parameters('environmentName')), '-DailyVMPolicy')]",
-        "protection_containers": ["[concat('IaasVMContainer;iaasvmcontainerv2', parameters('vmRGName'), parameters('vmName'))]"],
+        "protection_containers": ["[concat('IaasVMContainer;iaasvmcontainerv2;', parameters('vmRGName'), ';', parameters('vmName'))]"],
         "protected_items": ["[concat('vm;iaasvmcontainerv2;', parameters('vmRGName'), ';', parameters('vmName'))]"],
         "source_resource_ids": ["[concat('/subscriptions/', parameters('vmSubID'), '/resourceGroups/', parameters('vmRGName'), '/providers/Microsoft.Compute/virtualMachines/', parameters('vmName'))]"]
     },
