@@ -5,9 +5,6 @@
         "projectName": {
             "value": "Testing"
         },
-        "policyName": {
-            "value": "Testing1"
-        },
         "environmentName": {
             "value": "DEV"
         },
@@ -16,6 +13,9 @@
         },
         "instantRpRetentionRangeInDays": {
             "value": 5
+        },
+        "backupTime": {
+            "value": "14:00"
         }
     }
 }

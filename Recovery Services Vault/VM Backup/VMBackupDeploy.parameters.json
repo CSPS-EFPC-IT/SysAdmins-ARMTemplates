@@ -6,7 +6,7 @@
             "value": "Testing"
         },
         "policyName": {
-            "value": "Testing1"
+            "value": "Daily00:00For90Days-VMPolicy"
         },
         "environmentName": {
             "value": "DEV"

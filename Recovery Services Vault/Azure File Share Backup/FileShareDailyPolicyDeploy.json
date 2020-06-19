@@ -8,12 +8,6 @@
                 "description": "The name of the project. This string will be used to name all resources required."
             }
         },
-        "policyName": {
-            "type": "string",
-            "metadata": {
-                "description": "The name of the policy you want to create."
-            }
-        },
         "environmentName": {
             "type": "string",
             "defaultValue": "dev",
@@ -33,7 +27,14 @@
             "type": "int",
             "defaultValue": 90,
             "metadata": {
-                "description": "Number of days to retain daily backups."
+                "description": "Number of days (1-200) to retain daily backups."
+            }
+        },
+        "backupTime": {
+            "type": "string",
+            "defaultValue": "00:00",
+            "metadata": {
+                "description": "Time of daily backups (hh:mm)."
             }
         }
     },
@@ -58,7 +59,8 @@
     ],
     "variables": {
         "vault_name": "[concat(parameters('projectName') , env.transform(parameters('environmentName')), '-RecoveryVault')]",
-        "policy_name": "[concat(parameters('policyName') , env.transform(parameters('environmentName')), '-DailyFSPolicy')]"
+        "policy_name": "[concat('Daily', parameters('backupTime'), 'For', parameters('dailyBackupsRetention'),'Days-FSPolicy')]",
+        "backup_time": ["[concat('2020-06-10T', parameters('backupTime'),':00Z')]"]
     },
     "resources": [
         {
@@ -72,7 +74,7 @@
                     "scheduleRunFrequency": "Daily",
                     "scheduleRunDays": null,
                     "scheduleRunTimes": [
-                        "2020-06-10T00:00:00Z"
+                        "[variables('backup_time')]"
                     ],
                     "scheduleWeeklyFrequency": 0,
                     "schedulePolicyType": "SimpleSchedulePolicy"
@@ -80,7 +82,7 @@
                 "retentionPolicy": {
                     "dailySchedule": {
                         "retentionTimes": [
-                            "2020-06-10T00:00:00Z"
+                            "[variables('backup_time')]"
                         ],
                         "retentionDuration": {
                             "count": "[parameters('dailyBackupsRetention')]",
@@ -100,6 +102,10 @@
         "policyID": {
             "type": "string",
             "value": "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', variables('vault_name'), variables('policy_name'))]"
+        },
+        "policyName": {
+            "type": "string",
+            "value": "[variables('policy_name')]"
         }
     }
 }

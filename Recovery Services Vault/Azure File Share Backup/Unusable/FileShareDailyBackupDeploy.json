@@ -1,4 +1,5 @@
-{
+// Unusable 
+/*{
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
@@ -29,19 +30,25 @@
                 "description": "The environment of the resources to backup. This string will be used to name all resources required."
             }
         },
-        "vmName": {
+        "storageAccountName": {
             "type": "string",
             "metadata": {
-                "description": "The name of the Virtual Machine to backup."
+                "description": "The name of the Storage Account containing the Azure File Share to backup."
             }
         },
-        "vmRGName": {
+        "storageAccountRGName": {
             "type": "string",
             "metadata": {
-                "description": "The name of the Resource Group which contains the Virtual Machine to backup."
+                "description": "The name of the Resource Group which contains the Storage Account containing the Azure File Share to backup."
             }
         },
-        "vmSubID": {
+        "fileShareName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the Azure File Share to backup."
+            }
+        },
+        "storageAccountSubID": {
             "type": "string",
             "metadata": {
                 "description": "The subscription ID which contains the Virtual Machine to backup."
@@ -69,10 +76,10 @@
     ],
     "variables": {
         "vault_name": "[concat(parameters('projectName') , env.transform(parameters('environmentName')), '-RecoveryVault')]",
-        "policy_name": "[concat(parameters('policyName') , env.transform(parameters('environmentName')), '-WeeklyVMPolicy')]",
-        "protection_containers": ["[concat('IaasVMContainer;iaasvmcontainerv2;', parameters('vmRGName'), ';', parameters('vmName'))]"],
-        "protected_items": ["[concat('vm;iaasvmcontainerv2;', parameters('vmRGName'), ';', parameters('vmName'))]"],
-        "source_resource_ids": ["[concat('/subscription/', parameters('vmSubID'), '/resourceGroups/', parameters('vmRGName'), '/providers/Microsoft.Compute/virtualMachines/', parameters('vmName'))]"]
+        "policy_name": "[concat(parameters('policyName') , env.transform(parameters('environmentName')), '-DailyFSPolicy')]",
+        "protection_containers": ["[concat('storagecontainer;storage;', parameters('storageAccountRGName'), ';', parameters('storageAccountName'))]"],
+        "protected_items": ["[concat('azurefileshare;', parameters('fileShareName'))]"],
+        "source_resource_ids": ["[concat('/subscriptions/', parameters('storageAccountSubID'), '/resourceGroups/', parameters('storageAccountRGName'), '/providers/Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"]
     },
     "resources": [
         {
@@ -80,7 +87,10 @@
             "apiVersion": "2016-12-01",
             "name": "[concat(variables('vault_name'), '/Azure/',variables('protection_containers')[copyIndex()], '/', variables('protected_items')[copyIndex()])]",
             "properties": {
-                "protectedItemType": "Microsoft.ClassicCompute/virtualMachines",
+                "backupManagementType": "AzureStorage",
+                "workloadType": "AzureFileShare",
+                "friendlyName": "afs",
+                "protectedItemType": "AzureFileShareProtectedItem",
                 "policyId": "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', variables('vault_name'), variables('policy_name'))]",
                 "sourceResourceId": "[variables('source_resource_ids')[copyIndex()]]"
             },
@@ -90,4 +100,4 @@
             }
         }
     ]
-}
+}*/
