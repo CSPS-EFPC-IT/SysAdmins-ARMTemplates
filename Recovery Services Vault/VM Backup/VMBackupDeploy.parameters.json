@@ -2,14 +2,11 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "projectName": {
-            "value": "Testing"
+        "vaultName": {
+            "value": "Testing-RecoveryVault"
         },
         "policyName": {
-            "value": "Daily00:00For90Days-VMPolicy"
-        },
-        "environmentName": {
-            "value": "DEV"
+            "value": "Daily00h00For90Days-VMPolicy"
         },
         "vmName": {
             "value": "testingdev-VM"

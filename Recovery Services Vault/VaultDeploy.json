@@ -72,6 +72,10 @@
         "vaultID": {
             "type": "string",
             "value": "[resourceId('Microsoft.RecoveryServices/vaults', variables('vault_name'))]"
+        },
+        "vaultName": {
+            "type": "string",
+            "value": "[variables('vault_name')]"
         }
     }
 }

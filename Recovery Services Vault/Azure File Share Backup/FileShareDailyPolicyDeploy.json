@@ -2,25 +2,10 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "projectName": {
+        "vaultName": {
             "type": "string",
             "metadata": {
-                "description": "The name of the project. This string will be used to name all resources required."
-            }
-        },
-        "environmentName": {
-            "type": "string",
-            "defaultValue": "dev",
-            "allowedValues": [
-                "dev",
-                "staging",
-                "prod",
-                "DEV",
-                "STAGING",
-                "PROD"
-            ],
-            "metadata": {
-                "description": "The environment of the resources to backup. This string will be used to name all resources required."
+                "description": "The name of the recovery services vault which you wish the create the backup policy in."
             }
         },
         "dailyBackupsRetention": {
@@ -38,27 +23,7 @@
             }
         }
     },
-    "functions": [
-        {
-            "namespace": "env",
-            "members": {
-                "transform": {
-                    "parameters": [
-                        {
-                            "name": "env",
-                            "type": "string"
-                        }
-                    ],
-                    "output": {
-                        "type": "string",
-                        "value": "[if(equals(toUpper(parameters('env')), 'PROD'), '', concat('-', toUpper(parameters('env'))))]"
-                    }
-                }
-            }
-        }
-    ],
     "variables": {
-        "vault_name": "[concat(parameters('projectName') , env.transform(parameters('environmentName')), '-RecoveryVault')]",
         "policy_name": "[concat('Daily', replace(parameters('backupTime'), ':', 'h'), 'For', parameters('dailyBackupsRetention'),'Days-FSPolicy')]",
         "backup_time": ["[concat('2020-06-10T', parameters('backupTime'),':00.000Z')]"]
     },
@@ -66,7 +31,7 @@
         {
             "type": "Microsoft.RecoveryServices/vaults/backupPolicies",
             "apiVersion": "2016-12-01",
-            "name": "[concat(variables('vault_name'), '/', variables('policy_name'))]",
+            "name": "[concat(parameters('vaultName'), '/', variables('policy_name'))]",
             "properties": {
                 "backupManagementType": "AzureStorage",
                 "WorkloadType": "AzureFileShare",
@@ -97,7 +62,7 @@
     "outputs": {
         "policyID": {
             "type": "string",
-            "value": "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', variables('vault_name'), variables('policy_name'))]"
+            "value": "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', parameters('vaultName'), variables('policy_name'))]"
         },
         "policyName": {
             "type": "string",
