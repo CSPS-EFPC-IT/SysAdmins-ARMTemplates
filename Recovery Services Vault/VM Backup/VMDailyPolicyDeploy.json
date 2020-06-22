@@ -79,13 +79,13 @@
                 "schedulePolicy": {
                     "scheduleRunFrequency": "Daily",
                     "scheduleRunDays": null,
-                    "scheduleRunTimes": "[variables('backup_time')]",
+                    "scheduleRunTimes": ["2020-06-10T00h00:00Z"],
                     "scheduleWeeklyFrequency": 0,
                     "schedulePolicyType": "SimpleSchedulePolicy"
                 },
                 "retentionPolicy": {
                     "dailySchedule": {
-                        "retentionTimes": "[variables('backup_time')]",
+                        "retentionTimes": ["2020-06-10T00h00:00Z"],
                         "retentionDuration": {
                             "count": "[parameters('dailyBackupsRetention')]",
                             "durationType": "Days"
