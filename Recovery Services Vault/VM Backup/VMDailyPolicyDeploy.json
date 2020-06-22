@@ -67,7 +67,7 @@
     "variables": {
         "vault_name": "[concat(parameters('projectName') , env.transform(parameters('environmentName')), '-RecoveryVault')]",
         "policy_name": "[concat('Daily', parameters('backupTime'), 'For', string(parameters('dailyBackupsRetention')),'Days-VMPolicy')]",
-        "backup_time": ["[concat('2020-06-10T', parameters('backupTime'),':00Z')]"]
+        "backup_time": ["[concat('2020-06-10T', parameters('backupTime'),':00.000Z')]"]
     },
     "resources": [
         {
