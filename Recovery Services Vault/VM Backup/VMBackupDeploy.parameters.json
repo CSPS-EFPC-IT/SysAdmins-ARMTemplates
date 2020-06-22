@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vaultName": {
+            "value": "Testing-RecoveryVault"
+        },
+        "policyName": {
+            "value": "Daily00h00For90Days-VMPolicy"
+        },
+        "vmName": {
+            "value": "testingdev-VM"
+        },
+        "vmRGName": {
+            "value": "testingdev-RG"
+        },
+        "vmSubID": {
+            "value": "*Enter the subscription ID here.*"
+        }
+    }
+}

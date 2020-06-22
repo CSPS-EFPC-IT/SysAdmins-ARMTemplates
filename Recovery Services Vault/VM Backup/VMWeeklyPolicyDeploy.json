@@ -1,0 +1,86 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vaultName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the recovery services vault which you wish the create the backup policy in."
+            }
+        },
+        "weeklyBackupsRetention": {
+            "type": "int",
+            "defaultValue": 12,
+            "metadata": {
+                "description": "Number of weeks (1-5163) to retain weekly backups."
+            }
+        },
+        "instantRpRetentionRangeInDays": {
+            "type": "int",
+            "defaultValue": 5,
+            "metadata": {
+                "description": "Number of days (1-5) to keep instant recovery snapshots."
+            }
+        },
+        "backupTime": {
+            "type": "string",
+            "defaultValue": "00:00",
+            "metadata": {
+                "description": "Time of daily backups (hh:mm)."
+            }
+        }
+    },
+    "variables": {
+        "policy_name": "[concat('Weekly', replace(parameters('backupTime'), ':', 'h'), 'For', parameters('weeklyBackupsRetention'),'Weeks-VMPolicy')]",
+        "backup_time": ["[concat('2020-06-10T', parameters('backupTime'),':00.000Z')]"]
+    },
+    "resources": [
+        {
+            "type": "Microsoft.RecoveryServices/vaults/backupPolicies",
+            "apiVersion": "2016-12-01",
+            "name": "[concat(parameters('vaultName'), '/', variables('policy_name'))]",
+            "properties": {
+                "backupManagementType": "AzureIaasVM",
+                "schedulePolicy": {
+                    "scheduleRunFrequency": "Weekly",
+                    "scheduleRunDays": [
+                        "Sunday"
+                    ],
+                    "scheduleRunTimes": "[variables('backup_time')]",
+                    "scheduleWeeklyFrequency": 0,
+                    "schedulePolicyType": "SimpleSchedulePolicy"
+                },
+                "retentionPolicy": {
+                    "dailySchedule": null,
+                    "weeklySchedule": {
+                        "daysOfTheWeek": [
+                            "Sunday"
+                        ],
+                        "retentionTimes": "[variables('backup_time')]",
+                        "retentionDuration": {
+                            "count": "[parameters('weeklyBackupsRetention')]",
+                            "durationType": "Weeks"
+                        }
+                    },
+                    "monthlySchedule": null,
+                    "yearlySchedule": null,
+                    "retentionPolicyType": "LongTermRetentionPolicy"
+                },
+                "timeZone": "Eastern Standard Time",
+                "instantRpRetentionRangeInDays": "[parameters('instantRpRetentionRangeInDays')]",
+                "instantRPDetails": {
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "policyID": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', parameters('vaultName'), variables('policy_name'))]"
+        },
+        "policyName": {
+            "type": "string",
+            "value": "[variables('policy_name')]"
+        }
+    }
+}

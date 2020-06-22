@@ -1,0 +1,57 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vaultName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the recovery services vault which you wish use to backup target resource."
+            }
+        },
+        "policyName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the policy you want to use to enable backups."
+            }
+        },
+        "vmName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the Virtual Machine to backup."
+            }
+        },
+        "vmRGName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the Resource Group which contains the Virtual Machine to backup."
+            }
+        },
+        "vmSubID": {
+            "type": "string",
+            "metadata": {
+                "description": "The subscription ID which contains the Virtual Machine to backup."
+            }
+        }
+    },
+    "variables": {
+        "protection_containers": ["[concat('IaasVMContainer;iaasvmcontainerv2;', parameters('vmRGName'), ';', parameters('vmName'))]"],
+        "protected_items": ["[concat('vm;iaasvmcontainerv2;', parameters('vmRGName'), ';', parameters('vmName'))]"],
+        "source_resource_ids": ["[concat('/subscriptions/', parameters('vmSubID'), '/resourceGroups/', parameters('vmRGName'), '/providers/Microsoft.Compute/virtualMachines/', parameters('vmName'))]"]
+    },
+    "resources": [
+        {
+            "type": "Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems",
+            "apiVersion": "2016-12-01",
+            "name": "[concat(parameters('vaultName'), '/Azure/',variables('protection_containers')[copyIndex()], '/', variables('protected_items')[copyIndex()])]",
+            "properties": {
+                "protectedItemType": "Microsoft.ClassicCompute/virtualMachines",
+                "policyId": "[resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', parameters('vaultName'), parameters('policyName'))]",
+                "sourceResourceId": "[variables('source_resource_ids')[copyIndex()]]"
+            },
+            "copy": {
+                "name": "protectedItemsCopy",
+                "count": "[length(variables('protected_items'))]"
+            }
+        }
+    ]
+}
