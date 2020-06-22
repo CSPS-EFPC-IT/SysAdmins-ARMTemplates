@@ -20,7 +20,7 @@
         all resources required.</li>
       <li>resourceTags - An array of tags to add to each resource created.</li>
     </ul>
-  <li>The file will output the ID of the created vault.</li>
+  <li>The file will output the ID and name of the created vault.</li>
 </ol>
 <h2>Backup Policies</h2>
 <p>Once a Azure Recovery Services Vault is created, you will need to add Backup Policies to define different backup
@@ -42,9 +42,17 @@
     VMWeeklyPolicyDeploy.json file (ARM template) for a weekly backups policy.</li>
   <li>Pass in the following parameters:
     <ul>
-      <li>projectName - The name of the project/solution of the items you wish to backup using this vault.</li>
-      <li>environmentName - The environment The environment of the resources to backup. This string will be used to name
-        all resources required.</li>
+      <li>vaultName - The name of the recovery services vault which you wish the create the backup policy in. This value
+        can be found as so:
+        <ul>
+          <li>You can use the output of the ARM
+            template used to create the vault</li>
+          <li>Pass in the vault name knowing that the format will be as so:
+            [projectName][-environmentNameUnlessProd (-DEV/-STAGING/)]-RecoveryVault (ex: Testing-DEV-RecoveryVault,
+            Testing-RecoveryVault)</li>
+          <li>Find the value in Azure (ex: Using the Azure Portal)</li>
+        </ul>
+      </li>
       <li>dailyBackupsRetention (daily backup policy only) - Number of days (7-9999) to retain daily backups.</li>
       <li>weeklyBackupsRetention (weekly backup policy only) - Number of weeks (1-5163) to retain weekly backups.</li>
       <li>instantRpRetentionRangeInDays - Number of days (1-5) to keep instant recovery snapshots.</li>
@@ -63,9 +71,17 @@
   <li>Use the FileSharePolicyDeploy.json file (ARM template) for a daily backups policy.</li>
   <li>Pass in the following parameters:
     <ul>
-      <li>projectName - The name of the project/solution of the items you wish to backup using this vault.</li>
-      <li>environmentName - The environment The environment of the resources to backup. This string will be used to name
-        all resources required.</li>
+      <li>vaultName - The name of the recovery services vault which you wish the create the backup policy in. This value
+        can be found as so:
+        <ul>
+          <li>You can use the output of the ARM
+            template used to create the vault</li>
+          <li>Pass in the vault name knowing that the format will be as so:
+            [projectName][-environmentNameUnlessProd (-DEV/-STAGING/)]-RecoveryVault (ex: Testing-DEV-RecoveryVault,
+            Testing-RecoveryVault)</li>
+          <li>Find the value in Azure (ex: Using the Azure Portal)</li>
+        </ul>
+      </li>
       <li>dailyBackupsRetention - Number of days (1-200) to retain daily backups.</li>
       <li>backupTime - Time of daily backups (hh:mm).</li>
     </ul>
@@ -92,16 +108,25 @@
   <li>Use the VMBackupDeploy.json file (ARM template) to enable backups for a VM.</li>
   <li>Pass in the following parameters:
     <ul>
-      <li>projectName - The name of the project/solution of the items you wish to backup using this vault.</li>
-      <li>environmentName - The environment The environment of the resources to backup. This string will be used to name
-        all resources required.</li>
+      <li>vaultName - The name of the recovery services vault which you wish use to backup target resource. This value
+        can be found as so:
+        <ul>
+          <li>You can use the output of the ARM
+            template used to create the vault</li>
+          <li>Pass in the vault name knowing that the format will be as so:
+            [projectName][-environmentNameUnlessProd (-DEV/-STAGING/)]-RecoveryVault (ex: Testing-DEV-RecoveryVault,
+            Testing-RecoveryVault)</li>
+          <li>Find the value in Azure (ex: Using the Azure Portal)</li>
+        </ul>
+      </li>
       <li>policyName - The name of the policy you want to use to enable backups. This value can be found as so:
         <ul>
           <li>You can use the output of the ARM
             template used to create the policy</li>
-          <li>Pass in the policy name knowing that the format will be as so (unless you plan to use the default policies):
-            [frequency(Daily/Weekly)][backupsTime(hh:mm)]For[backupsRetention(# of
-            days/weeks)][retentionTimeUnit(Days/Weeks)]-VMPolicy (ex: "Daily00:00For90Days-VMPolicy")</li>
+          <li>Pass in the policy name knowing that the format will be as so (unless you plan to use the default
+            policies):
+            [frequency(Daily/Weekly)][backupsTime(HHhMM)]For[backupsRetention(# of
+            days/weeks)][retentionTimeUnit(Days/Weeks)]-VMPolicy (ex: "Daily00h00For90Days-VMPolicy")</li>
           <li>Find the value in Azure (ex: Using the Azure Portal)</li>
         </ul>
       </li>
