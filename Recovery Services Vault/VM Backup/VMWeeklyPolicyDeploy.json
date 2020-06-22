@@ -66,7 +66,7 @@
     ],
     "variables": {
         "vault_name": "[concat(parameters('projectName') , env.transform(parameters('environmentName')), '-RecoveryVault')]",
-        "policy_name": "[concat('Weekly', parameters('backupTime'), 'For', parameters('weeklyBackupsRetention'),'Weeks-VMPolicy')]",
+        "policy_name": "[concat('Weekly', replace(parameters('backupTime'), ':', 'h'), 'For', parameters('weeklyBackupsRetention'),'Weeks-VMPolicy')]",
         "backup_time": ["[concat('2020-06-10T', parameters('backupTime'),':00.000Z')]"]
     },
     "resources": [
@@ -81,9 +81,7 @@
                     "scheduleRunDays": [
                         "Sunday"
                     ],
-                    "scheduleRunTimes": [
-                        "[variables('backup_time')]"
-                    ],
+                    "scheduleRunTimes": "[variables('backup_time')]",
                     "scheduleWeeklyFrequency": 0,
                     "schedulePolicyType": "SimpleSchedulePolicy"
                 },
@@ -93,9 +91,7 @@
                         "daysOfTheWeek": [
                             "Sunday"
                         ],
-                        "retentionTimes": [
-                            "[variables('backup_time')]"
-                        ],
+                        "retentionTimes": "[variables('backup_time')]",
                         "retentionDuration": {
                             "count": "[parameters('weeklyBackupsRetention')]",
                             "durationType": "Weeks"
