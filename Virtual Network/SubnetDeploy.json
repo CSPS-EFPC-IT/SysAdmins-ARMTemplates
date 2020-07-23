@@ -5,7 +5,7 @@
         "projectName": {
             "type": "string",
             "metadata": {
-                "description": "The name of the project. This string will be used to name the virtual network."
+                "description": "The name of the project. This string will be used to name the subnet."
             }
         },
         "environmentName": {
@@ -20,28 +20,42 @@
                 "PROD"
             ],
             "metadata": {
-                "description": "The environment of the virtual network. This string will be used to name the virtual network."
+                "description": "The environment of the Virtual Network. This string will be used to name the subnet."
+            }
+        },
+        "zoneName": {
+            "type": "string",
+            "defaultValue": "PAZ",
+            "allowedValues": [
+                "PAZ",
+                "OZ",
+                "RZ",
+                "HRZ",
+                "REZ",
+                "SAZ"
+            ],
+            "metadata": {
+                "description": "The subnet's zone (capitalized acronym) according to ITSG22."
             }
         },
         "addressPrefix": {
             "type": "string",
             "metadata": {
-                "description": "The adress prefix of the virtual network's address space. (IE: 10.10.10.0)"
+                "description": "The adress prefix of the address space. (IE: 10.10.10.32)"
             }
         },
         "subnetMask": {
             "type": "string",
-            "defaultValue": "/24",
+            "defaultValue": "/27",
             "metadata": {
-                "description": "The subnet mask of the virtual network. Format: /# (IE: /24)"
+                "description": "The subnet mask of the subnet. Format: /# (IE: /27)"
             }
         },
-        "resourceTags": {
-            "type": "object",
+        "vnetName": {
+            "type": "string",
             "metadata": {
-                "description": "Tags to add to each resource created."
-            },
-            "defaultValue": {}
+                "description": "The name of the vnet you wish to deploy the subnet to."
+            }
         }
     },
     "functions": [
@@ -81,44 +95,31 @@
         }
     ],
     "variables": {
-        "virtual_network_name": "[concat(name.clean(parameters('projectName')), env.transform(parameters('environmentName')),'-VN')]",
-        "address_space": "[concat(parameters('addressPrefix'), parameters('subnetMask'))]",
-        "bastion_address_space": "[concat(parameters('addressPrefix'), '/27')]"
+        "subnet_name": "[concat(name.clean(parameters('projectName')), '-', parameters('zoneName'), '-', env.transform(parameters('environmentName')),'-SN')]",
+        "address_space": "[concat(parameters('addressPrefix'), parameters('subnetMask'))]"
     },
     "resources": [
         {
-            "apiVersion": "2015-05-01-preview",
-            "type": "Microsoft.Network/virtualNetworks",
-            "name": "[variables('virtual_network_name')]",
-            "location": "[resourceGroup().location]",
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2020-04-01",
+            "name": "[concat(parameters('vnetName'), '/', variables('subnet_name'))]",
             "properties": {
-                "addressSpace": {
-                    "addressPrefixes": [
-                        "[variables('address_space')]"
-                    ]
-                },
-                "subnets": [
-                    {
-                        "name": "AzureBastionSubnet",
-                        "properties": {
-                            "addressPrefix": "[variables('bastion_address_space')]"
-                        }
-                    }
-                ],
-                "tags": "[parameters('resourceTags')]",
-                "enableDdosProtection": false,
-                "enableVmProtection": true
+                "addressPrefix": "[variables('address_space')]",
+                "serviceEndpoints": [],
+                "delegations": [],
+                "privateEndpointNetworkPolicies": "Enabled",
+                "privateLinkServiceNetworkPolicies": "Enabled"
             }
         }
     ],
     "outputs": {
-        "vnetID": {
+        "subnetID": {
             "type": "string",
-            "value": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtual_network_name'))]"
+            "value": "[resourceId('Microsoft.Network/virtualNetworks', variables('subnet_name'))]"
         },
-        "vnetName": {
+        "subnetName": {
             "type": "string",
-            "value": "[variables('virtual_network_name')]"
+            "value": "[variables('subnet_name')]"
         }
     }
 }
