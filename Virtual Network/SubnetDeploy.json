@@ -95,7 +95,7 @@
         }
     ],
     "variables": {
-        "subnet_name": "[concat(name.clean(parameters('projectName')), '-', parameters('zoneName'), '-', env.transform(parameters('environmentName')),'-SN')]",
+        "subnet_name": "[concat(name.clean(parameters('projectName')), '-', parameters('zoneName'), env.transform(parameters('environmentName')),'-SN')]",
         "address_space": "[concat(parameters('addressPrefix'), parameters('subnetMask'))]"
     },
     "resources": [
