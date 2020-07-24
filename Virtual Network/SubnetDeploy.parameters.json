@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vnetName": {
+            "value": "Testing-DEV-VN"
+        },
+        "projectName": {
+            "value": "Testing"
+        },
+        "environmentName": {
+            "value": "dev"
+        },
+        "zoneName": {
+            "value": "PAZ"
+        },
+        "addressPrefix": {
+            "value": "10.10.10.32"
+        },
+        "subnetMask": {
+            "value": "/27"
+        }
+    }
+}

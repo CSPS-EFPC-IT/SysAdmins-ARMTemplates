@@ -1,0 +1,125 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "projectName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the project. This string will be used to name the subnet."
+            }
+        },
+        "environmentName": {
+            "type": "string",
+            "defaultValue": "dev",
+            "allowedValues": [
+                "dev",
+                "staging",
+                "prod",
+                "DEV",
+                "STAGING",
+                "PROD"
+            ],
+            "metadata": {
+                "description": "The environment of the Virtual Network. This string will be used to name the subnet."
+            }
+        },
+        "zoneName": {
+            "type": "string",
+            "defaultValue": "PAZ",
+            "allowedValues": [
+                "PAZ",
+                "OZ",
+                "RZ",
+                "HRZ",
+                "REZ",
+                "SAZ"
+            ],
+            "metadata": {
+                "description": "The subnet's zone (capitalized acronym) according to ITSG22."
+            }
+        },
+        "addressPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "The adress prefix of the address space. (IE: 10.10.10.32)"
+            }
+        },
+        "subnetMask": {
+            "type": "string",
+            "defaultValue": "/27",
+            "metadata": {
+                "description": "The subnet mask of the subnet. Format: /# (IE: /27)"
+            }
+        },
+        "vnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the vnet you wish to deploy the subnet to."
+            }
+        }
+    },
+    "functions": [
+        {
+            "namespace": "env",
+            "members": {
+                "transform": {
+                    "parameters": [
+                        {
+                            "name": "env",
+                            "type": "string"
+                        }
+                    ],
+                    "output": {
+                        "type": "string",
+                        "value": "[if(equals(toUpper(parameters('env')), 'PROD'), '', concat('-', toUpper(parameters('env'))))]"
+                    }
+                }
+            }
+        },
+        {
+            "namespace": "name",
+            "members": {
+                "clean": {
+                    "parameters": [
+                        {
+                            "name": "name",
+                            "type": "string"
+                        }
+                    ],
+                    "output": {
+                        "type": "string",
+                        "value": "[replace(replace(replace(parameters('name'), '-', ''), '_', ''), ' ', '')]"
+                    }
+                }
+            }
+        }
+    ],
+    "variables": {
+        "subnet_name": "[concat(name.clean(parameters('projectName')), '-', parameters('zoneName'), env.transform(parameters('environmentName')),'-SN')]",
+        "address_space": "[concat(parameters('addressPrefix'), parameters('subnetMask'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2020-04-01",
+            "name": "[concat(parameters('vnetName'), '/', variables('subnet_name'))]",
+            "properties": {
+                "addressPrefix": "[variables('address_space')]",
+                "serviceEndpoints": [],
+                "delegations": [],
+                "privateEndpointNetworkPolicies": "Enabled",
+                "privateLinkServiceNetworkPolicies": "Enabled"
+            }
+        }
+    ],
+    "outputs": {
+        "subnetID": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Network/virtualNetworks', variables('subnet_name'))]"
+        },
+        "subnetName": {
+            "type": "string",
+            "value": "[variables('subnet_name')]"
+        }
+    }
+}

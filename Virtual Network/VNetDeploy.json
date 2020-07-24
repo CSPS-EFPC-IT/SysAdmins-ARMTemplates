@@ -1,0 +1,167 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "projectName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the project. This string will be used to name the virtual network."
+            }
+        },
+        "environmentName": {
+            "type": "string",
+            "defaultValue": "dev",
+            "allowedValues": [
+                "dev",
+                "staging",
+                "prod",
+                "DEV",
+                "STAGING",
+                "PROD"
+            ],
+            "metadata": {
+                "description": "The environment of the virtual network. This string will be used to name the virtual network."
+            }
+        },
+        "addressPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "The adress prefix of the virtual network's address space. (IE: 10.10.10.0)"
+            }
+        },
+        "subnetMask": {
+            "type": "string",
+            "defaultValue": "/24",
+            "metadata": {
+                "description": "The subnet mask of the virtual network. Format: /# (IE: /24)"
+            }
+        },
+        "resourceTags": {
+            "type": "object",
+            "metadata": {
+                "description": "Tags to add to each resource created."
+            },
+            "defaultValue": {}
+        }
+    },
+    "functions": [
+        {
+            "namespace": "env",
+            "members": {
+                "transform": {
+                    "parameters": [
+                        {
+                            "name": "env",
+                            "type": "string"
+                        }
+                    ],
+                    "output": {
+                        "type": "string",
+                        "value": "[if(equals(toUpper(parameters('env')), 'PROD'), '', concat('-', toUpper(parameters('env'))))]"
+                    }
+                }
+            }
+        },
+        {
+            "namespace": "name",
+            "members": {
+                "clean": {
+                    "parameters": [
+                        {
+                            "name": "name",
+                            "type": "string"
+                        }
+                    ],
+                    "output": {
+                        "type": "string",
+                        "value": "[replace(replace(replace(parameters('name'), '-', ''), '_', ''), ' ', '')]"
+                    }
+                }
+            }
+        }
+    ],
+    "variables": {
+        "virtual_network_name": "[concat(name.clean(parameters('projectName')), env.transform(parameters('environmentName')),'-VN')]",
+        "address_space": "[concat(parameters('addressPrefix'), parameters('subnetMask'))]",
+        "bastion_address_space": "[concat(parameters('addressPrefix'), '/27')]",
+        "bastion_publicip_name": "[concat(name.clean(parameters('projectName')), env.transform(parameters('environmentName')),'-Bastion-PublicIP')]",
+        "bastion_name": "[concat(name.clean(parameters('projectName')), env.transform(parameters('environmentName')),'-Bastion')]"
+    },
+    "resources": [
+        {
+            "apiVersion": "2017-08-01",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[variables('virtual_network_name')]",
+            "location": "[resourceGroup().location]",
+            "tags": "[parameters('resourceTags')]",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[variables('address_space')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "AzureBastionSubnet",
+                        "properties": {
+                            "addressPrefix": "[variables('bastion_address_space')]"
+                        }
+                    }
+                ],
+                "enableDdosProtection": false,
+                "enableVmProtection": true
+            }
+        },
+        {
+            "name": "[variables('bastion_publicip_name')]",
+            "apiVersion": "2019-02-01",
+            "type": "Microsoft.Network/publicIpAddresses",
+            "location": "canada central",
+            "sku": {
+                "name": "Standard"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "Static"
+            },
+            "tags": {
+            }
+        },
+        {
+            "apiVersion": "2019-12-01",
+            "type": "Microsoft.Network/bastionHosts",
+            "name": "[variables('bastion_name')]",
+            "location": "Canada Central",
+            "dependsOn": [
+                "[variables('bastion_publicip_name')]",
+                "[variables('virtual_network_name')]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "BastionIpConf",
+                        "properties": {
+                            "subnet": {
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtual_network_name'), 'AzureBastionSubnet')]"
+                            },
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIpAddresses', variables('bastion_publicip_name'))]"
+                            }
+                        }
+                    }
+                ]
+            },
+            "tags": {
+            }
+        }
+    ],
+    "outputs": {
+        "vnetID": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtual_network_name'))]"
+        },
+        "vnetName": {
+            "type": "string",
+            "value": "[variables('virtual_network_name')]"
+        }
+    }
+}
