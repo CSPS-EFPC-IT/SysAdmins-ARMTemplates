@@ -83,7 +83,9 @@
     "variables": {
         "virtual_network_name": "[concat(name.clean(parameters('projectName')), env.transform(parameters('environmentName')),'-VN')]",
         "address_space": "[concat(parameters('addressPrefix'), parameters('subnetMask'))]",
-        "bastion_address_space": "[concat(parameters('addressPrefix'), '/27')]"
+        "bastion_address_space": "[concat(parameters('addressPrefix'), '/27')]",
+        "bastion_publicip_name": "[concat(name.clean(parameters('projectName')), env.transform(parameters('environmentName')),'-Bastion-PublicIP')]",
+        "bastion_name": "[concat(name.clean(parameters('projectName')), env.transform(parameters('environmentName')),'-Bastion')]"
     },
     "resources": [
         {
@@ -108,6 +110,47 @@
                 ],
                 "enableDdosProtection": false,
                 "enableVmProtection": true
+            }
+        },
+        {
+            "name": "[variables('bastion_publicip_name')]",
+            "apiVersion": "2019-02-01",
+            "type": "Microsoft.Network/publicIpAddresses",
+            "location": "canada central",
+            "sku": {
+                "name": "Standard"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "Static"
+            },
+            "tags": {
+            }
+        },
+        {
+            "apiVersion": "2019-12-01",
+            "type": "Microsoft.Network/bastionHosts",
+            "name": "[variables('bastion_name')]",
+            "location": "Canada Central",
+            "dependsOn": [
+                "[variables('bastion_publicip_name')]",
+                "[variables('virtual_network_name')]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "BastionIpConf",
+                        "properties": {
+                            "subnet": {
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtual_network_name'), 'AzureBastionSubnet')]"
+                            },
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIpAddresses', variables('bastion_publicip_name'))]"
+                            }
+                        }
+                    }
+                ]
+            },
+            "tags": {
             }
         }
     ],
