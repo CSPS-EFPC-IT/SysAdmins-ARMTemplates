@@ -91,6 +91,7 @@
             "type": "Microsoft.Network/virtualNetworks",
             "name": "[variables('virtual_network_name')]",
             "location": "[resourceGroup().location]",
+            "tags": "[parameters('resourceTags')]",
             "properties": {
                 "addressSpace": {
                     "addressPrefixes": [
@@ -105,7 +106,6 @@
                         }
                     }
                 ],
-                "tags": "[parameters('resourceTags')]",
                 "enableDdosProtection": false,
                 "enableVmProtection": true
             }
