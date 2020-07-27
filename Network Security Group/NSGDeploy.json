@@ -5,7 +5,7 @@
         "projectName": {
             "type": "string",
             "metadata": {
-                "description": "The name of the project. This string will be used to name the virtual network."
+                "description": "The name of the project. This string will be used to name the network security group."
             }
         },
         "environmentName": {
@@ -20,7 +20,7 @@
                 "PROD"
             ],
             "metadata": {
-                "description": "The environment of the virtual network. This string will be used to name the virtual network."
+                "description": "The environment of the virtual network. This string will be used to name the network security group."
             }
         },
         "resourceTags": {
