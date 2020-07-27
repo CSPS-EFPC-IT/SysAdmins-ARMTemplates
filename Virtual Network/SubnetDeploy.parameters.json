@@ -19,6 +19,9 @@
         },
         "subnetMask": {
             "value": "/27"
+        },
+        "nsgName": {
+            "value": "Testing-PAZ-DEV-NSG"
         }
     }
 }
