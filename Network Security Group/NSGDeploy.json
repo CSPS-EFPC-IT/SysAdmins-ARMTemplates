@@ -67,7 +67,7 @@
             }
         }
     ],
-    "variables":{
+    "variables": {
         "nsg_name": "[concat(name.clean(parameters('projectName')), env.transform(parameters('environmentName')),'-NSG')]"
     },
     "resources": [
@@ -79,5 +79,16 @@
             "tags": "[parameters('resourceTags')]",
             "properties": {}
         }
-    ]
+    ],
+    "outputs": {
+        "subnetID": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsg_name'))]"
+        },
+        "subnetName": {
+            "type": "string",
+            "value": "[variables('nsg_name')]"
+        }
+    }
+
 }
