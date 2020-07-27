@@ -81,11 +81,11 @@
         }
     ],
     "outputs": {
-        "subnetID": {
+        "nsgID": {
             "type": "string",
             "value": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsg_name'))]"
         },
-        "subnetName": {
+        "nsgName": {
             "type": "string",
             "value": "[variables('nsg_name')]"
         }
