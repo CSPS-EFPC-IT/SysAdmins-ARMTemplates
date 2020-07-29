@@ -2,35 +2,39 @@
     "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "location": {
-            "type": "string"
-        },
-        "networkInterfaceName": {
-            "type": "string"
-        },
         "subnetName": {
-            "type": "string"
+            "type": "string",
+            "metadata": {
+                "description": "The name of the pre-created subnet. ex: example-SN"
+            }
         },
         "virtualNetworkName": {
-            "type": "string"
-        },
-        "publicIpAddressName": {
-            "type": "string"
+            "type": "string",
+            "metadata": {
+                "description": "The name of the pre-created virtual network. ex: example-VN"
+            }
         },
         "publicIpAddressType": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "static",
+            "allowedValues": [
+                "static",
+                "dynamic"
+            ],
+            "metadata": {
+                "description": "The type of the public ip. ex: static or dynamic"
+            }
         },
         "publicIpAddressSku": {
-            "type": "string"
-        },
-        "virtualMachineName": {
-            "type": "string"
-        },
-        "virtualMachineComputerName": {
-            "type": "string"
-        },
-        "virtualMachineRG": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "basic",
+            "allowedValues": [
+                "basic",
+                "standard"
+            ],
+            "metadata": {
+                "description": "The SKU of the public ip. ex: basic or standard"
+            }
         },
         "osDiskType": {
             "type": "string"
@@ -53,17 +57,91 @@
         "diagnosticsStorageAccountName": {
             "type": "string"
         },
-        "diagnosticsStorageAccountId": {
-            "type": "string"
-        }
+        "projectName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the project. This string will be used to name the virtual machine."
+            }
+        },
+		
+        "vmPurpose": {
+            "type": "string",
+            "metadata": {
+                "description": "The purpose of the virtual machine. ex: App (application), Data (database)"
+            }
+        },
+
+        "vmNumber": {
+            "type": "integer",
+        
+            "metadata": {
+                    "description": "The number of the virtual machine. This integer will be used to name the virtual machine."
+            }
+        },
+
+        "environmentName": {
+            "type": "string",
+            "defaultValue": "dev",
+            "allowedValues": [
+                "dev",
+                "staging",
+                "prod",
+                "DEV",
+                "STAGING",
+                "PROD"
+            ],
+            "metadata": {
+                "description": "The environment of the virtual network. This string will be used to name the network security group."
+            }
+        },
     },
+    "functions": [
+        {
+            "namespace": "env",
+            "members": {
+                "transform": {
+                    "parameters": [
+                        {
+                            "name": "env",
+                            "type": "string"
+                        }
+                    ],
+                    "output": {
+                        "type": "string",
+                        "value": "[if(equals(toUpper(parameters('env')), 'PROD'), '', concat('-', toUpper(parameters('env'))))]"
+                    }
+                }
+            }
+        },
+        {
+            "namespace": "name",
+            "members": {
+                "clean": {
+                    "parameters": [
+                        {
+                            "name": "name",
+                            "type": "string"
+                        }
+                    ],
+                    "output": {
+                        "type": "string",
+                        "value": "[replace(replace(replace(parameters('name'), '-', ''), '_', ''), ' ', '')]"
+                    }
+                }
+            }
+        }
+    ],
     "variables": {
+        "vm_name": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'), env.transform(parameters('environmentName')))]",
+        "vm_publicip": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'),env.transform(parameters('environmentName')), '-PublicIP')]"
+        "vm_disk": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'),env.transform(parameters('environmentName')), '-Disk')]"
+        "vm_nic": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'),env.transform(parameters('environmentName')), '-NIC')]"
         "vnetName": "[parameters('virtualNetworkName')]",
         "subnetRef": "[concat(variables('vnetName'), '/subnets/', parameters('subnetName'))]"
     },
     "resources": [
         {
-            "name": "[parameters('publicIpAddressName')]",
+            "name": "[variables('vm_publicip')]",
             "type": "Microsoft.Network/publicIpAddresses",
             "apiVersion": "2019-02-01",
             "location": "Canada Central",
@@ -75,12 +153,12 @@
             }
         },        
         {
-            "name": "[parameters('networkInterfaceName')]",
+            "name": "[variables('vm_nic')]",
             "type": "Microsoft.Network/networkInterfaces",
             "apiVersion": "2019-07-01",
             "location": "Canada Central",
             "dependsOn": [
-                "[concat('Microsoft.Network/publicIpAddresses/', parameters('publicIpAddressName'))]"
+                "[concat('Microsoft.Network/publicIpAddresses/', variables('vm_nic'))]"
             ],
             "properties": {
                 "ipConfigurations": [
@@ -92,7 +170,7 @@
                             },
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIpAddress": {
-                                "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/publicIpAddresses', parameters('publicIpAddressName'))]"
+                                "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/publicIpAddresses', variables('vm_nic'))]"
                             }
                         }
                     }
@@ -100,7 +178,7 @@
             }
         },
         {
-            "name": "[parameters('dataDiskResources')[copyIndex()].name]",
+            "name": "[variables('vm_disk')]",
             "type": "Microsoft.Compute/disks",
             "apiVersion": "2019-07-01",
             "location": "Canada Central",
@@ -114,13 +192,13 @@
             }
         },
         {
-            "name": "[parameters('virtualMachineName')]",
+            "name": "[variables('vm_name')]",
             "type": "Microsoft.Compute/virtualMachines",
             "apiVersion": "2019-07-01",
             "location": "Canada Central",
             "dependsOn": [
                 "managedDiskResources",
-                "[concat('Microsoft.Network/networkInterfaces/', parameters('networkInterfaceName'))]"
+                "[concat('Microsoft.Network/networkInterfaces/', variables('vm_nic'))]"
             ],
             "properties": {
                 "hardwareProfile": {
@@ -163,12 +241,12 @@
                 "networkProfile": {
                     "networkInterfaces": [
                         {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaceName'))]"
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('vm_nic'))]"
                         }
                     ]
                 },
                 "osProfile": {
-                    "computerName": "[parameters('virtualMachineComputerName')]",
+                    "computerName": "[variables('vm_name')]",
                     "adminUsername": "[parameters('adminUsername')]",
                     "adminPassword": "[parameters('adminPassword')]",
                     "windowsConfiguration": {

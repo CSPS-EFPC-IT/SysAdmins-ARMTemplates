@@ -1,0 +1,12 @@
+VMname
+"name": "[concat(name.clean(parameters('projectName'))), (parameters('VMpurpose')), (parameters('VMnumber')]"
+#need a need variable for VMpurpose and VMnumber
+
+PublicIP
+"name": "[concat(name.clean(parameters('VMname')), env.transform(parameters('environmentName')),'-PublicIP')]"
+
+Disk
+"name": "[concat(name.clean(parameters('VMname')), env.transform(parameters('environmentName')),'-Disk')]"
+
+NIC
+"name": "[concat(name.clean(parameters('VMname')), env.transform(parameters('environmentName')),'-NIC')]"
