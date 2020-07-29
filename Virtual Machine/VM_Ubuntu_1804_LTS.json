@@ -3,47 +3,19 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "subnetName": {
-            "type": "string",
-            "metadata": {
-                "description": "The name of the pre-created subnet. ex: example-SN"
-            }
+            "type": "string"
         },
-        "virtualNetworkName": {
-            "type": "string",
-            "metadata": {
-                "description": "The name of the pre-created virtual network. ex: example-VN"
-            }
+        "virtualNetworkId": {
+            "type": "string"
         },
         "publicIpAddressType": {
-            "type": "string",
-            "defaultValue": "static",
-            "allowedValues": [
-                "static",
-                "dynamic"
-            ],
-            "metadata": {
-                "description": "The type of the public ip. ex: static or dynamic"
-            }
+            "type": "string"
         },
         "publicIpAddressSku": {
-            "type": "string",
-            "defaultValue": "basic",
-            "allowedValues": [
-                "basic",
-                "standard"
-            ],
-            "metadata": {
-                "description": "The SKU of the public ip. ex: basic or standard"
-            }
+            "type": "string"
         },
         "osDiskType": {
             "type": "string"
-        },
-        "dataDisks": {
-            "type": "array"
-        },
-        "dataDiskResources": {
-            "type": "array"
         },
         "virtualMachineSize": {
             "type": "string"
@@ -57,10 +29,10 @@
         "diagnosticsStorageAccountName": {
             "type": "string"
         },
-        "projectName": {
+                "projectName": {
             "type": "string",
             "metadata": {
-                "description": "The name of the project. This string will be used to name the virtual machine."
+                "description": "The name of the project. This string will be used to name the virtual machine and associated resources."
             }
         },
 		
@@ -95,7 +67,7 @@
             }
         },
     },
-    "functions": [
+        "functions": [
         {
             "namespace": "env",
             "members": {
@@ -133,32 +105,19 @@
     ],
     "variables": {
         "vm_name": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'), env.transform(parameters('environmentName')))]",
-        "vm_publicip": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'),env.transform(parameters('environmentName')), '-PublicIP')]"
-        "vm_disk": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'),env.transform(parameters('environmentName')), '-Disk')]"
-        "vm_nic": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'),env.transform(parameters('environmentName')), '-NIC')]"
-        "vnetName": "[parameters('virtualNetworkName')]",
-        "subnetRef": "[concat(variables('vnetName'), '/subnets/', parameters('subnetName'))]"
+        "vm_publicip": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'),env.transform(parameters('environmentName')), '-PublicIP')]",
+        "vm_nic": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'),env.transform(parameters('environmentName')), '-NIC')]",
+        "vnetId": "[parameters('virtualNetworkId')]",
+        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]"
     },
     "resources": [
-        {
-            "name": "[variables('vm_publicip')]",
-            "type": "Microsoft.Network/publicIpAddresses",
-            "apiVersion": "2019-02-01",
-            "location": "Canada Central",
-            "properties": {
-                "publicIpAllocationMethod": "[parameters('publicIpAddressType')]"
-            },
-            "sku": {
-                "name": "[parameters('publicIpAddressSku')]"
-            }
-        },        
         {
             "name": "[variables('vm_nic')]",
             "type": "Microsoft.Network/networkInterfaces",
             "apiVersion": "2019-07-01",
-            "location": "Canada Central",
+            "location": "canada central",
             "dependsOn": [
-                "[concat('Microsoft.Network/publicIpAddresses/', variables('vm_nic'))]"
+                "[concat('Microsoft.Network/publicIpAddresses/', variables('vm_publicip'))]"
             ],
             "properties": {
                 "ipConfigurations": [
@@ -170,34 +129,31 @@
                             },
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIpAddress": {
-                                "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/publicIpAddresses', variables('vm_nic'))]"
+                                "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/publicIpAddresses', variables('vm_publicip'))]"
                             }
                         }
                     }
-                ]
+                ],
             }
         },
         {
-            "name": "[variables('vm_disk')]",
-            "type": "Microsoft.Compute/disks",
-            "apiVersion": "2019-07-01",
-            "location": "Canada Central",
-            "properties": "[parameters('dataDiskResources')[copyIndex()].properties]",
-            "sku": {
-                "name": "[parameters('dataDiskResources')[copyIndex()].sku]"
+            "name": "[variables('vm_publicip')]",
+            "type": "Microsoft.Network/publicIpAddresses",
+            "apiVersion": "2019-02-01",
+            "location": "canada central",
+            "properties": {
+                "publicIpAllocationMethod": "[parameters('publicIpAddressType')]"
             },
-            "copy": {
-                "name": "managedDiskResources",
-                "count": "[length(parameters('dataDiskResources'))]"
+            "sku": {
+                "name": "[parameters('publicIpAddressSku')]"
             }
         },
         {
             "name": "[variables('vm_name')]",
             "type": "Microsoft.Compute/virtualMachines",
             "apiVersion": "2019-07-01",
-            "location": "Canada Central",
+            "location": "canada central",
             "dependsOn": [
-                "managedDiskResources",
                 "[concat('Microsoft.Network/networkInterfaces/', variables('vm_nic'))]"
             ],
             "properties": {
@@ -212,31 +168,11 @@
                         }
                     },
                     "imageReference": {
-                        "publisher": "MicrosoftWindowsServer",
-                        "offer": "WindowsServer",
-                        "sku": "2016-Datacenter",
+                        "publisher": "Canonical",
+                        "offer": "UbuntuServer",
+                        "sku": "18.04-LTS",
                         "version": "latest"
-                    },
-                    "copy": [
-                        {
-                            "name": "dataDisks",
-                            "count": "[length(parameters('dataDisks'))]",
-                            "input": {
-                                "lun": "[parameters('dataDisks')[copyIndex('dataDisks')].lun]",
-                                "createOption": "[parameters('dataDisks')[copyIndex('dataDisks')].createOption]",
-                                "caching": "[parameters('dataDisks')[copyIndex('dataDisks')].caching]",
-                                "writeAcceleratorEnabled": "[parameters('dataDisks')[copyIndex('dataDisks')].writeAcceleratorEnabled]",
-                                "diskSizeGB": "[parameters('dataDisks')[copyIndex('dataDisks')].diskSizeGB]",
-                                "managedDisk": {
-                                    "id": "[coalesce(parameters('dataDisks')[copyIndex('dataDisks')].id, if(equals(parameters('dataDisks')[copyIndex('dataDisks')].name, json('null')), json('null'), resourceId('Microsoft.Compute/disks', parameters('dataDisks')[copyIndex('dataDisks')].name)))]",
-                                    "storageAccountType": "[parameters('dataDisks')[copyIndex('dataDisks')].storageAccountType]",
-                                    "diskEncryptionSet": {
-                                        "id": "[parameters('dataDisks')[copyIndex('dataDisks')].diskEncryptionSet.id]"
-                                    }
-                                }
-                            }
-                        }
-                    ]
+                    }
                 },
                 "networkProfile": {
                     "networkInterfaces": [
@@ -248,11 +184,7 @@
                 "osProfile": {
                     "computerName": "[variables('vm_name')]",
                     "adminUsername": "[parameters('adminUsername')]",
-                    "adminPassword": "[parameters('adminPassword')]",
-                    "windowsConfiguration": {
-                        "enableAutomaticUpdates": true,
-                        "provisionVmAgent": true
-                    }
+                    "adminPassword": "[parameters('adminPassword')]"
                 },
                 "diagnosticsProfile": {
                     "bootDiagnostics": {
