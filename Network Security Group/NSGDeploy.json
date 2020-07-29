@@ -23,6 +23,21 @@
                 "description": "The environment of the virtual network. This string will be used to name the network security group."
             }
         },
+        "zoneName": {
+            "type": "string",
+            "defaultValue": "PAZ",
+            "allowedValues": [
+                "PAZ",
+                "OZ",
+                "RZ",
+                "HRZ",
+                "REZ",
+                "SAZ"
+            ],
+            "metadata": {
+                "description": "The NSG's zone (capitalized acronym) according to ITSG22."
+            }
+        },
         "resourceTags": {
             "type": "object",
             "metadata": {
@@ -68,7 +83,7 @@
         }
     ],
     "variables": {
-        "nsg_name": "[concat(name.clean(parameters('projectName')), env.transform(parameters('environmentName')),'-NSG')]"
+        "nsg_name": "[concat(name.clean(parameters('projectName')), '-', parameters('zoneName'), env.transform(parameters('environmentName')),'-NSG')]"
     },
     "resources": [
         {

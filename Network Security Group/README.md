@@ -13,6 +13,7 @@
             <li>addressPrefix - The adress prefix of the virtual network's address space. (IE: 10.10.10.0)</li>
             <li>subnetMask - The subnet mask of the virstual network. Format: /# (IE: /24)</li>
             <li>resourceTags - An array of tags to add to each resource created.</li>
+            <li>zoneName - The NSG's zone (capitalized acronym) according to ITSG22.</li>
         </ul>
     <li>The file will output the ID and name of the created network security group.</li>
 </ol>

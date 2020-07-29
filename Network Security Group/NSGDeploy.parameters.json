@@ -8,6 +8,9 @@
         "environmentName": {
             "value": "dev"
         },
+        "zoneName": {
+            "value": "PAZ"
+        },
         "resourceTags": {
             "value": {}
         }
