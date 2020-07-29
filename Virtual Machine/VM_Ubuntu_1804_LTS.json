@@ -3,16 +3,38 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "subnetName": {
-            "type": "string"
+            "type": "string",
+            "metadata": {
+                "description": "The name of the pre-created subnet. ex: example-SN"
+            }
         },
-        "virtualNetworkId": {
-            "type": "string"
+        "virtualNetworkName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the pre-created virtual network. ex: example-VN"
+            }
         },
         "publicIpAddressType": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "static",
+            "allowedValues": [
+                "static",
+                "dynamic"
+            ],
+            "metadata": {
+                "description": "The type of the public ip. ex: static or dynamic"
+            }
         },
         "publicIpAddressSku": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "basic",
+            "allowedValues": [
+                "basic",
+                "standard"
+            ],
+            "metadata": {
+                "description": "The SKU of the public ip. ex: basic or standard"
+            }
         },
         "osDiskType": {
             "type": "string"
