@@ -8,10 +8,10 @@
                 "description": "The name of the pre-created subnet. ex: example-SN"
             }
         },
-        "virtualNetworkName": {
+        "vnetName": {
             "type": "string",
             "metadata": {
-                "description": "The name of the pre-created virtual network. ex: example-VN"
+                "description": "The ID of the virtual network."
             }
         },
         "publicIpAddressType": {
@@ -36,22 +36,32 @@
                 "description": "The SKU of the public ip. ex: basic or standard"
             }
         },
-        "osDiskType": {
-            "type": "string"
-        },
         "virtualMachineSize": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "Standard_B2S",
+            "metadata": {
+                "description": "The size of the VM. ex: Standard_B2s"
+            }
         },
         "adminUsername": {
-            "type": "string"
+            "type": "string",
+            "metadata": {
+                "description": "The username of the default admin account"
+            }
         },
         "adminPassword": {
-            "type": "secureString"
+            "type": "secureString",
+            "metadata": {
+                "description": "The password of the default admin account"
+            }
         },
         "diagnosticsStorageAccountName": {
-            "type": "string"
+            "type": "string",
+            "metadata": {
+                "description": "The name the storage account for diagnostics."
+            }
         },
-                "projectName": {
+        "projectName": {
             "type": "string",
             "metadata": {
                 "description": "The name of the project. This string will be used to name the virtual machine and associated resources."
@@ -129,8 +139,7 @@
         "vm_name": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'), env.transform(parameters('environmentName')))]",
         "vm_publicip": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'),env.transform(parameters('environmentName')), '-PublicIP')]",
         "vm_nic": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'),env.transform(parameters('environmentName')), '-NIC')]",
-        "vnetId": "[parameters('virtualNetworkId')]",
-        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]"
+        "subnet_id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"
     },
     "resources": [
         {
@@ -147,7 +156,7 @@
                         "name": "ipconfig1",
                         "properties": {
                             "subnet": {
-                                "id": "[variables('subnetRef')]"
+                                "id": "[variables('subnet_id')]"
                             },
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIpAddress": {
@@ -186,7 +195,7 @@
                     "osDisk": {
                         "createOption": "fromImage",
                         "managedDisk": {
-                            "storageAccountType": "[parameters('osDiskType')]"
+                            "storageAccountType": "linux"
                         }
                     },
                     "imageReference": {
