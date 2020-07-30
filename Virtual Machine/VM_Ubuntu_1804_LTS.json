@@ -67,14 +67,12 @@
                 "description": "The name of the project. This string will be used to name the virtual machine and associated resources."
             }
         },
-		
         "vmPurpose": {
             "type": "string",
             "metadata": {
                 "description": "The purpose of the virtual machine. ex: App (application), Data (database)"
             }
         },
-
         "vmNumber": {
             "type": "integer",
         
@@ -82,7 +80,6 @@
                     "description": "The number of the virtual machine. This integer will be used to name the virtual machine."
             }
         },
-
         "environmentName": {
             "type": "string",
             "defaultValue": "dev",
