@@ -11,6 +11,9 @@
         "zoneName": {
             "value": "PAZ"
         },
+        "subZoneName": {
+            "value": ""
+        },
         "addressPrefix": {
             "value": "10.10.10.32"
         },

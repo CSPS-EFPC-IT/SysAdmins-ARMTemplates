@@ -29,12 +29,16 @@
     Subnet&NSGDeploy.json section.</p>
 <h3>SubnetDeploy.json</h3>
 <ol>
-    <li>As mencionned above, you can use the SubnetDeploy.json file (ARM template) in the current folder when deploying a Subnet which you want to associate with an exisiting network security group.</li>
+    <li>As mencionned above, you can use the SubnetDeploy.json file (ARM template) in the current folder when deploying
+        a Subnet which you want to associate with an exisiting network security group.</li>
     <li>Pass in the following parameters:
         <ul>
             <li>projectName - The name of the project/solution. This string will be used to name the subnet.</li>
             <li>environmentName - The environment of the subnet. This string will be used to name the subnet.</li>
             <li>zoneName - The subnet's zone (capitalized acronym) according to ITSG22.</li>
+            <li>subZoneName - Optional: Sub-zone in case one zone needs to be seperated. This should be a small string
+                or a capitalized acronym with no spaces. For instance, if you need to have a application gateway in a
+                different subnet in the same zone, then your subzone could be 'AG'.</li>
             <li>addressPrefix - The adress prefix of the subnet's address space. (IE: 10.10.10.0)</li>
             <li>subnetMask - The subnet mask of the subnet. Format: /# (IE: /24)</li>
             <li>vnetName - The name of the vnet you wish to deploy the subnet to.</li>
@@ -44,12 +48,16 @@
 </ol>
 <h3>Subnet&NSGDeploy.json</h3>
 <ol>
-    <li>As mencionned above, use the Subnet&NSGDeploy.json file (ARM template) in the current folder when deploying a subnet and its netork security group.</li>
+    <li>As mencionned above, use the Subnet&NSGDeploy.json file (ARM template) in the current folder when deploying a
+        subnet and its netork security group.</li>
     <li>Pass in the following parameters:
         <ul>
             <li>projectName - The name of the project/solution. This string will be used to name the subnet.</li>
             <li>environmentName - The environment of the subnet. This string will be used to name the subnet.</li>
             <li>zoneName - The subnet's zone (capitalized acronym) according to ITSG22.</li>
+            <li>subZoneName - Optional: Sub-zone in case one zone needs to be seperated. This should be a small string
+                or a capitalized acronym with no spaces. For instance, if you need to have a application gateway in a
+                different subnet in the same zone, then your subzone could be 'AG'.</li>
             <li>addressPrefix - The adress prefix of the subnet's address space. (IE: 10.10.10.0)</li>
             <li>subnetMask - The subnet mask of the subnet. Format: /# (IE: /24)</li>
             <li>vnetName - The name of the vnet you wish to deploy the subnet to.</li>

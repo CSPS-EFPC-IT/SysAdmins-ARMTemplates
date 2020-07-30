@@ -38,6 +38,13 @@
                 "description": "The NSG's zone (capitalized acronym) according to ITSG22."
             }
         },
+        "subZoneName": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional: Sub-zone in case one zone needs to be seperated."
+            }
+        },
         "resourceTags": {
             "type": "object",
             "metadata": {
@@ -78,12 +85,24 @@
                         "type": "string",
                         "value": "[replace(replace(replace(parameters('name'), '-', ''), '_', ''), ' ', '')]"
                     }
+                },
+                "optionalNameParameter": {
+                    "parameters": [
+                        {
+                            "name": "name",
+                            "type": "string"
+                        }
+                    ],
+                    "output": {
+                        "type": "string",
+                        "value": "[if(equals(parameters('name'), ''), '', concat('-', parameters('name'), '-'))]"
+                    }
                 }
             }
         }
     ],
     "variables": {
-        "nsg_name": "[concat(name.clean(parameters('projectName')), '-', parameters('zoneName'), env.transform(parameters('environmentName')),'-NSG')]"
+        "nsg_name": "[concat(name.clean(parameters('projectName')), '-', parameters('zoneName'), name.optionalNameParameter(parameters('subZoneName')), env.transform(parameters('environmentName')),'-NSG')]"
     },
     "resources": [
         {
@@ -105,5 +124,4 @@
             "value": "[variables('nsg_name')]"
         }
     }
-
 }

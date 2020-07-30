@@ -13,6 +13,9 @@
         },
         "resourceTags": {
             "value": {}
+        },
+        "subZoneName": {
+            "value": ""
         }
     }
 }

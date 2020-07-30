@@ -12,8 +12,11 @@
             <li>environmentName - The environment of the virtual network. This string will be used to name the virtual network.</li>
             <li>addressPrefix - The adress prefix of the virtual network's address space. (IE: 10.10.10.0)</li>
             <li>subnetMask - The subnet mask of the virstual network. Format: /# (IE: /24)</li>
-            <li>resourceTags - An array of tags to add to each resource created.</li>
             <li>zoneName - The NSG's zone (capitalized acronym) according to ITSG22.</li>
+            <li>subZoneName - Optional: Sub-zone in case one zone needs to be seperated. This should be a small string
+                or a capitalized acronym with no spaces. For instance, if you need to have a application gateway in a
+                different subnet in the same zone, then your subzone could be 'AG'.</li>
+            <li>resourceTags - An array of tags to add to each resource created.</li>
         </ul>
     <li>The file will output the ID and name of the created network security group.</li>
 </ol>
