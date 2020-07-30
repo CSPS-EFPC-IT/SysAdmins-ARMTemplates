@@ -1,0 +1,55 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "subnetName": {
+            "value": "" // TODO: Fill in parameter value
+        },
+        "virtualNetworkName": {
+            "value": "" // TODO: Fill in parameter value
+        },
+        "publicIpAddressType": {
+            "value": "static"
+        },
+        "publicIpAddressSku": {
+            "value": "basic"
+        },
+        "osDiskType": {
+            "value": "" // TODO: Fill in parameter value
+        },
+        "dataDisks": {
+            "value": [
+                // TODO: Fill in parameter value
+            ]
+        },
+        "dataDiskResources": {
+            "value": [
+                // TODO: Fill in parameter value
+            ]
+        },
+        "virtualMachineSize": {
+            "value": "" // TODO: Fill in parameter value
+        },
+        "adminUsername": {
+            "value": "" // TODO: Fill in parameter value
+        },
+        "adminPassword": {
+            "value": "" // TODO: Fill in parameter value
+        },
+        "diagnosticsStorageAccountName": {
+            "value": "" // TODO: Fill in parameter value
+        },
+        "projectName": {
+            "value": "" // TODO: Fill in parameter value
+        },
+        "vmPurpose": {
+            "value": "" // TODO: Fill in parameter value
+        },
+        "vmNumber": {
+            "value": "" // TODO: Fill in parameter value
+        },
+        "environmentName": {
+            "value": "dev"
+        }
+    }
+}
