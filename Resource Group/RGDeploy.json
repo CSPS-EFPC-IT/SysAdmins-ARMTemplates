@@ -47,6 +47,23 @@
     },
     "functions": [
         {
+            "namespace": "name",
+            "members": {
+                "clean": {
+                    "parameters": [
+                        {
+                            "name": "name",
+                            "type": "string"
+                        }
+                    ],
+                    "output": {
+                        "type": "string",
+                        "value": "[replace(replace(replace(parameters('name'), '-', ''), '_', ''), ' ', '')]"
+                    }
+                }
+            }
+        },
+        {
             "namespace": "env",
             "members": {
                 "transform": {
@@ -65,7 +82,7 @@
         }
     ],
     "variables": {
-        "rg_name": "[concat(parameters('projectName'), env.transform(parameters('environmentName')), '-RG')]"
+        "rg_name": "[concat(name.clean(parameters('projectName')), env.transform(parameters('environmentName')), '-RG')]"
     },
     "resources": [
         {
