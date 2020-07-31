@@ -64,11 +64,12 @@
                 "description": "The name of the vnet you wish to deploy the subnet to."
             }
         },
-        "nsgName": {
-            "type": "string",
+        "resourceTags": {
+            "type": "object",
             "metadata": {
-                "description": "The name of an existing NSG for the subnet."
-            }
+                "description": "Tags to add to the network security group."
+            },
+            "defaultValue": {}
         }
     },
     "functions": [
@@ -121,9 +122,35 @@
     ],
     "variables": {
         "subnet_name": "[concat(name.clean(parameters('projectName')), '-', parameters('zoneName'), name.optionalNameParameter(parameters('subZoneName')), env.transform(parameters('environmentName')),'-SN')]",
-        "address_space": "[concat(parameters('addressPrefix'), parameters('subnetMask'))]"
+        "address_space": "[concat(parameters('addressPrefix'), parameters('subnetMask'))]",
+        "nsg_name": "[concat(name.clean(parameters('projectName')), '-', parameters('zoneName'), name.optionalNameParameter(parameters('subZoneName')), env.transform(parameters('environmentName')),'-NSG')]"
     },
     "resources": [
+        {
+            "apiVersion": "2019-02-01",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "name": "[variables('nsg_name')]",
+            "location": "Canada Central",
+            "tags": "[parameters('resourceTags')]",
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "DenyAll_AllPorts",
+                        "properties": {
+                            "description": "Deny all by default.",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Deny",
+                            "priority": 4096,
+                            "direction": "Inbound"
+                        }
+                    }
+                ]
+            }
+        },
         {
             "type": "Microsoft.Network/virtualNetworks/subnets",
             "apiVersion": "2020-04-01",
@@ -135,9 +162,12 @@
                 "privateEndpointNetworkPolicies": "Enabled",
                 "privateLinkServiceNetworkPolicies": "Enabled",
                 "networkSecurityGroup": {
-                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsgName'))]"
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsg_name'))]"
                 }
-            }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsg_name'))]"
+            ]
         }
     ],
     "outputs": {
@@ -148,6 +178,14 @@
         "subnetName": {
             "type": "string",
             "value": "[variables('subnet_name')]"
+        },
+        "nsgID": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsg_name'))]"
+        },
+        "nsgName": {
+            "type": "string",
+            "value": "[variables('nsg_name')]"
         }
     }
 }

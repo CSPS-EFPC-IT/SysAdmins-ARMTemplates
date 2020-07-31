@@ -2,9 +2,6 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "vnetName": {
-            "value": "Testing-DEV-VN"
-        },
         "projectName": {
             "value": "Testing"
         },
@@ -14,17 +11,11 @@
         "zoneName": {
             "value": "PAZ"
         },
+        "resourceTags": {
+            "value": {}
+        },
         "subZoneName": {
             "value": ""
-        },
-        "addressPrefix": {
-            "value": "10.10.10.32"
-        },
-        "subnetMask": {
-            "value": "/27"
-        },
-        "nsgName": {
-            "value": "Testing-PAZ-DEV-NSG"
         }
     }
 }

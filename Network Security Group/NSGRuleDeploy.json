@@ -1,0 +1,92 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "rulePriority": {
+            "type": "int",
+            "metadata": {
+                "description": "Priority of the security rule. Integer between 100-495."
+            }
+        },
+        "ruleDescription": {
+            "type": "string",
+            "metadata": {
+                "description": "Summary of the security rule (Max. 140 characters)."
+            }
+        },
+        "sourceIP": {
+            "type": "string",
+            "metadata": {
+                "description": "The CIDR or source IP range. Asterisk '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used."
+            }
+        },
+         "sourceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Friendly source name with no spaces."
+            }
+        },
+        "destinationPort": {
+            "type": "string",
+            "metadata": {
+                "description": "Rule destination port. * for any"
+            }
+        },
+        "accessAction": {
+            "type": "string",
+            "allowedValues": [
+                "Allow",
+                "Deny"
+            ],
+            "metadata": {
+                "description": "Rule action: Allow or Deny."
+            }
+        },
+        "nsgName": {
+            "type": "string",
+            "metadata": {
+                "description": "The network security group where the rule is to be created."
+            }
+        }
+    },
+    "functions": [
+        {
+            "namespace": "name",
+            "members": {
+                "port": {
+                    "parameters": [
+                        {
+                            "name": "port",
+                            "type": "string"
+                        }
+                    ],
+                    "output": {
+                        "type": "string",
+                        "value": "[if(equals(toUpper(parameters('port')), '*'), 'AllPorts', parameters('port'))]"
+                    }
+                }
+            }
+        }
+    ],
+    "variables": {
+        "rule_name": "[concat(parameters('nsgName'),'/', parameters('accessAction'), parameters('sourceName'), '_', name.port(parameters('destinationPort')))]"
+    },
+    "resources": [
+        {
+            "name": "[variables('rule_name')]",
+            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+            "apiVersion": "2020-04-01",
+            "properties": {
+                "description": "[parameters('ruleDescription')]",
+                "protocol": "*",
+                "sourceAddressPrefix": "[parameters('sourceIP')]",
+                "destinationAddressPrefix": "*",
+                "sourcePortRange": "*",
+                "destinationPortRange": "[parameters('destinationPort')]",
+                "access": "[parameters('accessAction')]",
+                "priority": "[parameters('rulePriority')]",
+                "direction": "Inbound"
+            }
+        }
+    ]
+}

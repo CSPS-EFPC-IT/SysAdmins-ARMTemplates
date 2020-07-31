@@ -1,0 +1,27 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "rulePriority": {
+            "value": 100
+        },
+        "ruleDescription": {
+            "value": "Allows HTTPS access from TestingBastion subnet."
+        },
+        "sourceIP": {
+            "value": "10.10.10.0/27"
+        },
+        "sourceName": {
+            "value": "TestingBastion"
+        },
+        "destinationPort": {
+            "value": "443" 
+        },
+        "accessAction": {
+            "value": "Allow"
+        },
+        "nsgName": {
+            "value": "Testing-NSG"
+        }
+    }
+}

@@ -2,9 +2,6 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "vnetName": {
-            "value": "Testing-DEV-VN"
-        },
         "projectName": {
             "value": "Testing"
         },
@@ -23,8 +20,11 @@
         "subnetMask": {
             "value": "/27"
         },
-        "nsgName": {
-            "value": "Testing-PAZ-DEV-NSG"
+        "vnetName": {
+            "value": "Testing-DEV-VN"
+        },
+        "resourceTags": {
+            "value": {}
         }
     }
 }
