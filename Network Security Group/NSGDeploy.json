@@ -111,7 +111,24 @@
             "name": "[variables('nsg_name')]",
             "location": "Canada Central",
             "tags": "[parameters('resourceTags')]",
-            "properties": {}
+            "properties": {
+                "securityRules": [
+                     {
+                        "name": "DenyAll_AllPorts",
+                        "properties": {
+                            "description": "Deny all by default.",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Deny",
+                            "priority": 4096,
+                            "direction": "Inbound"
+                        }
+                    }
+                ]
+            }
         }
     ],
     "outputs": {
