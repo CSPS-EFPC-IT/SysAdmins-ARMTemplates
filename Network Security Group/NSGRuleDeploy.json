@@ -49,8 +49,27 @@
             }
         }
     },
+    "functions": [
+        {
+            "namespace": "name",
+            "members": {
+                "port": {
+                    "parameters": [
+                        {
+                            "name": "port",
+                            "type": "string"
+                        }
+                    ],
+                    "output": {
+                        "type": "string",
+                        "value": "[if(equals(toUpper(parameters('port')), '*'), 'AllPorts', parameters('port'))]"
+                    }
+                }
+            }
+        }
+    ],
     "variables": {
-        "rule_name": "[concat(parameters('nsgName'),'/', parameters('accessAction'), parameters('sourceName'), '_', parameters('destinationPort'))]"
+        "rule_name": "[concat(parameters('nsgName'),'/', parameters('accessAction'), parameters('sourceName'), '_', name.port(parameters('destinationPort')))]"
     },
     "resources": [
         {
@@ -62,7 +81,7 @@
                 "protocol": "*",
                 "sourceAddressPrefix": "[parameters('sourceIP')]",
                 "destinationAddressPrefix": "*",
-                "sourcePortRanges": [ "*" ],
+                "sourcePortRange": "*",
                 "destinationPortRange": "[parameters('destinationPort')]",
                 "access": "[parameters('accessAction')]",
                 "priority": "[parameters('rulePriority')]",
