@@ -12,9 +12,11 @@
             "type": "string",
             "defaultValue": "dev",
             "allowedValues": [
+                "sandbox",
                 "dev",
                 "staging",
                 "prod",
+                "SANDBOX",
                 "DEV",
                 "STAGING",
                 "PROD"
