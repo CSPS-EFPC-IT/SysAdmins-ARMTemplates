@@ -9,12 +9,11 @@
     <li>As mencionned above, use the NSGDeploy.json file (ARM template) in the current folder.</li>
     <li>Pass in the following parameters:
         <ul>
-            <li>projectName - The name of the project/solution. This string will be used to name the virtual network.
+            <li>projectName - The name of the project/solution. This string will be used to name the network security
+                group.
             </li>
-            <li>environmentName - The environment of the virtual network. This string will be used to name the virtual
-                network.</li>
-            <li>addressPrefix - The adress prefix of the virtual network's address space. (IE: 10.10.10.0)</li>
-            <li>subnetMask - The subnet mask of the virstual network. Format: /# (IE: /24)</li>
+            <li>environmentName - The environment of the network security group's virtual network. This string will be
+                used to name network security group.</li>
             <li>zoneName - The NSG's zone (capitalized acronym) according to ITSG22.</li>
             <li>subZoneName - Optional: Sub-zone in case one zone needs to be seperated. This should be a small string
                 or a capitalized acronym with no spaces. For instance, if you need to have a application gateway in a
@@ -31,13 +30,13 @@
     <li>As mencionned above, use the NSGRuleDeploy.json file (ARM template) in the current folder.</li>
     <li>Pass in the following parameters:
         <ul>
-            <li>rulePriority - Priority of the security rule.</li>
+            <li>rulePriority - Priority of the security rule. Must be an integer between 100-4095.</li>
             <li>ruleDescription - Summary of the security rule (Max. 140 characters).</li>
             <li>sourceIP - The CIDR or source IP range. Asterisk '*' can also be used to match all source IPs. Default
                 tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used.</li>
             <li>sourceName - Friendly source name with no spaces.</li>
-            <li>destinationPort - Rule destination port.</li>
-            <li>accessAction - Rule action: Allow or Deny.</li>
+            <li>destinationPort - Rule's destination port. Asterisk '*' can also be used to match all ports.</li>
+            <li>accessAction - Rule's action: Allow or Deny.</li>
             <li>nsgName - The network security group where the rule is to be created.</li>
         </ul>
 </ol>
