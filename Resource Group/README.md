@@ -15,57 +15,29 @@
                     <tbody>
                         <tr style="border: 1px solid black">
                             <td style="border: 1px solid black">
-                                <p><strong>Tag</strong></p>
+                                <p>Audience</p>
                             </td>
                             <td style="border: 1px solid black">
-                                <p><strong>Definition</strong></p>
+                                <p>Target audience of the solution.</p>
                             </td>
                             <td style="border: 1px solid black">
-                                <p><strong>Options / Examples</strong></p>
-                            </td>
-                        </tr>
-                        <tr style="border: 1px solid black">
-                            <td style="border: 1px solid black">
-                                <p>Project</p>
-                            </td>
-                            <td style="border: 1px solid black">
-                                <p>Name of the project (or application).</p>
-                            </td>
-                            <td style="border: 1px solid black">
-                                <p>Ex: Testing Application</p>
+                                <p>Team, CSPS, Government, Public</p>
+                                <p>Explanation: (Solution is for)</p>
+                                <p>Team &ndash; a single team at CSPS.</p>
+                                <p>CSPS &ndash; multiple teams at CSPS or for the entire CSPS department.</p>
+                                <p>Government &ndash; one or more Government departments other than CSPS.</p>
+                                <p>Public &ndash; the public.</p>
                             </td>
                         </tr>
                         <tr style="border: 1px solid black">
                             <td style="border: 1px solid black">
-                                <p>Group</p>
+                                <p>Backups</p>
                             </td>
                             <td style="border: 1px solid black">
-                                <p>Group to which the project belongs to.</p>
+                                <p>How often are backups are done. (In days)</p>
                             </td>
                             <td style="border: 1px solid black">
-                                <p>Ex: SysAdmins</p>
-                            </td>
-                        </tr>
-                        <tr style="border: 1px solid black">
-                            <td style="border: 1px solid black">
-                                <p>Owner</p>
-                            </td>
-                            <td style="border: 1px solid black">
-                                <p>Owner of the project, also known as a point of contact.</p>
-                            </td>
-                            <td style="border: 1px solid black">
-                                <p>Ex: John Doe</p>
-                            </td>
-                        </tr>
-                        <tr style="border: 1px solid black">
-                            <td style="border: 1px solid black">
-                                <p>Environment</p>
-                            </td>
-                            <td style="border: 1px solid black">
-                                <p>Establishes a resource&rsquo;s phase in its project development.</p>
-                            </td>
-                            <td style="border: 1px solid black">
-                                <p>SANDBOX, DEV, TEST, STAGING, PROD</p>
+                                <p>Ex: 7 (=weekly)</p>
                             </td>
                         </tr>
                         <tr style="border: 1px solid black">
@@ -86,30 +58,24 @@
                         </tr>
                         <tr style="border: 1px solid black">
                             <td style="border: 1px solid black">
-                                <p>Audience</p>
+                                <p>Environment</p>
                             </td>
                             <td style="border: 1px solid black">
-                                <p>Target audience of the solution.</p>
+                                <p>Establishes a resource&rsquo;s phase in its project development.</p>
                             </td>
                             <td style="border: 1px solid black">
-                                <p>Team, CSPS, Government, Public</p>
-                                <p>Explanation: (Solution is for)</p>
-                                <p>Team &ndash; a single team at CSPS.</p>
-                                <p>CSPS &ndash; multiple teams at CSPS or for the entire CSPS department.</p>
-                                <p>Government &ndash; one or more Government departments other than CSPS.</p>
-                                <p>Public &ndash; the public.</p>
+                                <p>SANDBOX, DEV, TEST, STAGING, PROD</p>
                             </td>
                         </tr>
                         <tr style="border: 1px solid black">
                             <td style="border: 1px solid black">
-                                <p>User Impact Level</p>
+                                <p>Group</p>
                             </td>
                             <td style="border: 1px solid black">
-                                <p>Defines the criticality of the resource depending on how many users will be
-                                    affected in case of resource failure.</p>
+                                <p>Group to which the project belongs to.</p>
                             </td>
                             <td style="border: 1px solid black">
-                                <p>1000+users, 500-999users, 100-499users, 20-99users, 1-19users</p>
+                                <p>Ex: SysAdmins</p>
                             </td>
                         </tr>
                         <tr style="border: 1px solid black">
@@ -125,24 +91,24 @@
                         </tr>
                         <tr style="border: 1px solid black">
                             <td style="border: 1px solid black">
-                                <p>Uptime Period</p>
+                                <p>Owner</p>
                             </td>
                             <td style="border: 1px solid black">
-                                <p>When is the resource/solution is up.</p>
+                                <p>Owner of the project, also known as a point of contact.</p>
                             </td>
                             <td style="border: 1px solid black">
-                                <p>24/7, daytime, weekdays, work hours</p>
+                                <p>Ex: John Doe</p>
                             </td>
                         </tr>
                         <tr style="border: 1px solid black">
                             <td style="border: 1px solid black">
-                                <p>Backups</p>
+                                <p>Project</p>
                             </td>
                             <td style="border: 1px solid black">
-                                <p>How often are backups are done. (In days)</p>
+                                <p>Name of the project (or application).</p>
                             </td>
                             <td style="border: 1px solid black">
-                                <p>Ex: 7 (=weekly)</p>
+                                <p>Ex: Testing Application</p>
                             </td>
                         </tr>
                         <tr style="border: 1px solid black">
@@ -154,6 +120,40 @@
                             </td>
                             <td style="border: 1px solid black">
                                 <p>Ex: 1</p>
+                            </td>
+                        </tr>
+                        <tr style="border: 1px solid black">
+                            <td style="border: 1px solid black">
+                                <p><strong>Tag</strong></p>
+                            </td>
+                            <td style="border: 1px solid black">
+                                <p><strong>Definition</strong></p>
+                            </td>
+                            <td style="border: 1px solid black">
+                                <p><strong>Options / Examples</strong></p>
+                            </td>
+                        </tr>
+                        <tr style="border: 1px solid black">
+                            <td style="border: 1px solid black">
+                                <p>Uptime Period</p>
+                            </td>
+                            <td style="border: 1px solid black">
+                                <p>When is the resource/solution is up.</p>
+                            </td>
+                            <td style="border: 1px solid black">
+                                <p>24/7, daytime, weekdays, work hours</p>
+                            </td>
+                        </tr>
+                        <tr style="border: 1px solid black">
+                            <td style="border: 1px solid black">
+                                <p>User Impact Level</p>
+                            </td>
+                            <td style="border: 1px solid black">
+                                <p>Defines the criticality of the resource depending on how many users will be
+                                    affected in case of resource failure.</p>
+                            </td>
+                            <td style="border: 1px solid black">
+                                <p>1000+users, 500-999users, 100-499users, 20-99users, 1-19users</p>
                             </td>
                         </tr>
                     </tbody>
