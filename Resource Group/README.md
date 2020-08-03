@@ -15,6 +15,17 @@
                     <tbody>
                         <tr style="border: 1px solid black">
                             <td style="border: 1px solid black">
+                                <p><strong>Tag</strong></p>
+                            </td>
+                            <td style="border: 1px solid black">
+                                <p><strong>Definition</strong></p>
+                            </td>
+                            <td style="border: 1px solid black">
+                                <p><strong>Options / Examples</strong></p>
+                            </td>
+                        </tr>
+                        <tr style="border: 1px solid black">
+                            <td style="border: 1px solid black">
                                 <p>Audience</p>
                             </td>
                             <td style="border: 1px solid black">
@@ -120,17 +131,6 @@
                             </td>
                             <td style="border: 1px solid black">
                                 <p>Ex: 1</p>
-                            </td>
-                        </tr>
-                        <tr style="border: 1px solid black">
-                            <td style="border: 1px solid black">
-                                <p><strong>Tag</strong></p>
-                            </td>
-                            <td style="border: 1px solid black">
-                                <p><strong>Definition</strong></p>
-                            </td>
-                            <td style="border: 1px solid black">
-                                <p><strong>Options / Examples</strong></p>
                             </td>
                         </tr>
                         <tr style="border: 1px solid black">
