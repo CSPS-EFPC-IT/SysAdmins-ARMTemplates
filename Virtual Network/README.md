@@ -15,6 +15,7 @@
                 network.</li>
             <li>addressPrefix - The adress prefix of the virtual network's address space. (IE: 10.10.10.0)</li>
             <li>subnetMask - The subnet mask of the virstual network. Format: /# (IE: /24)</li>
+            <li>bastionAddressPrefix - Optional: The address prefix of the bastion subnet IF different from the virtual network's address prefix. IF NOT, the value must remain an empty string (default). (IE: 10.10.10.0)</li>
             <li>resourceTags - An array of tags to add to each resource created.</li>
         </ul>
     <li>The file will output the ID and name of the created virtual network.</li>
@@ -39,7 +40,7 @@
             <li>subZoneName - Optional: Sub-zone in case one zone needs to be seperated. This should be a small string
                 or a capitalized acronym with no spaces. For instance, if you need to have a application gateway in a
                 different subnet in the same zone, then your subzone could be 'AG'.</li>
-            <li>addressPrefix - The adress prefix of the subnet's address space. (IE: 10.10.10.0)</li>
+            <li>addressPrefix - The address prefix of the subnet's address space. (IE: 10.10.10.0)</li>
             <li>subnetMask - The subnet mask of the subnet. Format: /# (IE: /24)</li>
             <li>vnetName - The name of the vnet you wish to deploy the subnet to.</li>
             <li>nsgName - The name of an existing NSG for the subnet.</li>

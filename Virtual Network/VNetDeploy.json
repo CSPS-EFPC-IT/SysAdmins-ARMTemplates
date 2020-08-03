@@ -28,7 +28,7 @@
         "addressPrefix": {
             "type": "string",
             "metadata": {
-                "description": "The adress prefix of the virtual network's address space. (IE: 10.10.10.0)"
+                "description": "The address prefix of the virtual network's address space. (IE: 10.10.10.0)"
             }
         },
         "subnetMask": {
@@ -36,6 +36,13 @@
             "defaultValue": "/24",
             "metadata": {
                 "description": "The subnet mask of the virtual network. Format: /# (IE: /24)"
+            }
+        },
+        "bastionAddressPrefix": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Optional: The address prefix of the bastion subnet IF different from the virtual network's address prefix. (IE: 10.10.10.0)"
             }
         },
         "resourceTags": {
@@ -80,12 +87,34 @@
                     }
                 }
             }
-        }
+        },
+        {
+            "namespace": "bastion",
+            "members": {
+                "address": {
+                    "parameters": [
+                        {
+                            "name": "bastionAddressPrefix",
+                            "type": "string"
+                        },
+                        {
+                            "name": "vnetAddressPrefix",
+                            "type": "string"
+                        }
+                    ],
+                    "output": {
+                        "type": "string",
+                        "value": "[if(equals(parameters('bastionAddressPrefix'), ''), parameters('vnetAddressPrefix'), parameters('bastionAddressPrefix'))]"
+                    }
+                }
+            }
+        },
+
     ],
     "variables": {
         "virtual_network_name": "[concat(name.clean(parameters('projectName')), env.transform(parameters('environmentName')),'-VN')]",
         "address_space": "[concat(parameters('addressPrefix'), parameters('subnetMask'))]",
-        "bastion_address_space": "[concat(parameters('addressPrefix'), '/27')]",
+        "bastion_address_space": "[concat(bastion.address(parameters('bastionAddressPrefix'), parameters('addressPrefix')), '/27')]",
         "bastion_publicip_name": "[concat(name.clean(parameters('projectName')), env.transform(parameters('environmentName')),'-Bastion-PublicIP')]",
         "bastion_name": "[concat(name.clean(parameters('projectName')), env.transform(parameters('environmentName')),'-Bastion')]"
     },
