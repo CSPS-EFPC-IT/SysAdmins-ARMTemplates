@@ -108,8 +108,7 @@
                     }
                 }
             }
-        },
-
+        }
     ],
     "variables": {
         "virtual_network_name": "[concat(name.clean(parameters('projectName')), env.transform(parameters('environmentName')),'-VN')]",
