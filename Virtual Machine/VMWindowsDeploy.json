@@ -46,16 +46,29 @@
             "type": "array"
         },
         "virtualMachineSize": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "Standard_B2S",
+            "metadata": {
+                "description": "The size of the VM. ex: Standard_B2s"
+            }
         },
         "adminUsername": {
-            "type": "string"
+            "type": "string",
+            "metadata": {
+                "description": "The username of the default admin account"
+            }
         },
         "adminPassword": {
-            "type": "secureString"
+            "type": "secureString",
+            "metadata": {
+                "description": "The password of the default admin account"
+            }
         },
         "diagnosticsStorageAccountName": {
-            "type": "string"
+            "type": "string",
+            "metadata": {
+                "description": "The name the storage account for diagnostics."
+            }
         },
         "projectName": {
             "type": "string",
