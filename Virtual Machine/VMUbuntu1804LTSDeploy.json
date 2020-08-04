@@ -74,10 +74,10 @@
             }
         },
         "vmNumber": {
-            "type": "integer",
+            "type": "string",
         
             "metadata": {
-                    "description": "The number of the virtual machine. This integer will be used to name the virtual machine."
+                    "description": "The number of the virtual machine. This integer will be used to name the virtual machine. (ex: 01)"
             }
         },
         "environmentName": {
