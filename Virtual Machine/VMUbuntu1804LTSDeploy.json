@@ -182,7 +182,8 @@
             "apiVersion": "2019-07-01",
             "location": "canada central",
             "dependsOn": [
-                "[concat('Microsoft.Network/networkInterfaces/', variables('vm_nic'))]"
+                "[concat('Microsoft.Network/networkInterfaces/', variables('vm_nic'))]",
+                "[concat('Microsoft.Storage/storageAccounts/', parameters('diagnosticsStorageAccountName'))]"
             ],
             "properties": {
                 "hardwareProfile": {
