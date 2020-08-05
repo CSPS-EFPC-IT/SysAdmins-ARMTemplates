@@ -85,6 +85,8 @@
             "defaultValue": "dev",
             "allowedValues": [
                 "dev",
+                "sandbox",
+                "SANDBOX",
                 "staging",
                 "prod",
                 "DEV",

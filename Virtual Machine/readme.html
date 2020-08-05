@@ -13,3 +13,26 @@
         </ul>
     <li>The file will output the username of the admin account.</li>
 </ol>
+
+<h2>Ubuntu 18.04 LTS Virtual Machine</h2>
+<p>The VMUbuntu1804LTSDeploys.json ARM template can be used to deploy a virtual machine with an OSdisk, nic and public IP.
+    Feel free to use the VMUbuntu1804LTSDeploys.parameters.json as parameter examples.</p>
+<ol>
+    <li>As mentioned above, use the VMUbuntu1804LTSDeploys.json file (ARM template) in the current folder.</li>
+    <li>Pass in the following parameters:
+        <ul>
+            <li>subnetName: The name of the pre-created subnet. ex: example-SN </li>
+            <li>vnetName:The ID of the virtual network. </li>
+            <li> publicIpAddressType: The type of the public ip. ex: static or dynamic</li>
+            <li>publicIpAddressSku: The SKU of the public ip. ex: basic or standard</li>
+            <li>virtualMachineSize: The size of the VM. ex: Standard_B2s</li>
+            <li>adminUsername: The username of the default admin account</li>
+            <li>adminPassword: The password of the default admin account</li>
+            <li>diagnosticsStorageAccountName: The name the storage account for diagnostics.</li>
+            <li>projectName: The name of the project. This string will be used to name the virtual machine and associated resources.</li>
+            <li>vmPurpose: description: The purpose of the virtual machine. ex: App (application), Data (database)</li>
+            <li>vmNumber: The number of the virtual machine. This integer will be used to name the virtual machine. (ex: 01)</li>
+            <li>environmentName: The environment of the virtual network. This string will be used to name the network security group.</li>
+        </ul>
+    <li>The file will output the username of the admin account.</li>
+</ol>
