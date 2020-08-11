@@ -60,7 +60,7 @@
     },
     "variables": {
         "policy_name": "[concat('Monthly', replace(parameters('backupTime'), ':', 'h'), 'For', string(parameters('dailyBackupsRetention')),'Days-VMPolicy')]",
-        "backup_time": [ "[concat('2020-06-10T', parameters('backupTime'),':00Z')]" ]
+        "backup_time": [ "[concat('2020-06-10T', parameters('backupTime'),':00.000Z')]" ]
     },
     "resources": [
         {
@@ -110,8 +110,9 @@
                         },
                         "timeZone": "Eastern Standard Time",
                         "instantRpRetentionRangeInDays": "[parameters('instantRpRetentionRangeInDays')]",
-                        "instantRPDetails": {
-                        }
+                        "instantRPDetails": {},
+                        "yearlySchedule": null,
+                        "retentionPolicyType": "LongTermRetentionPolicy"
                     }
                 }
             }
