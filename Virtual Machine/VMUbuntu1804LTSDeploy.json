@@ -1,0 +1,274 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "projectName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the project. This string will be used to name the virtual machine and associated resources."
+            }
+        },
+        "environmentName": {
+            "type": "string",
+            "defaultValue": "dev",
+            "allowedValues": [
+                "dev",
+                "sandbox",
+                "SANDBOX",
+                "staging",
+                "prod",
+                "DEV",
+                "STAGING",
+                "PROD"
+            ],
+            "metadata": {
+                "description": "The environment of the whole solution."
+            }
+        },
+        "vmPurpose": {
+            "type": "string",
+            "metadata": {
+                "description": "The purpose of the virtual machine. ex: App (application), Data (database)"
+            }
+        },
+        "vmNumber": {
+            "type": "string",
+        
+            "metadata": {
+                    "description": "The number of the virtual machine. This number will be used to name the virtual machine. (ex: 01)"
+            }
+        },
+        "vmSize": {
+            "type": "string",
+            "defaultValue": "Standard_B2S",
+            "metadata": {
+                "description": "The size of the virtual machine. ex: Standard_B2s"
+            }
+        },
+        "adminUsername": {
+            "type": "string",
+            "metadata": {
+                "description": "The username of the default admin account."
+            }
+        },
+        "adminPassword": {
+            "type": "secureString",
+            "metadata": {
+                "description": "The password of the default admin account."
+            }
+        },
+        "publicIpAddressType": {
+            "type": "string",
+            "defaultValue": "static",
+            "allowedValues": [
+                "static",
+                "dynamic"
+            ],
+            "metadata": {
+                "description": "The type of the public ip. ex: static or dynamic"
+            }
+        },
+        "publicIpAddressSku": {
+            "type": "string",
+            "defaultValue": "basic",
+            "allowedValues": [
+                "basic",
+                "standard"
+            ],
+            "metadata": {
+                "description": "The SKU of the public ip. ex: basic or standard"
+            }
+        },
+        "diagnosticsStorageAccountName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the diagnostic storage account to be created for your virtual machine."
+            }
+        },
+        "vnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the virtual network where the virtual machine will be created."
+            }
+        },
+        "subnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the pre-created subnet. ex: example-SN"
+            }
+        }
+    },
+        "functions": [
+        {
+            "namespace": "env",
+            "members": {
+                "transform": {
+                    "parameters": [
+                        {
+                            "name": "env",
+                            "type": "string"
+                        }
+                    ],
+                    "output": {
+                        "type": "string",
+                        "value": "[if(equals(toUpper(parameters('env')), 'PROD'), '', concat('-', toUpper(parameters('env'))))]"
+                    }
+                }
+            }
+        },
+        {
+            "namespace": "name",
+            "members": {
+                "clean": {
+                    "parameters": [
+                        {
+                            "name": "name",
+                            "type": "string"
+                        }
+                    ],
+                    "output": {
+                        "type": "string",
+                        "value": "[replace(replace(replace(parameters('name'), '-', ''), '_', ''), ' ', '')]"
+                    }
+                }
+            }
+        }
+    ],
+    "variables": {
+        "vm_name": "[concat(name.clean(parameters('projectName')), '-', parameters('vmPurpose'), parameters('vmNumber'), env.transform(parameters('environmentName')))]",
+        "vm_publicip": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'),env.transform(parameters('environmentName')), '-PublicIP')]",
+        "vm_nic": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'),env.transform(parameters('environmentName')), '-NIC')]",
+        "subnet_id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"
+    },
+    "resources": [
+        {
+            "name": "[variables('vm_nic')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2019-07-01",
+            "location": "canada central",
+            "dependsOn": [
+                "[concat('Microsoft.Network/publicIpAddresses/', variables('vm_publicip'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "subnet": {
+                                "id": "[variables('subnet_id')]"
+                            },
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIpAddress": {
+                                "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/publicIpAddresses', variables('vm_publicip'))]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "[variables('vm_publicip')]",
+            "type": "Microsoft.Network/publicIpAddresses",
+            "apiVersion": "2019-02-01",
+            "location": "canada central",
+            "properties": {
+                "publicIpAllocationMethod": "[parameters('publicIpAddressType')]"
+            },
+            "sku": {
+                "name": "[parameters('publicIpAddressSku')]"
+            }
+        },
+        {
+            "name": "[variables('vm_name')]",
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2019-07-01",
+            "location": "canada central",
+            "dependsOn": [
+                "[concat('Microsoft.Network/networkInterfaces/', variables('vm_nic'))]",
+                "[concat('Microsoft.Storage/storageAccounts/', parameters('diagnosticsStorageAccountName'))]"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[parameters('vmSize')]"
+                },
+                "storageProfile": {
+                    "osDisk": {
+                        "createOption": "fromImage",
+                        "managedDisk": {
+                            "storageAccountType": "Premium_LRS"
+                        }
+                    },
+                    "imageReference": {
+                        "publisher": "Canonical",
+                        "offer": "UbuntuServer",
+                        "sku": "18.04-LTS",
+                        "version": "latest"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('vm_nic'))]"
+                        }
+                    ]
+                },
+                "osProfile": {
+                    "computerName": "[variables('vm_name')]",
+                    "adminUsername": "[parameters('adminUsername')]",
+                    "adminPassword": "[parameters('adminPassword')]"
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                        "storageUri": "[concat('https://', parameters('diagnosticsStorageAccountName'), '.blob.core.windows.net/')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-06-01",
+            "name": "[parameters('diagnosticsStorageAccountName')]",
+            "location": "canada central",
+            "sku": {
+                "name": "Standard_LRS"
+            },
+            "kind": "Storage",
+            "properties": {}
+}
+    ],
+    "outputs": {
+        "vmName": {
+            "type": "string",
+            "value": "[variables('vm_name')]"
+        },
+        "vmID": {
+            "type": "string",
+            "value": "[concat('Microsoft.Compute/virtualMachines',variables('vm_name'))]"
+        },
+        "nicName": {
+            "type": "string",
+            "value": "[variables('vm_nic')]"
+        },
+        "nicID": {
+            "type": "string",
+            "value": "[concat('Microsoft.Network/networkInterfaces',variables('vm_nic'))]"
+        },
+        "publicipName": {
+            "type": "string",
+            "value": "[variables('vm_publicip')]"
+        },
+        "publicipID": {
+            "type": "string",
+            "value": "[concat('Microsoft.Network/publicIpAddresses',variables('vm_publicip'))]"
+        },
+        "diagstorageaccountName": {
+            "type": "string",
+            "value": "[parameters('diagnosticsStorageAccountName')]"
+        },
+        "diagstorageaccountID": {
+            "type": "string",
+            "value": "[concat('Microsoft.Storage/storageAccounts',parameters('diagnosticsStorageAccountName'))]"
+        }
+    }
+}
