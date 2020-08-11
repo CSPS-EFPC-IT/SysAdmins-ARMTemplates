@@ -77,39 +77,41 @@
                     "schedulePolicyType": "SimpleSchedulePolicy"
                 },
                 "retentionPolicy": {
-                    "value": {
-                        "dailySchedule": {
-                            "retentionTimes": "[variables('backup_time')]",
-                            "retentionDuration": {
-                                "count": "[parameters('dailyBackupsRetention')]",
-                                "durationType": "Days"
-                            }
-                        },
-                        "weeklySchedule": {
-                            "daysOfTheWeek": [ "[parameters('daysOfTheWeek')]" ],
-                            "retentionTimes": [ "[variables('backup_time')]" ],
-                            "retentionDuration": {
-                                "count": "[parameters('weeklyBackupsRetention')]",
-                                "durationType": "Weeks"
-                            }
-                        },
-                        "monthlySchedule": {
-                            "retentionScheduleFormatType": "Weekly",
-                            "retentionScheduleDaily": null,
-                            "retentionScheduleWeekly": {
-                                "daysOfTheWeek": [ "[parameters('daysOfTheWeek')]" ],
-                                "weeksOfTheMonth": [ "[parameters('weeksOfTheMonth')]" ]
+                    "retention": {
+                        "value": {
+                            "dailySchedule": {
+                                "retentionTimes": "[variables('backup_time')]",
+                                "retentionDuration": {
+                                    "count": "[parameters('dailyBackupsRetention')]",
+                                    "durationType": "Days"
+                                }
                             },
-                            "retentionTimes": [
-                                "[variables('backup_time')]"
-                            ],
-                            "retentionDuration": {
-                                "count": "[parameters('monthlyBackupsRetention')]",
-                                "durationType": "Months"
-                            }
-                        },
-                        "yearlySchedule": null,
-                        "retentionPolicyType": "LongTermRetentionPolicy"
+                            "weeklySchedule": {
+                                "daysOfTheWeek": [ "[parameters('daysOfTheWeek')]" ],
+                                "retentionTimes": [ "[variables('backup_time')]" ],
+                                "retentionDuration": {
+                                    "count": "[parameters('weeklyBackupsRetention')]",
+                                    "durationType": "Weeks"
+                                }
+                            },
+                            "monthlySchedule": {
+                                "retentionScheduleFormatType": "Weekly",
+                                "retentionScheduleDaily": null,
+                                "retentionScheduleWeekly": {
+                                    "daysOfTheWeek": [ "[parameters('daysOfTheWeek')]" ],
+                                    "weeksOfTheMonth": [ "[parameters('weeksOfTheMonth')]" ]
+                                },
+                                "retentionTimes": [
+                                    "[variables('backup_time')]"
+                                ],
+                                "retentionDuration": {
+                                    "count": "[parameters('monthlyBackupsRetention')]",
+                                    "durationType": "Months"
+                                }
+                            },
+                            "yearlySchedule": null,
+                            "retentionPolicyType": "LongTermRetentionPolicy"
+                        }
                     }
                 },
                 "timeZone": "Eastern Standard Time",
