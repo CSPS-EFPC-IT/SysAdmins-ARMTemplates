@@ -87,7 +87,7 @@
                         },
                         "weeklySchedule": {
                             "daysOfTheWeek": ["[parameters('daysOfTheWeek')]"],
-                            "retentionTimes": "[variables('backup_time')]",
+                            "retentionTimes": ["[variables('backup_time')]"],
                             "retentionDuration": {
                                 "count": "[parameters('weeklyBackupsRetention')]",
                                 "durationType": "Weeks"
