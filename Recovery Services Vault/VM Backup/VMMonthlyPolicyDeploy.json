@@ -77,8 +77,6 @@
                     "schedulePolicyType": "SimpleSchedulePolicy"
                 },
                 "retentionPolicy": {
-                    "retention": {
-                        "value": {
                             "dailySchedule": {
                                 "retentionTimes": "[variables('backup_time')]",
                                 "retentionDuration": {
@@ -109,8 +107,6 @@
                             },
                             "yearlySchedule": null,
                             "retentionPolicyType": "LongTermRetentionPolicy"
-                        }
-                    }
                 },
                 "timeZone": "Eastern Standard Time",
                 "instantRpRetentionRangeInDays": "[parameters('instantRpRetentionRangeInDays')]",
