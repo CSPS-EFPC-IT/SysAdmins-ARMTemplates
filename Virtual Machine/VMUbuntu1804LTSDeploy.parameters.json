@@ -1,0 +1,42 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "projectName": {
+            "value": "testing" 
+        },
+        "environmentName": {
+            "value": "dev"
+        },
+        "vmPurpose": {
+            "value": "App" 
+        },
+        "vmNumber": {
+            "value": "01"
+        },
+        "vmSize": {
+            "value": "Standard_B2S"
+        },
+        "adminUsername": {
+            "value": "admin"
+        },
+        "adminPassword": {
+            "value": "password"
+        },
+        "publicIpAddressType": {
+            "value": "static"
+        },
+        "publicIpAddressSku": {
+            "value": "basic"
+        },
+        "diagnosticsStorageAccountName": {
+            "value": "testingdiagsa"
+        },
+        "vnetName": {
+            "value": "testing-VN"
+        },
+        "subnetName": {
+            "value": "testing-PAZ-SN"
+        }
+    }
+}

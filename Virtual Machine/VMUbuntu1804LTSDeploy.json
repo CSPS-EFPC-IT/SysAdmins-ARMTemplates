@@ -38,7 +38,7 @@
                     "description": "The number of the virtual machine. This number will be used to name the virtual machine. (ex: 01)"
             }
         },
-        "virtualMachineSize": {
+        "vmSize": {
             "type": "string",
             "defaultValue": "Standard_B2S",
             "metadata": {
@@ -189,7 +189,7 @@
             ],
             "properties": {
                 "hardwareProfile": {
-                    "vmSize": "[parameters('virtualMachineSize')]"
+                    "vmSize": "[parameters('vmSize')]"
                 },
                 "storageProfile": {
                     "osDisk": {
@@ -266,9 +266,9 @@
             "type": "string",
             "value": "[parameters('diagnosticsStorageAccountName')]"
         },
-        "diagstorageaccontID": {
+        "diagstorageaccountID": {
             "type": "string",
             "value": "[concat('Microsoft.Storage/storageAccounts',parameters('diagnosticsStorageAccountName'))]"
-        },
+        }
     }
 }
