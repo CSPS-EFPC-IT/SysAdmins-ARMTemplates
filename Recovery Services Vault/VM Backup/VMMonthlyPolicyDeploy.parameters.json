@@ -1,0 +1,30 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vaultName": {
+            "value": "Testing-RecoveryVault"
+        },
+        "instantRpRetentionRangeInDays": {
+            "value": 5
+        },
+        "dailyBackupsRetention": {
+            "value": 90
+        },
+        "weeklyBackupsRetention": {
+            "value": 4
+        },
+        "monthlyBackupsRetention": {
+            "value": 12
+        },
+        "daysOfTheWeek": {
+            "value": "Sunday"
+        },
+        "weeksOfTheMonth": {
+            "value": "First"
+        },
+        "backupTime": {
+            "value": "00:00"
+        }
+    }
+}
