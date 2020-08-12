@@ -39,7 +39,7 @@
         Backup</a> folder where you will find the appropriate files to backup Azure Virtual Machines.</p>
   </li>
   <li>Use the VMDailyPolicyDeploy.json file (ARM template) for a daily backups policy. Otherwise, you may use the
-    VMWeeklyPolicyDeploy.json file (ARM template) for a weekly backups policy.</li>
+    VMWeeklyPolicyDeploy.json file (ARM template) for a weekly backups policy. Another option is to use the VMMonthlyPolicyDeploy.son file (ARM template) to deploy a policy which configures daily, weekly, and monthly backups altogether.</li>
   <li>Pass in the following parameters:
     <ul>
       <li>vaultName - The name of the recovery services vault which you wish the create the backup policy in. This value
@@ -53,9 +53,12 @@
           <li>Find the value in Azure (ex: Using the Azure Portal)</li>
         </ul>
       </li>
-      <li>dailyBackupsRetention (daily backup policy only) - Number of days (7-9999) to retain daily backups.</li>
-      <li>weeklyBackupsRetention (weekly backup policy only) - Number of weeks (1-5163) to retain weekly backups.</li>
+      <li>dailyBackupsRetention (daily/monthly backup policies only) - Number of days (7-9999) to retain daily backups.</li>
+      <li>weeklyBackupsRetention (weekly/monthly backup policies only) - Number of weeks (1-5163) to retain weekly backups.</li>
+      <li>monthlyBackupsRetention - Number of months (1-1188) to retain monthly backups.</li>
       <li>instantRpRetentionRangeInDays - Number of days (1-5) to keep instant recovery snapshots.</li>
+      <li>daysOfTheWeek (monthly backup policy only) - </li>
+      <li>weeksOfTheMonth (monthly backup policy only) - Day of the week when the backup should be retained. (Monday, Tuesday, Wednesday, Thursday, Friday, Saturday or Sunday) - Week of the month when the backup should be retained. (First, Second, Third, Fourth or Last)</li>
       <li>backupTime - Time of daily backups (hh:mm).</li>
     </ul>
   </li>

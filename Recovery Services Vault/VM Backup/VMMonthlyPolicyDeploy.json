@@ -8,13 +8,6 @@
                 "description": "The name of the recovery services vault which you wish the create the backup policy in."
             }
         },
-        "instantRpRetentionRangeInDays": {
-            "type": "int",
-            "defaultValue": 5,
-            "metadata": {
-                "description": "Number of days (1-5) to keep instant recovery snapshots."
-            }
-        },
         "dailyBackupsRetention": {
             "type": "int",
             "defaultValue": 90,
@@ -34,6 +27,13 @@
             "defaultValue": 12,
             "metadata": {
                 "description": "Number of months (1-1188) to retain monthly backups."
+            }
+        },
+        "instantRpRetentionRangeInDays": {
+            "type": "int",
+            "defaultValue": 5,
+            "metadata": {
+                "description": "Number of days (1-5) to keep instant recovery snapshots."
             }
         },
         "daysOfTheWeek": {
@@ -77,36 +77,36 @@
                     "schedulePolicyType": "SimpleSchedulePolicy"
                 },
                 "retentionPolicy": {
-                            "dailySchedule": {
-                                "retentionTimes": "[variables('backup_time')]",
-                                "retentionDuration": {
-                                    "count": "[parameters('dailyBackupsRetention')]",
-                                    "durationType": "Days"
-                                }
-                            },
-                            "weeklySchedule": {
-                                "daysOfTheWeek": [ "[parameters('daysOfTheWeek')]" ],
-                                "retentionTimes": "[variables('backup_time')]",
-                                "retentionDuration": {
-                                    "count": "[parameters('weeklyBackupsRetention')]",
-                                    "durationType": "Weeks"
-                                }
-                            },
-                            "monthlySchedule": {
-                                "retentionScheduleFormatType": "Weekly",
-                                "retentionScheduleDaily": null,
-                                "retentionScheduleWeekly": {
-                                    "daysOfTheWeek": [ "[parameters('daysOfTheWeek')]" ],
-                                    "weeksOfTheMonth": [ "[parameters('weeksOfTheMonth')]" ]
-                                },
-                                "retentionTimes": "[variables('backup_time')]",
-                                "retentionDuration": {
-                                    "count": "[parameters('monthlyBackupsRetention')]",
-                                    "durationType": "Months"
-                                }
-                            },
-                            "yearlySchedule": null,
-                            "retentionPolicyType": "LongTermRetentionPolicy"
+                    "dailySchedule": {
+                        "retentionTimes": "[variables('backup_time')]",
+                        "retentionDuration": {
+                            "count": "[parameters('dailyBackupsRetention')]",
+                            "durationType": "Days"
+                        }
+                    },
+                    "weeklySchedule": {
+                        "daysOfTheWeek": [ "[parameters('daysOfTheWeek')]" ],
+                        "retentionTimes": "[variables('backup_time')]",
+                        "retentionDuration": {
+                            "count": "[parameters('weeklyBackupsRetention')]",
+                            "durationType": "Weeks"
+                        }
+                    },
+                    "monthlySchedule": {
+                        "retentionScheduleFormatType": "Weekly",
+                        "retentionScheduleDaily": null,
+                        "retentionScheduleWeekly": {
+                            "daysOfTheWeek": [ "[parameters('daysOfTheWeek')]" ],
+                            "weeksOfTheMonth": [ "[parameters('weeksOfTheMonth')]" ]
+                        },
+                        "retentionTimes": "[variables('backup_time')]",
+                        "retentionDuration": {
+                            "count": "[parameters('monthlyBackupsRetention')]",
+                            "durationType": "Months"
+                        }
+                    },
+                    "yearlySchedule": null,
+                    "retentionPolicyType": "LongTermRetentionPolicy"
                 },
                 "timeZone": "Eastern Standard Time",
                 "instantRpRetentionRangeInDays": "[parameters('instantRpRetentionRangeInDays')]",
