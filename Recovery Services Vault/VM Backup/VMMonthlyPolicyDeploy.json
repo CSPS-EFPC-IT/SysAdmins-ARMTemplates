@@ -59,7 +59,7 @@
         }
     },
     "variables": {
-        "policy_name": "[concat('Monthly', replace(parameters('backupTime'), ':', 'h'), 'For', string(parameters('dailyBackupsRetention')),'Days-VMPolicy')]",
+        "policy_name": "[concat('Monthly', replace(parameters('backupTime'), ':', 'h'), 'For', string(parameters('MonthlyBackupsRetention')),'Months-VMPolicy')]",
         "backup_time": [ "[concat('2020-06-10T', parameters('backupTime'),':00Z')]" ]
     },
     "resources": [
