@@ -20,6 +20,19 @@
         </ul>
     <li>The file will output the ID and name of the created virtual network.</li>
 </ol>
+<h3>Virtual Network Peering</h3>
+<p>The VNetPeeringDeploy.json file can be used to peer two Azure virtual networks.</p>
+<p>Pass in the following parameters:</p>
+<ul>
+    <li>vnetSource - Name of the Vnet to be peered.</li>
+    <li>vnetDest - Name of the Vnet to be peer source with.</li>
+    <li>vnetDestRG - Name of resource group containing destination Vnet.</li>
+    <li>vnetDestSubID - Subscription ID containg destination Vnet.</li>
+    <li>allowVirtualNetworkAccess - Boolean: Allow virtual network access.</li>
+    <li>allowForwardedTraffic - Boolean: Allow forwarded traffic.</li>
+    <li>allowGatewayTransit - Boolean: Allow gateway transit.</li>
+    <li>useRemoteGateways - Boolean: Use Remote Gateways.</li>
+</ul>
 
 <h2>Subnet</h2>
 <p>Both the SubnetDeploy.json and Subnet&NSGDeploy.json ARM templates can be used to deploy a subnet within an existing

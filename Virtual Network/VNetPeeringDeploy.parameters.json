@@ -1,0 +1,30 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vnetSource": {
+            "value": "Vnet1"
+        },
+        "vnetDest": {
+            "value": "Vnet2"
+        },
+        "vnetDestRG": {
+            "value": "Vnet2-RG"
+        },
+        "vnetDestSubID": {
+            "value": "[Insert Sub ID of Vnet2-RG]"
+        },
+        "allowVirtualNetworkAccess": {
+            "value": true
+        },
+        "allowForwardedTraffic": {
+            "value": false
+        },
+        "allowGatewayTransit": {
+            "value": false
+        },
+        "useRemoteGateways": {
+            "value": false
+        }
+    }
+}
