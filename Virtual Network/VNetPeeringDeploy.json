@@ -1,0 +1,84 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vnetSource": {
+            "type": "String",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Name of the Vnet to be peered."
+            }
+        },
+        "vnetDest": {
+            "type": "String",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Name of the Vnet to be peer source with."
+            }
+        },
+        "vnetDestRG": {
+            "type": "String",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Name of resource group containing destination Vnet."
+            }
+        },
+        "vnetDestSubID": {
+            "type": "String",
+            "defaultValue": "b44b3cf6-fb7d-4b25-9a81-b903fd8bd936",
+            "metadata": {
+                "description": "Subscription ID containg destination Vnet."
+            }
+        },
+        "allowVirtualNetworkAccess": {
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "Boolean: Allow virtual network access."
+            }
+        },
+        "allowForwardedTraffic": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Boolean: Allow forwarded traffic."
+            }
+        },
+        "allowGatewayTransit": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Boolean: Allow gateway transit."
+            }
+        },
+        "useRemoteGateways": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Boolean: Use Remote Gateways."
+            }
+        }
+    },
+    "functions": [
+    ],
+    "variables": {
+    },
+    "resources": [
+
+        {
+            "apiVersion": "2019-11-01",
+            "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
+            "name": "[concat(parameters('vnetSource'), '/', parameters('vnetSource'), '_', parameters('vnetDest'), '_Peering')]",
+            "location": "Canada Central",
+            "properties": {
+                "allowVirtualNetworkAccess": "[parameters('allowVirtualNetworkAccess')]",
+                "allowForwardedTraffic": "[parameters('allowForwardedTraffic')]",
+                "allowGatewayTransit": "[parameters('allowGatewayTransit')]",
+                "useRemoteGateways": "[parameters('useRemoteGateways')]",
+                "remoteVirtualNetwork": {
+                    "id": "[concat('/subscriptions/', parameters('vnetDestSubID'),'/resourceGroups/', parameters('vnetDestRG'), '/providers/Microsoft.Network/virtualNetworks/',parameters('vnetDest'))]"
+                }
+            }
+        }
+    ]
+}
