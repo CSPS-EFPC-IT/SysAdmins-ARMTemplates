@@ -1,9 +1,9 @@
 <h1>Network Security Group</h1>
-<p>This section includes two parts: an ARM template which deploys a virtual network and another to deploy subnets.</p>
+<p>This section includes two parts: an ARM template which deploys a network security group and another to deploy its rules.</p>
 
 <h2>Network Security Group</h2>
-<p>The NSGDeploy.json ARM template can be used to deploy a network security group.</p>
-<p><b>Note:</b> If you wish to use an network security group, you may proceed to the Network Security Rule section
+<p>The NSGDeploy.json ARM template can be used to deploy a network security group. Feel free to consult the NSGDeploy.parameters.json file for parameter examples.</p>
+<p><b>Note:</b> If you wish to use an existing network security group, you may proceed to the Network Security Rule section
     below.</p>
 <ol>
     <li>As mencionned above, use the NSGDeploy.json file (ARM template) in the current folder.</li>
@@ -25,7 +25,7 @@
 
 <h2>Network Security Rule</h2>
 <p>The NSGRuleDeploy.json ARM template can be used to deploy a network security rule within an existing network security
-    group. Feel free to use the NSGRuleDeploy.parameters.json as parameter examples.</p>
+    group. Feel free to consult the NSGRuleDeploy.parameters.json file for parameter examples.</p>
 <ol>
     <li>As mencionned above, use the NSGRuleDeploy.json file (ARM template) in the current folder.</li>
     <li>Pass in the following parameters:
