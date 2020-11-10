@@ -102,7 +102,7 @@
 
 <h2>Backups Enabling</h2>
 <p>Finally, you will need to create Protected Items which are basically links between the resources to backup and their
-  Backup Polocies.</p>
+  Backup Policies.</p>
 <p>The creation of these links through ARM templates vary in configurations, which is why the Protected Items will be
   created
   differently depending on the resource you wish to backup:</p>
