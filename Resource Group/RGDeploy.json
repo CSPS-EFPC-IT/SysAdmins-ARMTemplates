@@ -28,7 +28,7 @@
         "resourceTags": {
             "type": "object",
             "metadata": {
-                "description": "Tags to add to the resource group. The required tags are: Project, Group, Owner, Environment, Classfication, Audience, User Impact Level, High Availability, Uptime Period, Backups, and Retention."
+                "description": "Tags to add to the resource group. The required tags are: Audience, Backups, Classification, Environment, Group, High Availability, Owner, Project, Retention, Technical Contact, Uptime Period, and User Impact Level."
             },
             "defaultValue": {
                 "Audience": "",
@@ -40,6 +40,7 @@
                 "Owner": "",
                 "Project": "",
                 "Retention": "",
+                "Technical Contact": "",
                 "Uptime Period": "",
                 "User Impact Level": ""
             }

@@ -1,0 +1,28 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "projectName": {
+            "value": "Testing"
+        },
+        "environmentName": {
+            "value": "dev"
+        },
+        "resourceTags": {
+            "value": {
+                "Audience": "Team",
+                "Backups": "0",
+                "Classification": "Unclassified",
+                "Environment": "Dev",
+                "Group": "AGroup",
+                "High Availability": "False",
+                "Owner": "AGroupMember",
+                "Project": "Testing",
+                "Retention": "0",
+                "Technical Contact": "ATech",
+                "Uptime Period": "work hours",
+                "User Impact Level": "1-19users"
+            }
+        }
+    }
+}
