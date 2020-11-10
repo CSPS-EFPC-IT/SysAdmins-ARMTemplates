@@ -3,7 +3,7 @@
 
 <h2>Virtual Network</h2>
 <p>The VNetDeploy.json ARM template can be used to deploy a virtual network with a Bastion service (and related subnet)
-    included. Feel free to use the VNetDeploy.parameters.json as parameter examples.</p>
+    included. Feel free to consult the VNetDeploy.parameters.json file for parameter examples.</p>
 <p><b>Note:</b> If you wish to use an existing virtual network, you may proceed to the Subnet section below.</p>
 <ol>
     <li>As mencionned above, use the VNetDeploy.json file (ARM template) in the current folder.</li>
@@ -21,7 +21,7 @@
     <li>The file will output the ID and name of the created virtual network.</li>
 </ol>
 <h3>Virtual Network Peering</h3>
-<p>The VNetPeeringDeploy.json file can be used to peer two Azure virtual networks.</p>
+<p>The VNetPeeringDeploy.json file can be used to peer two Azure virtual networks. Feel free to consult the VNetPerringDeploy.parameters.json file for parameter examples.</p> Please note you will need to deploy the template twice (each virtual network should be passed as source and destination through the parameters) in order to peer both vnets in both directions.
 <p>Pass in the following parameters:</p>
 <ul>
     <li>vnetSource - Name of the Vnet to be peered.</li>
@@ -36,8 +36,7 @@
 
 <h2>Subnet</h2>
 <p>Both the SubnetDeploy.json and Subnet&NSGDeploy.json ARM templates can be used to deploy a subnet within an existing
-    virtual network. Feel free to use the SubnetDeploy.parameters.json Subnet&NSGDeploy.parameters.json as parameter
-    examples.</p>
+    virtual network. Feel free to consult the SubnetDeploy.parameters.json and Subnet&NSGDeploy files for parameter examples.</p>
 <p><b>Note:</b>If you want to associate an existing network security group, please follow the SubnetDeploy.json section
     below. On the other hand, if you wish to create the network security group with your subnet, please follow the
     Subnet&NSGDeploy.json section.</p>
@@ -78,4 +77,5 @@
             <li>resourceTags - Tags to add to the network security group.</li>
         </ul>
     <li>The file will output the ID and name of the created subnet and network security group.</li>
+    <li>In order to add security rules to the NSG, please refer to the Network Security Group section of the repository.</li>
 </ol>
