@@ -137,8 +137,7 @@
     "variables": {
         "vm_name": "[concat(name.clean(parameters('projectName')), '-', parameters('vmPurpose'), parameters('vmNumber'), env.transform(parameters('environmentName')))]",
         "vm_publicip_name": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'),env.transform(parameters('environmentName')), '-PublicIP')]",
-        "vm_nic_name": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'),env.transform(parameters('environmentName')), '-NIC')]",
-        "subnet_id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"
+        "vm_nic_name": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'),env.transform(parameters('environmentName')), '-NIC')]"
     },
     "resources": [
         {
@@ -146,16 +145,13 @@
             "type": "Microsoft.Network/networkInterfaces",
             "apiVersion": "2019-07-01",
             "location": "canada central",
-            "dependsOn": [
-                "[resourceId('Microsoft.Network/networkInterfaces',variables('vm_nic_name'))]"
-            ],
             "properties": {
                 "ipConfigurations": [
                     {
                         "name": "ipconfig1",
                         "properties": {
                             "subnet": {
-                                "id": "[variables('subnet_id')]"
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"
                             },
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIpAddress": {
