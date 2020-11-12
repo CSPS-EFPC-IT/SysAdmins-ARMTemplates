@@ -33,9 +33,9 @@
         },
         "vmNumber": {
             "type": "string",
-        
+
             "metadata": {
-                    "description": "The number of the virtual machine. This number will be used to name the virtual machine. (ex: 01)"
+                "description": "The number of the virtual machine. This number will be used to name the virtual machine. (ex: 01)"
             }
         },
         "vmSize": {
@@ -98,7 +98,7 @@
             }
         }
     },
-        "functions": [
+    "functions": [
         {
             "namespace": "env",
             "members": {
@@ -145,6 +145,9 @@
             "type": "Microsoft.Network/networkInterfaces",
             "apiVersion": "2019-07-01",
             "location": "canada central",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIpAddresses',variables('vm_publicip_name'))]"
+            ],
             "properties": {
                 "ipConfigurations": [
                     {
@@ -231,7 +234,7 @@
             },
             "kind": "Storage",
             "properties": {}
-}
+        }
     ],
     "outputs": {
         "vmName": {
