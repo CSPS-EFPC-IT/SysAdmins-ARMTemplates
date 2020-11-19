@@ -33,9 +33,9 @@
         },
         "vmNumber": {
             "type": "string",
-        
+
             "metadata": {
-                    "description": "The number of the virtual machine. This number will be used to name the virtual machine. (ex: 01)"
+                "description": "The number of the virtual machine. This number will be used to name the virtual machine. (ex: 01)"
             }
         },
         "vmSize": {
@@ -98,7 +98,7 @@
             }
         }
     },
-        "functions": [
+    "functions": [
         {
             "namespace": "env",
             "members": {
@@ -136,18 +136,17 @@
     ],
     "variables": {
         "vm_name": "[concat(name.clean(parameters('projectName')), '-', parameters('vmPurpose'), parameters('vmNumber'), env.transform(parameters('environmentName')))]",
-        "vm_publicip": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'),env.transform(parameters('environmentName')), '-PublicIP')]",
-        "vm_nic": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'),env.transform(parameters('environmentName')), '-NIC')]",
-        "subnet_id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"
+        "vm_publicip_name": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'),env.transform(parameters('environmentName')), '-PublicIP')]",
+        "vm_nic_name": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'),env.transform(parameters('environmentName')), '-NIC')]"
     },
     "resources": [
         {
-            "name": "[variables('vm_nic')]",
+            "name": "[variables('vm_nic_name')]",
             "type": "Microsoft.Network/networkInterfaces",
             "apiVersion": "2019-07-01",
             "location": "canada central",
             "dependsOn": [
-                "[concat('Microsoft.Network/publicIpAddresses/', variables('vm_publicip'))]"
+                "[resourceId('Microsoft.Network/publicIpAddresses',variables('vm_publicip_name'))]"
             ],
             "properties": {
                 "ipConfigurations": [
@@ -155,11 +154,11 @@
                         "name": "ipconfig1",
                         "properties": {
                             "subnet": {
-                                "id": "[variables('subnet_id')]"
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"
                             },
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIpAddress": {
-                                "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/publicIpAddresses', variables('vm_publicip'))]"
+                                "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/publicIpAddresses', variables('vm_publicip_name'))]"
                             }
                         }
                     }
@@ -167,7 +166,7 @@
             }
         },
         {
-            "name": "[variables('vm_publicip')]",
+            "name": "[variables('vm_publicip_name')]",
             "type": "Microsoft.Network/publicIpAddresses",
             "apiVersion": "2019-02-01",
             "location": "canada central",
@@ -184,8 +183,8 @@
             "apiVersion": "2019-07-01",
             "location": "canada central",
             "dependsOn": [
-                "[concat('Microsoft.Network/networkInterfaces/', variables('vm_nic'))]",
-                "[concat('Microsoft.Storage/storageAccounts/', parameters('diagnosticsStorageAccountName'))]"
+                "[resourceId('Microsoft.Network/networkInterfaces/', variables('vm_nic_name'))]",
+                "[resourceId('Microsoft.Storage/storageAccounts',parameters('diagnosticsStorageAccountName'))]"
             ],
             "properties": {
                 "hardwareProfile": {
@@ -208,7 +207,7 @@
                 "networkProfile": {
                     "networkInterfaces": [
                         {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('vm_nic'))]"
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('vm_nic_name'))]"
                         }
                     ]
                 },
@@ -235,7 +234,7 @@
             },
             "kind": "Storage",
             "properties": {}
-}
+        }
     ],
     "outputs": {
         "vmName": {
@@ -244,23 +243,23 @@
         },
         "vmID": {
             "type": "string",
-            "value": "[concat('Microsoft.Compute/virtualMachines',variables('vm_name'))]"
+            "value": "[resourceId('Microsoft.Compute/virtualMachines',variables('vm_name'))]"
         },
         "nicName": {
             "type": "string",
-            "value": "[variables('vm_nic')]"
+            "value": "[variables('vm_nic_name')]"
         },
         "nicID": {
             "type": "string",
-            "value": "[concat('Microsoft.Network/networkInterfaces',variables('vm_nic'))]"
+            "value": "[resourceId('Microsoft.Network/networkInterfaces',variables('vm_nic_name'))]"
         },
         "publicipName": {
             "type": "string",
-            "value": "[variables('vm_publicip')]"
+            "value": "[variables('vm_publicip_name')]"
         },
         "publicipID": {
             "type": "string",
-            "value": "[concat('Microsoft.Network/publicIpAddresses',variables('vm_publicip'))]"
+            "value": "[resourceId('Microsoft.Network/publicIpAddresses',variables('vm_publicip_name'))]"
         },
         "diagstorageaccountName": {
             "type": "string",
@@ -268,7 +267,7 @@
         },
         "diagstorageaccountID": {
             "type": "string",
-            "value": "[concat('Microsoft.Storage/storageAccounts',parameters('diagnosticsStorageAccountName'))]"
+            "value": "[resourceId('Microsoft.Storage/storageAccounts',parameters('diagnosticsStorageAccountName'))]"
         }
     }
 }

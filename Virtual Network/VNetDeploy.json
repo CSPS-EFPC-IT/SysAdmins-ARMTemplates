@@ -162,8 +162,8 @@
             "name": "[variables('bastion_name')]",
             "location": "Canada Central",
             "dependsOn": [
-                "[variables('bastion_publicip_name')]",
-                "[variables('virtual_network_name')]"
+                "[resourceId('Microsoft.Network/publicIpAddresses', variables('bastion_publicip_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('virtual_network_name'))]"
             ],
             "properties": {
                 "ipConfigurations": [

@@ -5,8 +5,7 @@
 <p>TBD</p>
 
 <h2>Ubuntu 18.04 LTS Virtual Machine</h2>
-<p>The VMUbuntu1804LTSDeploys.json ARM template can be used to deploy a virtual machine with a NIC, PublicIP and Diagnostics Storage Account.
-    Feel free to use the VMUbuntu1804LTSDeploys.parameters.json as parameter examples.</p>
+<p>The VMUbuntu1804LTSDeploy.json ARM template in the Linux folder can be used to deploy a virtual machine with a NIC, PublicIP and Diagnostics Storage Account. Feel free to consult the VMUbuntu1804LTSDeploy.parameters.json file for parameter examples.</p>
 <ol>
     <li>As mentioned above, use the VMUbuntu1804LTSDeploys.json file (ARM template) in the current folder.</li>
     <li>Pass in the following parameters:
