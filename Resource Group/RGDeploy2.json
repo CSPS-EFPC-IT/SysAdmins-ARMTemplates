@@ -1,0 +1,197 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "Audience": {
+            "type": "string",
+            "defaultValue": "Team",
+            "allowedValues": [
+                "Team",
+                "CSPS",
+                "Government",
+                "Public"
+            ],
+            "metadata": {
+                "description": "Tag - Target audience of the solution."
+            }
+        },
+        "Backups": {
+            "type": "string",
+            "defaultValue": "7",
+            "metadata": {
+                "description": "Tag - How often are backups are done. (In days)"
+            }
+        },
+        "Classification": {
+            "type": "string",
+            "defaultValue": "dev",
+            "allowedValues": [
+                "Unclassified",
+                "ProtectedA",
+                "ProtectedB",
+                "ProtectedC",
+                "Confidential",
+                "Secret",
+                "TopSecret"
+            ],
+            "metadata": {
+                "description": "Tag - Government Classification"
+            }
+        },
+        "Environment": {
+            "type": "string",
+            "defaultValue": "DEV",
+            "allowedValues": [
+                "SANDBOX",
+                "DEV",
+                "STAGING",
+                "PROD"
+            ],
+            "metadata": {
+                "description": "Tag - Establishes a resource’s phase in its project development. Also used to name the resource group."
+            }
+        },
+        "Group": {
+            "type": "string",
+            "metadata": {
+                "description": "Tag - Group to which the project belongs to."
+            }
+        },
+        "High Availability": {
+            "type": "string",
+            "defaultValue": "False",
+            "allowedValues": [
+                "True",
+                "False"
+            ],
+            "metadata": {
+                "description": "Tag - Is the resource part of high availability solution."
+            }
+        },
+        "Owner": {
+            "type": "string",
+            "metadata": {
+                "description": "Tag - Owner of the project, also known as a point of contact."
+            }
+        },
+        "Project": {
+            "type": "string",
+            "metadata": {
+                "description": "Tag - Name of the project (or application). Also used to name the resource group."
+            }
+        },
+        "Retention": {
+            "type": "string",
+            "defaultValue": "30",
+            "metadata": {
+                "description": "Tag - How long are the backups kept for. (In days)"
+            }
+        },
+        "Technical Contact": {
+            "type": "string",
+            "metadata": {
+                "description": "Tag - Technical contact of the solution in case of technical issues."
+            }
+        },
+        "Uptime Period": {
+            "type": "string",
+            "defaultValue": "24/7",
+            "allowedValues": [
+                "24/7",
+                "daytime",
+                "weekdays",
+                "work hours"
+            ],
+            "metadata": {
+                "description": "Tag - When is the resource/solution is up."
+            }
+        },
+        "User Impact Level": {
+            "type": "string",
+            "defaultValue": "1-19users",
+            "allowedValues": [
+                "1-19users",
+                "20-99users",
+                "100-499users",
+                "500-999users",
+                "1000+users"
+            ],
+            "metadata": {
+                "description": "Tag - Defines the criticality of the resource depending on how many users will be affected in case of resource failure."
+            }
+        }
+    },
+    "functions": [
+        {
+            "namespace": "name",
+            "members": {
+                "clean": {
+                    "parameters": [
+                        {
+                            "name": "name",
+                            "type": "string"
+                        }
+                    ],
+                    "output": {
+                        "type": "string",
+                        "value": "[replace(replace(replace(parameters('name'), '-', ''), '_', ''), ' ', '')]"
+                    }
+                }
+            }
+        },
+        {
+            "namespace": "env",
+            "members": {
+                "transform": {
+                    "parameters": [
+                        {
+                            "name": "env",
+                            "type": "string"
+                        }
+                    ],
+                    "output": {
+                        "type": "string",
+                        "value": "[if(equals(toUpper(parameters('env')), 'PROD'), '', concat('-', toUpper(parameters('env'))))]"
+                    }
+                }
+            }
+        }
+    ],
+    "variables": {
+        "rg_name": "[concat(name.clean(parameters('project')), env.transform(parameters('environment')), '-RG')]",
+        "rg_tags":{
+            "Audience": "[parameters('Audience')]",
+            "Backups": "[parameters('Backups')]",
+            "Classification": "[parameters('Classification')]",
+            "Environment": "[parameters('Environment')]",
+            "Group": "[parameters('Group')]",
+            "High Availability": "[parameters('High Availability')]",
+            "Owner": "[parameters('Owner')]",
+            "Project": "[parameters('Project')]",
+            "Retention": "[parameters('Retention')]",
+            "Technical Contact": "[parameters('Technical Contact')]",
+            "Uptime Period": "[parameters('Uptime Period')]",
+            "User Impact Level": "[parameters('User Impact Level')]"
+        }
+    },
+    "resources": [
+        {
+            "name": "[variables('rg_name')]",
+            "type": "Microsoft.Resources/resourceGroups",
+            "apiVersion": "2020-06-01",
+            "location": "Canada Central",
+            "tags": "[variables('rg_tags')]",
+            "properties": {}
+        }
+    ],
+    "outputs": {
+        "rgID": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Resources/resourceGroups', variables('rg_name'))]"
+        },
+        "rgName": {
+            "type": "string",
+            "value": "[variables('rg_name')]"
+        }
+    }
+}
