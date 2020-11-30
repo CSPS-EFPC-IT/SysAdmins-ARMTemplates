@@ -24,7 +24,7 @@
         },
         "Classification": {
             "type": "string",
-            "defaultValue": "dev",
+            "defaultValue": "Unclassified",
             "allowedValues": [
                 "Unclassified",
                 "ProtectedA",
