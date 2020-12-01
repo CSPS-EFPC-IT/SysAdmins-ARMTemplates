@@ -57,7 +57,7 @@
                 "description": "Tag - Group to which the project belongs to."
             }
         },
-        "High Availability": {
+        "HighAvailability": {
             "type": "string",
             "defaultValue": "False",
             "allowedValues": [
@@ -87,13 +87,13 @@
                 "description": "Tag - How long are the backups kept for. (In days)"
             }
         },
-        "Technical Contact": {
+        "TechnicalContact": {
             "type": "string",
             "metadata": {
                 "description": "Tag - Technical contact of the solution in case of technical issues."
             }
         },
-        "Uptime Period": {
+        "UptimePeriod": {
             "type": "string",
             "defaultValue": "24/7",
             "allowedValues": [
@@ -106,7 +106,7 @@
                 "description": "Tag - When is the resource/solution is up."
             }
         },
-        "User Impact Level": {
+        "UserImpactLevel": {
             "type": "string",
             "defaultValue": "1-19users",
             "allowedValues": [
@@ -165,13 +165,13 @@
             "Classification": "[parameters('Classification')]",
             "Environment": "[parameters('Environment')]",
             "Group": "[parameters('Group')]",
-            "High Availability": "[parameters('High Availability')]",
+            "High Availability": "[parameters('HighAvailability')]",
             "Owner": "[parameters('Owner')]",
             "Project": "[parameters('Project')]",
             "Retention": "[parameters('Retention')]",
-            "Technical Contact": "[parameters('Technical Contact')]",
-            "Uptime Period": "[parameters('Uptime Period')]",
-            "User Impact Level": "[parameters('User Impact Level')]"
+            "Technical Contact": "[parameters('TechnicalContact')]",
+            "Uptime Period": "[parameters('UptimePeriod')]",
+            "User Impact Level": "[parameters('UserImpactLevel')]"
         }
     },
     "resources": [

@@ -17,7 +17,7 @@
         "Group": {
             "value": "SysAdmins"
         },
-        "High Availability": {
+        "HighAvailability": {
             "value": "False"
         },
         "Owner": {
@@ -29,13 +29,13 @@
         "Retention": {
             "value": "30"
         },
-        "Technical Contact": {
+        "TechnicalContact": {
             "value": "ATechMember"
         },
-        "Uptime Period": {
+        "UptimePeriod": {
             "value": "24/7"
         },
-        "User Impact Level": {
+        "UserImpactLevel": {
             "value": "1-19users"
         }
     }
