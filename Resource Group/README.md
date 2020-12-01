@@ -1,6 +1,7 @@
 <h1>Resource Group</h1>
 <p>This section includes the ARM template to deploy a new resource group.</p>
 <p>The RGDeploy.json ARM template can be used to deploy a resource group. Feel free to consult the RGDeploy.parameters.json file for parameter examples.</p>
+<p>The RGDeploy2.json ARM template can also be used to deploy a resource group. The template is similar to the other put takes in the tag values in stead (see below for information). Feel free to consult the RGDeploy2.parameters.json file for parameter examples.</p>
 <ol>
     <li>As mencionned above, use the RGDeploy.json file (ARM template) in the current folder.</li>
     <li>Pass in the following parameters:
