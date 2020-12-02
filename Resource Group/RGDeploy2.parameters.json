@@ -1,0 +1,42 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "Audience": {
+            "value": "Team"
+        },
+        "Backups": {
+            "value": "7"
+        },
+        "Classification": {
+            "value": "Unclassified"
+        },
+        "Environment": {
+            "value": "DEV"
+        },
+        "Group": {
+            "value": "SysAdmins"
+        },
+        "HighAvailability": {
+            "value": "False"
+        },
+        "Owner": {
+            "value": "AGroupMember"
+        },
+        "Project": {
+            "value": "Testing"
+        },
+        "Retention": {
+            "value": "30"
+        },
+        "TechnicalContact": {
+            "value": "ATechMember"
+        },
+        "UptimePeriod": {
+            "value": "24/7"
+        },
+        "UserImpactLevel": {
+            "value": "1-19users"
+        }
+    }
+}
