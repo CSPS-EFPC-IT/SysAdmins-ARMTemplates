@@ -168,7 +168,7 @@
         }
     ],
     "variables": {
-        "vm_name": "[concat(name.clean(parameters('projectName')), '-', parameters('vmPurpose'), parameters('vmNumber'), env.transform(parameters('environmentName')))]",
+        "vm_name": "[concat(name.clean(parameters('projectName')), '-', parameters('vmPurpose'), parameters('vmNumber'), env.transform(parameters('environmentName')), '-VM')]",
         "vm_publicip_name": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'),env.transform(parameters('environmentName')), '-PublicIP')]",
         "vm_nic_name": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'),env.transform(parameters('environmentName')), '-NIC')]",
         "vm_os_disk_name": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'),env.transform(parameters('environmentName')), '-OSDisk')]",
