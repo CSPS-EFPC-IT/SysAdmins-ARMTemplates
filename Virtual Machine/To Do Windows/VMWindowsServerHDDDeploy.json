@@ -60,7 +60,7 @@
         },
         "vmOSDiskType": {
             "type": "string",
-            "defaultValue": "Premium_LRS",
+            "defaultValue": "Standard_LRS",
             "allowedValues": [
                 "Standard_LRS",
                 "Premium_LRS",
@@ -236,6 +236,21 @@
             "properties": {}
         },
         {
+            "type": "Microsoft.Compute/disks",
+            "name": "[variables('vm_data_disk_name')]",
+            "apiVersion": "2019-07-01",
+            "location": "Canada Central",
+            "properties": {
+                "diskSizeGB": "[parameters('vmDiskSize')]",
+                "creationData": {
+                    "createOption": "empty"
+                }
+            },
+            "sku": {
+                "name":"Standard_LRS"
+            }
+        },
+        {
             "type": "Microsoft.Compute/virtualMachines",
             "name": "[variables('vm_name')]",
             "apiVersion": "2019-07-01",
@@ -243,7 +258,8 @@
             "tags": {},
             "dependsOn": [
                 "[resourceId('Microsoft.Network/networkInterfaces/', variables('vm_nic_name'))]",
-                "[resourceId('Microsoft.Storage/storageAccounts',parameters('diagnosticsStorageAccountName'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts',parameters('diagnosticsStorageAccountName'))]",
+                "[resourceId('Microsoft.Compute/disks', variables('vm_data_disk_name'))]"
             ],
             "properties": {
                 "hardwareProfile": {
@@ -265,10 +281,15 @@
                         "version": "latest"
                     },
                     "dataDisks": [{
-                        "name": "[variables('vm_data_disk_name')]",
-                        "diskSizeGB": "[parameters('vmDiskSize')]",
                         "lun": 0,
-                        "createOption": "Empty"
+                        "createOption": "attach",
+                        "caching": "ReadWrite",
+                        "writeAcceleratorEnabled": false,
+                        "diskSizeGB": 80,
+                        "managedDisk": {
+                            "id": "[resourceId('Microsoft.Compute/disks', variables('vm_data_disk_name'))]",
+                            "storageAccountType": null
+                        }
                     }]
                 },
                 "networkProfile": {
@@ -328,6 +349,14 @@
         "diagstorageaccountID": {
             "type": "string",
             "value": "[resourceId('Microsoft.Storage/storageAccounts',parameters('diagnosticsStorageAccountName'))]"
-        }
+        },
+        "dataDiskName": {
+            "type": "string",
+            "value": "[variables('vm_data_disk_name')]"
+        },
+        "dataDiskID": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Compute/disks', variables('vm_data_disk_name'))]"
+        },
     }
 }
