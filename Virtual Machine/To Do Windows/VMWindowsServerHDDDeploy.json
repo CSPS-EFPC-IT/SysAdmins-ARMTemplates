@@ -357,6 +357,6 @@
         "dataDiskID": {
             "type": "string",
             "value": "[resourceId('Microsoft.Compute/disks', variables('vm_data_disk_name'))]"
-        },
+        }
     }
 }
