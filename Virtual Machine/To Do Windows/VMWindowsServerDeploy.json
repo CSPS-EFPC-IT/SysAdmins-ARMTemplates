@@ -28,7 +28,7 @@
         "vmComputerName": {
             "type": "string",
             "metadata": {
-                "description": "The computer name of the virtual machine's OS. Windows computer name cannot be more than 15 characters long, be entirely numeric, or contain some special characters: ` ~ ! @ # $ %25 ^ & * ( ) = + _ [ ] { } \\ | ; : . ' \" , < > / ?."
+                "description": "The computer name of the virtual machine's OS. Windows computer name cannot be more than 15 characters long, be entirely numeric, or contain these characters: ` ~ ! @ # $ %25 ^ & * ( ) = + _ [ ] { } \\ | ; : . ' \" , < > / ?."
             }
         },
         "vmPurpose": {
@@ -112,6 +112,12 @@
                 "description": "The name of the diagnostic storage account to be created for your virtual machine.  Suggested format: [short project name][vmpurpose]diagsa"
             }
         },
+        "vnetRG": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the resource group containing the virtual network where the virtual machine will be created."
+            }
+        },
         "vnetName": {
             "type": "string",
             "metadata": {
@@ -183,7 +189,7 @@
                         "name": "ipconfig",
                         "properties": {
                             "subnet": {
-                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"
+                                "id": "[resourceId(parameters('vnetRG'),'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"
                             },
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIpAddress": {
