@@ -25,6 +25,12 @@
                 "description": "The environment of the whole solution."
             }
         },
+        "vmComputerName": {
+            "type": "string",
+            "metadata": {
+                "description": "The computer name of the virtual machine's OS. Windows computer name cannot be more than 15 characters long, be entirely numeric, or contain some special characters: ` ~ ! @ # $ %25 ^ & * ( ) = + _ [ ] { } \\ | ; : . ' \" , < > / ?."
+            }
+        },
         "vmPurpose": {
             "type": "string",
             "metadata": {
@@ -255,7 +261,7 @@
                     ]
                 },
                 "osProfile": {
-                    "computerName": "[variables('vm_name')]",
+                    "computerName": "[parameters('vmComputerName')]",
                     "adminUsername": "[parameters('adminUsername')]",
                     "adminPassword": "[parameters('adminPassword')]",
                     "windowsConfiguration": {
