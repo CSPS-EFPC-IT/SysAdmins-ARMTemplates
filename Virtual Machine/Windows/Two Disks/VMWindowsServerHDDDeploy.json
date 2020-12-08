@@ -70,9 +70,16 @@
                 "description": "The disk type of the virtual machine's OS Disk."
             }
         },
+        "vmOSDiskSize": {
+            "type": "int",
+            "defaultValue": 128,
+            "metadata": {
+                "description": "The disk size of the virtual machine's OS Disk."
+            }
+        },
         "vmDiskSize": {
             "type": "int",
-            "defaultValue": 100,
+            "defaultValue": 128,
             "metadata": {
                 "description": "The size (GB) of the data disk of the virtual machine."
             }
@@ -272,7 +279,8 @@
                         "createOption": "fromImage",
                         "managedDisk": {
                             "storageAccountType": "[parameters('vmOSDiskType')]"
-                        }
+                        },
+                        "diskSizeGB": "[parameters('vmOSDiskSize')]"
                     },
                     "imageReference": {
                         "publisher": "MicrosoftWindowsServer",
