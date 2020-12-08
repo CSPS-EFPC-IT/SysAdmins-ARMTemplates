@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 {
+=======
+/*{
+>>>>>>> origin/WindowsVM
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
@@ -70,11 +74,19 @@
                 "description": "The disk type of the virtual machine's OS Disk."
             }
         },
+<<<<<<< HEAD
         "vmDiskSize": {
             "type": "int",
             "defaultValue": 100,
             "metadata": {
                 "description": "The size (GB) of the data disk of the virtual machine."
+=======
+        "vmOSDiskSize": {
+            "type": "int",
+            "defaultValue": 128,
+            "metadata": {
+                "description": "The disk size of the virtual machine's OS Disk."
+>>>>>>> origin/WindowsVM
             }
         },
         "vmAutomaticUpdates": {
@@ -183,8 +195,12 @@
         "vm_name": "[concat(name.clean(parameters('projectName')), '-', parameters('vmPurpose'), parameters('vmNumber'), env.transform(parameters('environmentName')), '-VM')]",
         "vm_publicip_name": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'),env.transform(parameters('environmentName')), '-PublicIP')]",
         "vm_nic_name": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'),env.transform(parameters('environmentName')), '-NIC')]",
+<<<<<<< HEAD
         "vm_os_disk_name": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'),env.transform(parameters('environmentName')), '-OSDisk')]",
         "vm_data_disk_name": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'),env.transform(parameters('environmentName')), '-DataDisk')]"
+=======
+        "vm_os_disk_name": "[concat(name.clean(parameters('projectName')), parameters('vmPurpose'), parameters('vmNumber'),env.transform(parameters('environmentName')), '-OSDisk')]"
+>>>>>>> origin/WindowsVM
     },
     "resources": [
         {
@@ -256,7 +272,12 @@
                         "createOption": "fromImage",
                         "managedDisk": {
                             "storageAccountType": "[parameters('vmOSDiskType')]"
+<<<<<<< HEAD
                         }
+=======
+                        },
+                        "diskSizeGB": "[parameters('vmOSDiskSize')]"
+>>>>>>> origin/WindowsVM
                     },
                     "imageReference": {
                         "publisher": "MicrosoftWindowsServer",
@@ -264,12 +285,16 @@
                         "sku": "[parameters('vmOSVersion')]",
                         "version": "latest"
                     },
+<<<<<<< HEAD
                     "dataDisks": [{
                         "name": "[variables('vm_data_disk_name')]",
                         "diskSizeGB": "[parameters('vmDiskSize')]",
                         "lun": 0,
                         "createOption": "Empty"
                     }]
+=======
+                    "dataDisks": []
+>>>>>>> origin/WindowsVM
                 },
                 "networkProfile": {
                     "networkInterfaces": [
@@ -330,4 +355,8 @@
             "value": "[resourceId('Microsoft.Storage/storageAccounts',parameters('diagnosticsStorageAccountName'))]"
         }
     }
+<<<<<<< HEAD
 }
+=======
+}*/
+>>>>>>> origin/WindowsVM
