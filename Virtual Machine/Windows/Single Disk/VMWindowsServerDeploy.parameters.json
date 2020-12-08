@@ -1,0 +1,60 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "projectName": {
+            "value": "Testing"
+        },
+        "environmentName": {
+            "value": "dev"
+        },
+        "vmComputerName": {
+            "value": "TestingDevVM"
+        },
+        "vmPurpose": {
+            "value": "App"
+        },
+        "vmNumber": {
+            "value": "01"
+        },
+        "vmSize": {
+            "value": "Standard_B2S"
+        },
+        "vmOSVersion": {
+            "value": "2016-Datacenter"
+        },
+        "vmOSDiskType": {
+            "value": "Premium_LRS"
+        },
+        "vmOSDiskSize": {
+            "value": 128
+        },
+        "vmAutomaticUpdates": {
+            "value": true
+        },
+        "adminUsername": {
+            "value": "admin-user" 
+        },
+        "adminPassword": {
+            "value": "TestingPassword!"
+        },
+        "publicIpAddressType": {
+            "value": "static"
+        },
+        "publicIpAddressSku": {
+            "value": "basic"
+        },
+        "diagnosticsStorageAccountName": {
+            "value": "vmdiag012"
+        },
+        "vnetRG": {
+            "value": "test-rg"
+        },
+        "vnetName": {
+            "value": "test-vnet"
+        },
+        "subnetName": {
+            "value": "test-vnet-sn"
+        }
+    }
+}
