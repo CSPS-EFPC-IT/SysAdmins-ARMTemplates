@@ -933,7 +933,7 @@
             },
             "resources": [
                 {
-                    "name": "[concat(variables('sql_server_name'), variables('sql_db_name'))]",
+                    "name": "[concat(variables('sql_server_name'), '/', variables('sql_db_name'))]",
                     "type": "Microsoft.Sql/servers/databases",
                     "apiVersion": "2020-08-01-preview",
                     "location": "Canada Central",
