@@ -51,7 +51,7 @@
             "type": "int",
             "defaultValue": 100000000000
         },
-        "sql_server_sa_sub": {
+        "sqlServerSASub": {
             "type": "string",
             "metadata": {
                 "description": "Subscription ID containing the storage account."
@@ -1094,7 +1094,7 @@
                         "isAzureMonitorTargetEnabled": true,
                         "state": "Enabled",
                         "storageEndpoint": "[concat('https://', variables('sql_server_sa_name'), '.blob.core.windows.net/')]",
-                        "storageAccountSubscriptionId": "[parameters('sql_server_sa_sub')]"
+                        "storageAccountSubscriptionId": "[parameters('sqlServerSASub')]"
                     }
                 },
                 {
@@ -1407,7 +1407,7 @@
                 "isAzureMonitorTargetEnabled": true,
                 "state": "Enabled",
                 "storageEndpoint": "[concat('https://', variables('sql_server_sa_name'), '.blob.core.windows.net/')]",
-                "storageAccountSubscriptionId": "[parameters('sql_server_sa_sub')]"
+                "storageAccountSubscriptionId": "[parameters('sqlServerSASub')]"
             }
         },
         {
@@ -1430,7 +1430,7 @@
                 "isAzureMonitorTargetEnabled": true,
                 "state": "Enabled",
                 "storageEndpoint": "[concat('https://', variables('sql_server_sa_name'), '.blob.core.windows.net/')]",
-                "storageAccountSubscriptionId": "[parameters('sql_server_sa_sub')]"
+                "storageAccountSubscriptionId": "[parameters('sqlServerSASub')]"
             }
         }
 
