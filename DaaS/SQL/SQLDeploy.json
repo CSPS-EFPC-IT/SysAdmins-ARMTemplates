@@ -8,6 +8,12 @@
                 "description": "The name of the project. This string will be used to name the resources."
             }
         },
+        "projectShortName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the project but shortened for naming restrictions. This string will be used to name some resources."
+            }
+        },
         "environmentName": {
             "type": "string",
             "defaultValue": "dev",
@@ -163,7 +169,7 @@
     ],
     "variables": {
         "sql_server_name": "[concat(toLower(name.clean(parameters('projectName'))),  tolower(env.transform(parameters('environmentName'))), '-sqlserver')]",
-        "sql_server_sa_name": "[name.clean(concat(toLower(name.clean(parameters('projectName'))),  tolower(env.transform(parameters('environmentName'))), 'sqlserversa'))]",
+        "sql_server_sa_name": "[name.clean(concat(toLower(name.clean(parameters('projectShortName'))),  tolower(env.transform(parameters('environmentName'))), 'sqlserversa'))]",
         "sql_server_nic_name": "[concat(name.clean(parameters('projectName')),  env.transform(parameters('environmentName')), '-SQLServer-NIC')]",
         "sql_server_privateendpoint_name": "[concat(name.clean(parameters('projectName')),  env.transform(parameters('environmentName')), '-SQLServer-PrivateEndpoint')]",
         "sql_server_laws_name": "[concat(name.clean(parameters('projectName')),  env.transform(parameters('environmentName')), '-SQLServer-LAWS')]",
