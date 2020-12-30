@@ -1388,7 +1388,7 @@
             ],
             "properties": {
                 "recurringScans": {
-                    "isEnabled": false,
+                    "isEnabled": true,
                     "emailSubscriptionAdmins": true,
                     "emails": []
                 }
