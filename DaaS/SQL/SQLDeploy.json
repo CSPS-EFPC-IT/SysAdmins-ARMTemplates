@@ -1240,7 +1240,7 @@
                 "referencedResources": []
             }
         },
-        {
+        /*{
             "type": "Microsoft.Sql/servers/databases/advisors",
             "apiVersion": "2014-04-01",
             "name": "[concat(variables('sql_server_name'), '/', variables('sql_db_name'), '/CreateIndex')]",
@@ -1287,7 +1287,7 @@
             "properties": {
                 "autoExecuteValue": "Disabled"
             }
-        },
+        },*/
         {
             "type": "Microsoft.Sql/servers/databases/advisors",
             "apiVersion": "2014-04-01",
@@ -1300,7 +1300,7 @@
                 "autoExecuteValue": "Enabled"
             }
         },
-        {
+        /*{
             "type": "Microsoft.Sql/servers/databases/auditingPolicies",
             "apiVersion": "2014-04-01",
             "name": "[concat(variables('sql_server_name'), '/', variables('sql_db_name'), '/Default')]",
@@ -1312,7 +1312,7 @@
             "properties": {
                 "auditingState": "Disabled"
             }
-        },
+        },*/
         {
             "type": "Microsoft.Sql/servers/databases/backupLongTermRetentionPolicies",
             "apiVersion": "2017-03-01-preview",
@@ -1353,7 +1353,7 @@
                 "state": "Enabled"
             }
         },
-        {
+        /*{
             "type": "Microsoft.Sql/servers/databases/securityAlertPolicies",
             "apiVersion": "2020-02-02-preview",
             "name": "[concat(variables('sql_server_name'), '/', variables('sql_db_name'), '/Default')]",
@@ -1364,7 +1364,7 @@
             "properties": {
                 "state": "Disabled"
             }
-        },
+        },*/
         {
             "type": "Microsoft.Sql/servers/databases/transparentDataEncryption",
             "apiVersion": "2014-04-01",
