@@ -72,6 +72,14 @@
                 "description": "Tags to add to the network security group."
             },
             "defaultValue": {}
+        },
+        "privateEndpointNetworkPoliciesEnabled": {
+            "type": "string",
+            "defaultValue": "enabled",
+            "allowedValues": ["enabled", "disabled"],
+            "metadata": {
+                "description": "If private endpoints should be enabled or disabled. In order to use a private endpoint in the subnet, policies will need to be disabled."
+            }
         }
     },
     "functions": [
@@ -161,7 +169,7 @@
                 "addressPrefix": "[variables('address_space')]",
                 "serviceEndpoints": [],
                 "delegations": [],
-                "privateEndpointNetworkPolicies": "Enabled",
+                "privateEndpointNetworkPolicies": "[parameters('privateEndpointNetworkPoliciesEnabled')]",
                 "privateLinkServiceNetworkPolicies": "Enabled",
                 "networkSecurityGroup": {
                     "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsg_name'))]"
