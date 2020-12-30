@@ -370,7 +370,7 @@
                     "name": "pergb2018"
                 },
                 "retentionInDays": "[parameters('sqlServerLAWSRetention')]"
-            },
+            }/*,
             "resources": [
                 {
                     "type": "Microsoft.OperationalInsights/workspaces/savedSearches",
@@ -918,7 +918,7 @@
                         "Version": 2
                     }
                 }
-            ]
+            ]*/
         },
 
         {
