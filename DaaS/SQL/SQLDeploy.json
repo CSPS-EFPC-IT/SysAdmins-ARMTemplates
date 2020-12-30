@@ -978,7 +978,7 @@
                         }
                     }
                 },
-                {
+                /*{
                     "type": "Microsoft.Sql/servers/advisors",
                     "apiVersion": "2014-04-01",
                     "name": "[concat(variables('sql_server_name'), '/CreateIndex')]",
@@ -988,8 +988,8 @@
                     "properties": {
                         "autoExecuteValue": "Disabled"
                     }
-                },
-                {
+                },*/
+                /*{
                     "type": "Microsoft.Sql/servers/advisors",
                     "apiVersion": "2014-04-01",
                     "name": "[concat(variables('sql_server_name'), '/DbParameterization')]",
@@ -999,8 +999,8 @@
                     "properties": {
                         "autoExecuteValue": "Disabled"
                     }
-                },
-                {
+                },*/
+                /*{
                     "type": "Microsoft.Sql/servers/advisors",
                     "apiVersion": "2014-04-01",
                     "name": "[concat(variables('sql_server_name'), '/DefragmentIndex')]",
@@ -1010,8 +1010,8 @@
                     "properties": {
                         "autoExecuteValue": "Disabled"
                     }
-                },
-                {
+                },*/
+                /*{
                     "type": "Microsoft.Sql/servers/advisors",
                     "apiVersion": "2014-04-01",
                     "name": "[concat(variables('sql_server_name'), '/DropIndex')]",
@@ -1021,7 +1021,7 @@
                     "properties": {
                         "autoExecuteValue": "Disabled"
                     }
-                },
+                },*/
                 {
                     "type": "Microsoft.Sql/servers/advisors",
                     "apiVersion": "2014-04-01",
@@ -1033,7 +1033,7 @@
                         "autoExecuteValue": "Enabled"
                     }
                 },
-                {
+                /*{
                     "type": "Microsoft.Sql/servers/auditingPolicies",
                     "apiVersion": "2014-04-01",
                     "name": "[concat(variables('sql_server_name'), '/Default')]",
@@ -1044,7 +1044,7 @@
                     "properties": {
                         "auditingState": "Disabled"
                     }
-                },
+                },*/
                 {
                     "type": "Microsoft.Sql/servers/encryptionProtector",
                     "apiVersion": "2015-05-01-preview",
@@ -1119,8 +1119,8 @@
                             "emails": []
                         }
                     }
-                },
-                {
+                }//,
+                /*{
                     "type": "Microsoft.Sql/servers/databases/auditingPolicies",
                     "apiVersion": "2014-04-01",
                     "name": "[concat(variables('sql_server_name'), '/master/Default')]",
@@ -1131,8 +1131,8 @@
                     "properties": {
                         "auditingState": "Disabled"
                     }
-                },
-                {
+                },*/
+                /*{
                     "type": "Microsoft.Sql/servers/databases/auditingSettings",
                     "apiVersion": "2017-03-01-preview",
                     "name": "[concat(variables('sql_server_name'), '/master/Default')]",
@@ -1147,8 +1147,8 @@
                         "state": "Disabled",
                         "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
                     }
-                },
-                {
+                },*/
+                /*{
                     "type": "Microsoft.Sql/servers/databases/extendedAuditingSettings",
                     "apiVersion": "2017-03-01-preview",
                     "name": "[concat(variables('sql_server_name'), '/master/Default')]",
@@ -1163,8 +1163,8 @@
                         "state": "Disabled",
                         "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
                     }
-                },
-                {
+                },*/
+                /*{
                     "type": "Microsoft.Sql/servers/databases/geoBackupPolicies",
                     "apiVersion": "2014-04-01",
                     "name": "[concat(variables('sql_server_name'), '/master/Default')]",
@@ -1175,8 +1175,8 @@
                     "properties": {
                         "state": "Disabled"
                     }
-                },
-                {
+                },*/
+                /*{
                     "type": "Microsoft.Sql/servers/databases/securityAlertPolicies",
                     "apiVersion": "2020-02-02-preview",
                     "name": "[concat(variables('sql_server_name'), '/master/Default')]",
@@ -1186,20 +1186,21 @@
                     "properties": {
                         "state": "Disabled"
                     }
-                },
-                {
+                },*/
+                /*{
                     "type": "Microsoft.Sql/servers/databases/transparentDataEncryption",
                     "apiVersion": "2014-04-01",
                     "name": "[concat(variables('sql_server_name'), '/master/current')]",
                     "location": "Canada Central",
                     "dependsOn": [
+                        "[resourceId('Microsoft.Sql/servers/databases', variables('sql_server_name'), 'master')]",
                         "[resourceId('Microsoft.Sql/servers', variables('sql_server_name'))]"
                     ],
                     "properties": {
                         "status": "Disabled"
                     }
-                },
-                {
+                },*/
+                /*{
                     "type": "Microsoft.Sql/servers/databases/vulnerabilityAssessments",
                     "apiVersion": "2017-03-01-preview",
                     "name": "[concat(variables('sql_server_name'), '/master/Default')]",
@@ -1212,7 +1213,7 @@
                             "emailSubscriptionAdmins": true
                         }
                     }
-                }
+                }*/
             ]
         },
         {
