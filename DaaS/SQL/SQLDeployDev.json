@@ -237,7 +237,7 @@
         {
             "type": "Microsoft.Sql/servers",
             "apiVersion": "2015-05-01-preview",
-            "name": "[variables('sql_server_sa_name')]",
+            "name": "[variables('sql_server_name')]",
             "location": "Canada Central",
             "properties": {
                 "administratorLogin": "[parameters('administratorLogin')]",
@@ -256,7 +256,7 @@
                     "name": "AllowAllWindowsAzureIps",
                     "location": "Canada Central",
                     "dependsOn": [
-                        "[resourceId('Microsoft.Sql/servers', variables('sql_server_sa_name'))]"
+                        "[resourceId('Microsoft.Sql/servers', variables('sql_server_name'))]"
                     ],
                     "properties": {
                         "endIpAddress": "0.0.0.0",
@@ -269,7 +269,7 @@
                     "apiVersion": "2017-03-01-preview",
                     "name": "Default",
                     "dependsOn": [
-                        "[resourceId('Microsoft.Sql/servers', variables('sql_server_sa_name'))]"
+                        "[resourceId('Microsoft.Sql/servers', variables('sql_server_name'))]"
                     ],
                     "properties": {
                         "state": "Enabled",
@@ -282,9 +282,9 @@
                     "apiVersion": "2018-06-01-preview",
                     "name": "Default",
                     "dependsOn": [
-                        "[concat('Microsoft.Sql/servers/', variables('sql_server_sa_name'))]",
+                        "[concat('Microsoft.Sql/servers/', variables('sql_server_name'))]",
                         "[concat('Microsoft.Storage/storageAccounts/', variables('sql_server_sa_name'))]",
-                        "[concat('Microsoft.Sql/servers/', variables('sql_server_sa_name'), '/securityAlertPolicies/Default')]"
+                        "[concat('Microsoft.Sql/servers/', variables('sql_server_name'), '/securityAlertPolicies/Default')]"
                     ],
                     "properties": {
                         "storageContainerPath": "[if(parameters('sqlServerEnableVA'), concat(reference(resourceId('Microsoft.Storage/storageAccounts', variables('sql_server_sa_name'))).primaryEndpoints.blob, 'vulnerability-assessment'), '')]",
