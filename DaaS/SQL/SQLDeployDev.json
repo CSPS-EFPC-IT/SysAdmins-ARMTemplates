@@ -144,13 +144,6 @@
                 "description": "If vulnarability assessments should be done on the SQL Server using a managed identity."
             }
         },
-        "serverAllowAzureIPs": {
-            "type": "bool",
-            "defaultValue": false,
-            "metadata": {
-                "description": "If access from Azure IPs should be allowed for the SQL Server."
-            }
-        },
         "sqlEnableADS": {
             "type": "bool",
             "defaultValue": true,
@@ -249,20 +242,6 @@
             "identity": "[if(and(parameters('sqlServerEnableVA'),parameters('sqlServerUseVAManagedIdentity')), json('{\"type\":\"SystemAssigned\"}'), json('null'))]",
             "tags": {},
             "resources": [
-                {
-                    "condition": "[parameters('serverAllowAzureIPs')]",
-                    "type": "firewallRules",
-                    "apiVersion": "2014-04-01",
-                    "name": "AllowAllWindowsAzureIps",
-                    "location": "Canada Central",
-                    "dependsOn": [
-                        "[resourceId('Microsoft.Sql/servers', variables('sql_server_name'))]"
-                    ],
-                    "properties": {
-                        "endIpAddress": "0.0.0.0",
-                        "startIpAddress": "0.0.0.0"
-                    }
-                },
                 {
                     "condition": "[parameters('sqlEnableADS')]",
                     "type": "securityAlertPolicies",
