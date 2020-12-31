@@ -1,0 +1,351 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "projectName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the project. This string will be used to name the resources."
+            }
+        },
+        "projectShortName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the project but shortened for naming restrictions. This string will be used to name some resources."
+            }
+        },
+        "environmentName": {
+            "type": "string",
+            "defaultValue": "dev",
+            "allowedValues": [
+                "sandbox",
+                "dev",
+                "staging",
+                "prod",
+                "SANDBOX",
+                "DEV",
+                "STAGING",
+                "PROD"
+            ],
+            "metadata": {
+                "description": "The environment of the whole solution."
+            }
+        },
+        "administratorLogin": {
+            "type": "string"
+        },
+        "administratorLoginPassword": {
+            "type": "securestring"
+        },
+        "dbTier": {
+            "type": "string",
+            "defaultValue": "Standard",
+            "allowedValues": [
+                "Basic",
+                "Standard",
+                "Premium",
+                "GeneralPurpose",
+                "Hyperscale",
+                "BusinessCritical"
+            ]
+        },
+        "dbSkuName": {
+            "type": "string",
+            "defaultValue": "S1"
+        },
+        "dbMaxSize": {
+            "type": "int",
+            "defaultValue": 100000000000
+        },
+        "sqlServerSASub": {
+            "type": "string",
+            "metadata": {
+                "description": "Subscription ID containing the storage account."
+            }
+        },
+        "endpointVnetRG": {
+            "type": "string",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "endpointVnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "endpointSubnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "dbDailyRetention": {
+            "type": "int",
+            "defaultValue": 7,
+            "metadata": {
+                "description": "How long should daily backups of the database be kept for (days)?"
+            }
+        },
+        "dbWeeklyRetention": {
+            "type": "string",
+            "defaultValue": "PT0S",
+            "metadata": {
+                "description": "How long should weekly backups of the database be kept for (ISO 8601 format)? Default value will disable weekly backups."
+            }
+        },
+        "dbMonthlyRetention": {
+            "type": "string",
+            "defaultValue": "PT0S",
+            "metadata": {
+                "description": "How long should monthly backups of the database be kept for (ISO 8601 format)? Default value will disable monthly backups."
+            }
+        },
+        "dbYearlyRetention": {
+            "type": "string",
+            "defaultValue": "PT0S",
+            "metadata": {
+                "description": "How long should yearly backups of the database be kept for (ISO 8601 format)? Default value will disable yearly backups."
+            }
+        },
+        "dbSARetention": {
+            "type": "int",
+            "defaultValue": 90,
+            "metadata": {
+                "description": "Retention period (days) for SQL Server storage account."
+            }
+        },
+        "sqlServerLAWSRetention": {
+            "type": "int",
+            "defaultValue": 90,
+            "metadata": {
+                "description": "Retention of Log Analytics Workspace Data (Days)."
+            }
+        },
+        "sqlServerSARetention": {
+            "type": "int",
+            "defaultValue": 90,
+            "metadata": {
+                "description": "Retention period (days) for SQL Server storage account."
+            }
+        },
+        "sqlServerEnableVA": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "If vulnarability assessments should be done on the SQL Server."
+            }
+        },
+        "sqlServerUseVAManagedIdentity": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "If vulnarability assessments should be done on the SQL Server using a managed identity."
+            }
+        },
+        "serverAllowAzureIPs": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "If access from Azure IPs should be allowed for the SQL Server."
+            }
+        },
+        "sqlEnableADS": {
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "If Azure Defender should be enabled on the SQL server."
+            }
+        }
+    },
+    "functions": [
+        {
+            "namespace": "env",
+            "members": {
+                "transform": {
+                    "parameters": [
+                        {
+                            "name": "env",
+                            "type": "string"
+                        }
+                    ],
+                    "output": {
+                        "type": "string",
+                        "value": "[if(equals(toUpper(parameters('env')), 'PROD'), '', concat('-', toUpper(parameters('env'))))]"
+                    }
+                }
+            }
+        },
+        {
+            "namespace": "name",
+            "members": {
+                "clean": {
+                    "parameters": [
+                        {
+                            "name": "name",
+                            "type": "string"
+                        }
+                    ],
+                    "output": {
+                        "type": "string",
+                        "value": "[replace(replace(replace(parameters('name'), '-', ''), '_', ''), ' ', '')]"
+                    }
+                }
+            }
+        }
+    ],
+    "variables": {
+        "sql_server_name": "[concat(toLower(name.clean(parameters('projectName'))),  tolower(env.transform(parameters('environmentName'))), '-sqlserver')]",
+        "sql_server_sa_name": "[name.clean(concat(toLower(name.clean(parameters('projectShortName'))),  tolower(env.transform(parameters('environmentName'))), 'sqlserversa'))]",
+        "sql_server_nic_name": "[concat(name.clean(parameters('projectName')),  env.transform(parameters('environmentName')), '-SQLServer-NIC')]",
+        "sql_server_privateendpoint_name": "[concat(name.clean(parameters('projectName')),  env.transform(parameters('environmentName')), '-SQLServer-PrivateEndpoint')]",
+        "sql_server_laws_name": "[concat(name.clean(parameters('projectName')),  env.transform(parameters('environmentName')), '-SQLServer-LAWS')]",
+        "sql_db_name": "[concat(name.clean(parameters('projectName')),  env.transform(parameters('environmentName')), '-SQL')]",
+        "sql_db_auditing": "[concat(name.clean(parameters('projectName')),  env.transform(parameters('environmentName')), '-SQL-Audit')]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "name": "[variables('sql_server_sa_name')]",
+            "condition": "[parameters('sqlServerEnableVA')]",
+            "apiVersion": "2019-04-01",
+            "location": "Canada  Central",
+            "sku": {
+                "name": "Standard_LRS"
+            },
+            "kind": "StorageV2",
+            "resources": [
+                {
+                    "type": "Microsoft.Storage/storageAccounts/providers/roleAssignments",
+                    "name": "[concat(variables('sql_server_sa_name'), '/Microsoft.Authorization/', guid(resourceId('Microsoft.Storage/storageAccounts', variables('sql_server_sa_name')), subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'), resourceId('Microsoft.Sql/servers', variables('sql_server_name'))))]",
+                    "condition": "[parameters('sqlServerUseVAManagedIdentity')]",
+                    "apiVersion": "2018-09-01-preview",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Sql/servers', variables('sql_server_name'))]",
+                        "[resourceId('Microsoft.Storage/storageAccounts', variables('sql_server_sa_name'))]"
+                    ],
+                    "properties": {
+                        "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
+                        "principalId": "[reference(resourceId('Microsoft.Sql/servers', variables('sql_server_name')), '2018-06-01-preview', 'Full').identity.principalId]",
+                        "scope": "[resourceId('Microsoft.Storage/storageAccounts', variables('sql_server_sa_name'))]",
+                        "principalType": "ServicePrincipal"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "Microsoft.Sql/servers",
+            "apiVersion": "2015-05-01-preview",
+            "name": "[variables('sql_server_sa_name')]",
+            "location": "Canada Central",
+            "properties": {
+                "administratorLogin": "[parameters('administratorLogin')]",
+                "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
+                "version": "12.0",
+                "minimalTlsVersion": "1.2",
+                "publicNetworkAccess": "disabled"
+            },
+            "identity": "[if(and(parameters('sqlServerEnableVA'),parameters('sqlServerUseVAManagedIdentity')), json('{\"type\":\"SystemAssigned\"}'), json('null'))]",
+            "tags": {},
+            "resources": [
+                {
+                    "condition": "[parameters('serverAllowAzureIPs')]",
+                    "type": "firewallRules",
+                    "apiVersion": "2014-04-01",
+                    "name": "AllowAllWindowsAzureIps",
+                    "location": "Canada Central",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Sql/servers', variables('sql_server_sa_name'))]"
+                    ],
+                    "properties": {
+                        "endIpAddress": "0.0.0.0",
+                        "startIpAddress": "0.0.0.0"
+                    }
+                },
+                {
+                    "condition": "[parameters('sqlEnableADS')]",
+                    "type": "securityAlertPolicies",
+                    "apiVersion": "2017-03-01-preview",
+                    "name": "Default",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Sql/servers', variables('sql_server_sa_name'))]"
+                    ],
+                    "properties": {
+                        "state": "Enabled",
+                        "emailAccountAdmins": true
+                    }
+                },
+                {
+                    "condition": "[parameters('sqlServerEnableVA')]",
+                    "type": "vulnerabilityAssessments",
+                    "apiVersion": "2018-06-01-preview",
+                    "name": "Default",
+                    "dependsOn": [
+                        "[concat('Microsoft.Sql/servers/', variables('sql_server_sa_name'))]",
+                        "[concat('Microsoft.Storage/storageAccounts/', variables('sql_server_sa_name'))]",
+                        "[concat('Microsoft.Sql/servers/', variables('sql_server_sa_name'), '/securityAlertPolicies/Default')]"
+                    ],
+                    "properties": {
+                        "storageContainerPath": "[if(parameters('sqlServerEnableVA'), concat(reference(resourceId('Microsoft.Storage/storageAccounts', variables('sql_server_sa_name'))).primaryEndpoints.blob, 'vulnerability-assessment'), '')]",
+                        "storageAccountAccessKey": "[if(and(parameters('sqlServerEnableVA'),not(parameters('sqlServerUseVAManagedIdentity'))), listKeys(variables('sql_server_sa_name'), '2018-02-01').keys[0].value, '')]",
+                        "recurringScans": {
+                            "isEnabled": true,
+                            "emailSubscriptionAdmins": true
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "outputs": {
+        /*"sqlServerName": {
+            "type": "string",
+            "value": "[variables('sql_server_name')]"
+        },
+        "sqlServerID": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Sql/servers',variables('sql_server_name'))]"
+        },
+        "sqlServerSAName": {
+            "type": "string",
+            "value": "[variables('sql_server_sa_name')]"
+        },
+        "sqlServerSAID": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Storage/storageAccounts',variables('sql_server_sa_name'))]"
+        },
+        "sqlServerNICName": {
+            "type": "string",
+            "value": "[variables('sql_server_nic_name')]"
+        },
+        "sqlServerNICID": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Network/networkInterfaces',variables('sql_server_nic_name'))]"
+        },
+        "sqlServerPEName": {
+            "type": "string",
+            "value": "[variables('sql_server_privateendpoint_name')]"
+        },
+        "sqlServerPEID": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Network/privateEndpoints',variables('sql_server_privateendpoint_name'))]"
+        },
+        "sqlServerLAWSName": {
+            "type": "string",
+            "value": "[variables('sql_server_laws_name')]"
+        },
+        "sqlServerLAWSID": {
+            "type": "string",
+            "value": "[resourceId('microsoft.operationalinsights/workspaces',variables('sql_server_laws_name'))]"
+        },
+        "sqlDBName": {
+            "type": "string",
+            "value": "[variables('sql_db_name')]"
+        },
+        "sqlDBID": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Sql/servers/databases',variables('sql_server_name'),variables('sql_db_name'))]"
+        }*/
+    }
+}

@@ -959,7 +959,7 @@
                 {
                     "type": "Microsoft.Sql/servers/privateEndpointConnections",
                     "apiVersion": "2018-06-01-preview",
-                    "name": "[concat(variables('sql_server_name'), '/', variables('sql_server_name'), '-Endpoint-caa1bbe4-b573-4f1c-b78f-5ca70f079b09')]",
+                    "name": "[concat(variables('sql_server_name'), '/', variables('sql_server_name'), '-Endpoint-Connection')]",
                     "dependsOn": [
                         "[resourceId('Microsoft.Sql/servers', variables('sql_server_name'))]",
                         "[resourceId('Microsoft.Network/privateEndpoints', variables('sql_server_privateendpoint_name'))]"
