@@ -264,9 +264,9 @@
                     "apiVersion": "2018-06-01-preview",
                     "name": "Default",
                     "dependsOn": [
-                        "[resourceId('Microsoft.Sql/servers/', variables('sql_server_name'))]",
-                        "[resourceId('Microsoft.Storage/storageAccounts/', variables('sql_server_sa_name'))]",
-                        "[resourceId('Microsoft.Sql/servers/', variables('sql_server_name'), '/securityAlertPolicies/Default')]"
+                        "[resourceId('Microsoft.Sql/servers', variables('sql_server_name'))]",
+                        "[resourceId('Microsoft.Storage/storageAccounts', variables('sql_server_sa_name'))]",
+                        "[resourceId('Microsoft.Sql/servers/securityAlertPolicies', variables('sql_server_name'), 'Default')]"
                     ],
                     "properties": {
                         "storageContainerPath": "[if(parameters('sqlServerEnableVA'), concat(reference(resourceId('Microsoft.Storage/storageAccounts', variables('sql_server_sa_name'))).primaryEndpoints.blob, 'vulnerability-assessment'), '')]",
