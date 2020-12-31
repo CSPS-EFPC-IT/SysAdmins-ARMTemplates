@@ -232,6 +232,9 @@
             "apiVersion": "2015-05-01-preview",
             "name": "[variables('sql_server_name')]",
             "location": "Canada Central",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('sql_server_sa_name'))]"
+            ],
             "properties": {
                 "administratorLogin": "[parameters('administratorLogin')]",
                 "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
@@ -261,9 +264,9 @@
                     "apiVersion": "2018-06-01-preview",
                     "name": "Default",
                     "dependsOn": [
-                        "[concat('Microsoft.Sql/servers/', variables('sql_server_name'))]",
-                        "[concat('Microsoft.Storage/storageAccounts/', variables('sql_server_sa_name'))]",
-                        "[concat('Microsoft.Sql/servers/', variables('sql_server_name'), '/securityAlertPolicies/Default')]"
+                        "[resourceId('Microsoft.Sql/servers/', variables('sql_server_name'))]",
+                        "[resourceId('Microsoft.Storage/storageAccounts/', variables('sql_server_sa_name'))]",
+                        "[resourceId('Microsoft.Sql/servers/', variables('sql_server_name'), '/securityAlertPolicies/Default')]"
                     ],
                     "properties": {
                         "storageContainerPath": "[if(parameters('sqlServerEnableVA'), concat(reference(resourceId('Microsoft.Storage/storageAccounts', variables('sql_server_sa_name'))).primaryEndpoints.blob, 'vulnerability-assessment'), '')]",
