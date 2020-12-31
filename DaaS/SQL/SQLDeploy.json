@@ -304,10 +304,6 @@
                     "dependsOn": [
                         "[resourceId('Microsoft.Storage/storageAccounts', variables('sql_server_sa_name'))]"
                     ],
-                    "sku": {
-                        "name": "Standard_GRS",
-                        "tier": "Standard"
-                    },
                     "properties": {
                         "protocolSettings": {
                             "smb": {}
