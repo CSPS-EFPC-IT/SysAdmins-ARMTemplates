@@ -312,6 +312,28 @@
                     }
                 ]
             }
+        },
+        {
+            "name": "[concat(variables('sql_server_name'), '/', variables('sql_db_name'))]",
+            "type": "Microsoft.Sql/servers/databases",
+            "apiVersion": "2020-08-01-preview",
+            "location": "Canada Central",
+            "tags": {},
+            "sku": {
+                "name": "[parameters('dbSkuName')]",
+                "tier": "[parameters('dbTier')]"
+            },
+            "properties": {
+                "maxSizeBytes": "[parameters('dbMaxSize')]",
+                "catalogCollation": "SQL_Latin1_General_CP1_CI_AS",
+                "zoneRedundant": false,
+                "licenseType": "LicenseIncluded",
+                "readScale": "Disabled",
+                "storageAccountType": "GRS"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', variables('sql_server_name'))]"
+            ]
         }
     ],
     "outputs": {
