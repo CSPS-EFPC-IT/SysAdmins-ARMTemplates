@@ -296,6 +296,43 @@
                     }
                 }
             ]
+        },
+        {
+            "type": "Microsoft.Network/privateEndpoints",
+            "apiVersion": "2020-05-01",
+            "name": "[variables('sql_server_privateendpoint_name')]",
+            "location": "canadacentral",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', variables('sql_server_name'))]"
+            ],
+            "tags": {},
+            "properties": {
+                "privateLinkServiceConnections": [
+                    {
+                        "name": "[variables('sql_server_privateendpoint_name')]",
+                        "properties": {
+                            "privateLinkServiceId": "[resourceId('Microsoft.Sql/servers', variables('sql_server_name'))]",
+                            "groupIds": [
+                                "SqlServer"
+                            ],
+                            "privateLinkServiceConnectionState": {
+                                "status": "Approved",
+                                "description": "Auto-approved",
+                                "actionsRequired": "None"
+                            }
+                        }
+                    }
+                ],
+                "manualPrivateLinkServiceConnections": [],
+                "subnet": {
+                    "id": "[resourceId(parameters('endpointVnetRG'),'Microsoft.Network/virtualNetworks/subnets', parameters('endpointVnetName'), parameters('endpointSubnetName'))]"
+                },
+                "customDnsConfigs": [
+                    {
+                        "fqdn": "[concat(variables('sql_server_name'),'.database.windows.net')]"
+                    }
+                ]
+            }
         }
     ],
     "outputs": {
