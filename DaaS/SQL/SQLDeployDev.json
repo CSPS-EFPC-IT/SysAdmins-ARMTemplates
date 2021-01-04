@@ -337,6 +337,30 @@
                         "storageEndpoint": "[concat('https://', variables('sql_server_sa_name'), '.blob.core.windows.net/')]",
                         "storageAccountSubscriptionId": "[parameters('sqlServerSASub')]"
                     }
+                },
+                {
+                    "type": "Microsoft.OperationsManagement/solutions",
+                    "apiVersion": "2015-11-01-preview",
+                    "name": "[variables('sql_db_auditing')]",
+                    "location": "Canada Central",
+                    "dependsOn": [
+                        "[resourceId('microsoft.operationalinsights/workspaces', variables('sql_server_laws_name'))]"
+                    ],
+                    "tags": {},
+                    "plan": {
+                        "name": "[concat('SQLAuditing[',variables('sql_server_laws_name'),']')]",
+                        "promotionCode": "",
+                        "product": "SQLAuditing",
+                        "publisher": "Microsoft"
+                    },
+                    "properties": {
+                        "workspaceResourceId": "[resourceId('microsoft.operationalinsights/workspaces', variables('sql_server_laws_name'))]",
+                        "containedResources": [
+                            "[concat(resourceId('microsoft.operationalinsights/workspaces', variables('sql_server_laws_name')), '/views/SQLAccessToSensitiveData')]",
+                            "[concat(resourceId('microsoft.operationalinsights/workspaces', variables('sql_server_laws_name')), '/views/SQLSecurityInsights')]"
+                        ],
+                        "referencedResources": []
+                    }
                 }
             ]
         },
