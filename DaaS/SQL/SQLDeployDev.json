@@ -344,7 +344,9 @@
                     "name": "[variables('sql_db_auditing')]",
                     "location": "Canada Central",
                     "dependsOn": [
-                        "[resourceId('microsoft.operationalinsights/workspaces', variables('sql_server_laws_name'))]"
+                        "[resourceId('microsoft.operationalinsights/workspaces', variables('sql_server_laws_name'))]",
+                        "[resourceId('Microsoft.Sql/servers/databases', variables('sql_server_name'), variables('sql_db_name'))]",
+                        "[resourceId('Microsoft.Sql/servers', variables('sql_server_name'))]"
                     ],
                     "tags": {},
                     "plan": {
