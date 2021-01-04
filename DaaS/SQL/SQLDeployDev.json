@@ -228,6 +228,19 @@
             ]
         },
         {
+            "type": "microsoft.operationalinsights/workspaces",
+            "apiVersion": "2015-11-01-preview",
+            "name": "[variables('sql_server_laws_name')]",
+            "location": "canadacentral",
+            "tags": {},
+            "properties": {
+                "sku": {
+                    "name": "pergb2018"
+                },
+                "retentionInDays": "[parameters('sqlServerLAWSRetention')]"
+            }
+        },
+        {
             "type": "Microsoft.Sql/servers",
             "apiVersion": "2019-06-01-preview",
             "name": "[variables('sql_server_name')]",
