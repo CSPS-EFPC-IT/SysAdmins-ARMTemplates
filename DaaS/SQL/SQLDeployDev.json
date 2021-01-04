@@ -348,7 +348,7 @@
                     ],
                     "tags": {},
                     "plan": {
-                        "name": "[concat('SQLAuditing[',variables('sql_server_laws_name'),']')]",
+                        "name": "[variables('sql_db_auditing')]",
                         "promotionCode": "",
                         "product": "SQLAuditing",
                         "publisher": "Microsoft"
