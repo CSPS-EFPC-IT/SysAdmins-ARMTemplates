@@ -278,6 +278,65 @@
                             "emailSubscriptionAdmins": true
                         }
                     }
+                },
+                {
+                    "type": "Microsoft.Sql/servers/auditingSettings",
+                    "apiVersion": "2017-03-01-preview",
+                    "name": "[concat(variables('sql_server_name'), '/Default')]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Sql/servers/databases', variables('sql_server_name'), variables('sql_db_name'))]",
+                        "[resourceId('Microsoft.Sql/servers', variables('sql_server_name'))]",
+                        "[resourceId('Microsoft.Storage/StorageAccounts', variables('sql_server_sa_name'))]"
+                    ],
+                    "properties": {
+                        "retentionDays": "[parameters('sqlServerSARetention')]",
+                        "auditActionsAndGroups": [
+                            "SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP",
+                            "FAILED_DATABASE_AUTHENTICATION_GROUP",
+                            "BATCH_COMPLETED_GROUP"
+                        ],
+                        "isStorageSecondaryKeyInUse": false,
+                        "isAzureMonitorTargetEnabled": true,
+                        "state": "Enabled",
+                        "storageEndpoint": "[concat('https://', variables('sql_server_sa_name'), '.blob.core.windows.net/')]",
+                        "storageAccountSubscriptionId": "[parameters('sqlServerSASub')]"
+                    }
+                },
+                {
+                    "type": "Microsoft.Sql/servers/databases/extendedAuditingSettings",
+                    "apiVersion": "2017-03-01-preview",
+                    "name": "[concat(variables('sql_server_name'), '/', variables('sql_db_name'), '/Default')]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Sql/servers/databases', variables('sql_server_name'), variables('sql_db_name'))]",
+                        "[resourceId('Microsoft.Sql/servers', variables('sql_server_name'))]",
+                        "[resourceId('Microsoft.Storage/StorageAccounts', variables('sql_server_sa_name'))]"
+                    ],
+                    "properties": {
+                        "retentionDays": "[parameters('dbSARetention')]",
+                        "auditActionsAndGroups": [
+                            "SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP",
+                            "FAILED_DATABASE_AUTHENTICATION_GROUP",
+                            "BATCH_COMPLETED_GROUP"
+                        ],
+                        "isStorageSecondaryKeyInUse": false,
+                        "isAzureMonitorTargetEnabled": true,
+                        "state": "Enabled",
+                        "storageEndpoint": "[concat('https://', variables('sql_server_sa_name'), '.blob.core.windows.net/')]",
+                        "storageAccountSubscriptionId": "[parameters('sqlServerSASub')]"
+                    }
+                },
+                {
+                    "type": "Microsoft.Sql/servers/securityAlertPolicies",
+                    "apiVersion": "2020-02-02-preview",
+                    "name": "[concat(variables('sql_server_name'), '/Default')]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Sql/servers/databases', variables('sql_server_name'), variables('sql_db_name'))]",
+                        "[resourceId('Microsoft.Sql/servers', variables('sql_server_name'))]",
+                        "[resourceId('Microsoft.Storage/StorageAccounts', variables('sql_server_sa_name'))]"
+                    ],
+                    "properties": {
+                        "state": "Enabled"
+                    }
                 }
             ]
         },
