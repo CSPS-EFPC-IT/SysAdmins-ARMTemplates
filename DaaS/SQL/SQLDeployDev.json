@@ -240,9 +240,11 @@
                 "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
                 "version": "12.0",
                 "minimalTlsVersion": "1.2",
-                "publicNetworkAccess": "disabled"
+                "publicNetworkAccess": "Disabled"
             },
-            "identity": "[if(and(parameters('sqlServerEnableVA'),parameters('sqlServerUseVAManagedIdentity')), json('{\"type\":\"SystemAssigned\"}'), json('null'))]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
             "tags": {},
             "resources": [
                 {
