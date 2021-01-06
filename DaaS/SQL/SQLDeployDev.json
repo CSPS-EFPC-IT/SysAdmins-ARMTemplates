@@ -239,6 +239,26 @@
                     }
                 },
                 {
+                    "type": "Microsoft.Storage/storageAccounts/blobServices",
+                    "apiVersion": "2020-08-01-preview",
+                    "name": "[concat(variables('sql_server_sa_name'), '/default')]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Storage/storageAccounts', variables('sql_server_sa_name'))]"
+                    ],
+                    "sku": {
+                        "name": "Standard_GRS",
+                        "tier": "Standard"
+                    },
+                    "properties": {
+                        "cors": {
+                            "corsRules": []
+                        },
+                        "deleteRetentionPolicy": {
+                            "enabled": false
+                        }
+                    }
+                },
+                {
                     "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
                     "apiVersion": "2020-08-01-preview",
                     "name": "[concat(variables('sql_server_sa_name'), '/default/vulnerability-assessment')]",
