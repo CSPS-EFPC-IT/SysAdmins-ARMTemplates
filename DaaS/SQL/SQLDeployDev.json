@@ -150,6 +150,19 @@
             "metadata": {
                 "description": "If Azure Defender should be enabled on the SQL server."
             }
+        },
+        "adminGroup": {
+            "type": "string",
+            "defaultValue": "SysAdmins",
+            "metadata": {
+                "description": "The name of the AD group who will administer resources."
+            }
+        },
+        "adminGroupID": {
+            "type": "string",
+            "metadata": {
+                "description": "The ID of the AD group who will administer resources."
+            }
         }
     },
     "functions": [
@@ -224,6 +237,20 @@
                         "scope": "[resourceId('Microsoft.Storage/storageAccounts', variables('sql_server_sa_name'))]",
                         "principalType": "ServicePrincipal"
                     }
+                },
+                {
+                    "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+                    "apiVersion": "2020-08-01-preview",
+                    "name": "[concat(variables('sql_server_sa_name'), '/default/vulnerability-assessment')]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('sql_server_sa_name'), 'default')]",
+                        "[resourceId('Microsoft.Storage/storageAccounts', variables('sql_server_sa_name'))]"
+                    ],
+                    "properties": {
+                        "defaultEncryptionScope": "$account-encryption-key",
+                        "denyEncryptionScopeOverride": false,
+                        "publicAccess": "None"
+                    }
                 }
             ]
         },
@@ -288,7 +315,10 @@
                         "storageAccountAccessKey": "[if(and(parameters('sqlServerEnableVA'),not(parameters('sqlServerUseVAManagedIdentity'))), listKeys(variables('sql_server_sa_name'), '2018-02-01').keys[0].value, '')]",
                         "recurringScans": {
                             "isEnabled": true,
-                            "emailSubscriptionAdmins": true
+                            "emailSubscriptionAdmins": true,
+                            "emails": [
+                                "csps.sysadminmonit.efpc@canada.ca"
+                            ]
                         }
                     }
                 },
@@ -362,6 +392,30 @@
                             "[concat(resourceId('microsoft.operationalinsights/workspaces', variables('sql_server_laws_name')), '/views/SQLSecurityInsights')]"
                         ],
                         "referencedResources": []
+                    }
+                },
+                {
+                    "type": "Microsoft.Sql/servers/azureADOnlyAuthentications",
+                    "apiVersion": "2020-02-02-preview",
+                    "name": "[concat(variables('sql_server_name'), '/Default')]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Sql/servers', variables('sql_server_name'))]"
+                    ],
+                    "properties": {
+                        "azureADOnlyAuthentication": false
+                    }
+                },
+                {
+                    "type": "Microsoft.Sql/servers/administrators",
+                    "apiVersion": "2019-06-01-preview",
+                    "name": "[concat(variables('sql_server_name'), '/ActiveDirectory')]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Sql/servers', variables('sql_server_name'))]"
+                    ],
+                    "properties": {
+                        "administratorType": "ActiveDirectory",
+                        "login": "[parameters('adminGroup')]",
+                        "sid": "[parameters('adminGroupId')]"
                     }
                 }
             ]
