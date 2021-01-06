@@ -415,17 +415,6 @@
                     }
                 },
                 {
-                    "type": "Microsoft.Sql/servers/azureADOnlyAuthentications",
-                    "apiVersion": "2020-02-02-preview",
-                    "name": "[concat(variables('sql_server_name'), '/Default')]",
-                    "dependsOn": [
-                        "[resourceId('Microsoft.Sql/servers', variables('sql_server_name'))]"
-                    ],
-                    "properties": {
-                        "azureADOnlyAuthentication": false
-                    }
-                },
-                {
                     "type": "Microsoft.Sql/servers/administrators",
                     "apiVersion": "2019-06-01-preview",
                     "name": "[concat(variables('sql_server_name'), '/ActiveDirectory')]",
