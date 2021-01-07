@@ -25,6 +25,9 @@
         },
         "nsgName": {
             "value": "Testing-PAZ-DEV-NSG"
+        },
+        "privateEndpointNetworkPoliciesEnabled": {
+            "value": "enabled"
         }
     }
 }

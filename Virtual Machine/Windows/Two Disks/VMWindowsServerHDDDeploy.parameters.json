@@ -48,7 +48,7 @@
             "value": "basic"
         },
         "diagnosticsStorageAccountName": {
-            "value": ""
+            "value": "vmdiagsa123"
         },
         "vnetRG": {
             "value": "testing-rg"

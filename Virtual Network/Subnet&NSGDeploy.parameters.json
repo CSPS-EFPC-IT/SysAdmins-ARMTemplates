@@ -25,6 +25,9 @@
         },
         "resourceTags": {
             "value": {}
+        },
+        "privateEndpointNetworkPoliciesEnabled": {
+            "value": "enabled"
         }
     }
 }
