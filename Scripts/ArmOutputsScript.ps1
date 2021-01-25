@@ -22,5 +22,8 @@ $armOutputObj.PSObject.Properties | ForEach-Object {
 		Write-Host "##vso[task.setvariable variable=$key]$value"
 		$outPut = "Variable '" + $key + "' was created with the following value: '" + $value + "'"
 		Write-Host $outPut
+	} else {
+		$outPut = "Unable to create variable '" + $key + "' as variables of type " + $type + " are not supported by this script."
+		Write-Host $outPut
 	}
 }
