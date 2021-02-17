@@ -3,28 +3,28 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "vnetSource": {
-            "type": "String",
+            "type": "string",
             "defaultValue": "",
             "metadata": {
                 "description": "Name of the Vnet to be peered."
             }
         },
         "vnetDest": {
-            "type": "String",
+            "type": "string",
             "defaultValue": "",
             "metadata": {
                 "description": "Name of the Vnet to be peer source with."
             }
         },
         "vnetDestRG": {
-            "type": "String",
+            "type": "string",
             "defaultValue": "",
             "metadata": {
                 "description": "Name of resource group containing destination Vnet."
             }
         },
         "vnetDestSubID": {
-            "type": "String",
+            "type": "string",
             "defaultValue": "b44b3cf6-fb7d-4b25-9a81-b903fd8bd936",
             "metadata": {
                 "description": "Subscription ID containg destination Vnet."
