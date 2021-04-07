@@ -222,7 +222,8 @@
         "sql_server_privateendpoint_name": "[concat(name.clean(parameters('projectName')),  env.transform(parameters('environmentName')), '-SQLServer-PrivateEndpoint')]",
         "sql_server_laws_name": "[concat(name.clean(parameters('projectName')),  env.transform(parameters('environmentName')), '-SQLServer-LAWS')]",
         "sql_db_name": "[concat(name.clean(parameters('projectName')),  env.transform(parameters('environmentName')), '-SQL')]",
-        "sql_db_auditing": "[concat(name.clean(parameters('projectName')),  env.transform(parameters('environmentName')), '-SQL-Audit')]"
+        "sql_db_auditing": "[concat(name.clean(parameters('projectName')),  env.transform(parameters('environmentName')), '-SQL-Audit')]",
+        "sql_server_privatednszone_name": "[concat(name.clean(parameters('projectName')), env.transform(parameters('environmentName')),'-SQLServer-PrivateDnsZone')]"
     },
     "resources": [
         {
@@ -481,6 +482,52 @@
             }
         },
         {
+            "type": "Microsoft.Network/privateDnsZones",
+            "apiVersion": "2018-09-01",
+            "name": "[variables('sql_server_privatednszone_name')]",
+            "location": "global",
+            "tags": {
+            },
+            "properties": {
+            }
+        },
+        {
+            "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
+            "apiVersion": "2018-09-01",
+            "name": "[concat(variables('sql_server_privatednszone_name'), '/networkingarchitecture-dev-vn-link')]",
+            "location": "global",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/privateDnsZones', variables('sql_server_privatednszone_name'))]"
+            ],
+            "tags": {
+            },
+            "properties": {
+                "registrationEnabled": false,
+                "virtualNetwork": {
+                    "id": "[resourceId(parameters('endpointVnetRG'),'Microsoft.Network/virtualNetworks', parameters('endpointVnetName'))]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+            "apiVersion": "2020-03-01",
+            "name": "[concat(variables('sql_server_privateendpoint_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', variables('sql_server_privateendpoint_name'))]",
+                "[resourceId('Microsoft.Network/privateDnsZones', variables('sql_server_privatednszone_name'))]"
+            ],
+            "properties": {
+                "privateDnsZoneConfigs": [
+                    {
+                        "name": "TeleworkForm-DEV-SQLServer-PrivateLinkDNSConfig",
+                        "properties": {
+                            "privateDnsZoneId": "[resourceId('Microsoft.Network/privateDnsZones', variables('sql_server_privatednszone_name'))]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
             "name": "[concat(variables('sql_server_name'), '/', variables('sql_db_name'))]",
             "type": "Microsoft.Sql/servers/databases",
             "apiVersion": "2020-08-01-preview",
@@ -501,6 +548,18 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Sql/servers', variables('sql_server_name'))]"
             ]
+        },
+        {
+            "type": "Microsoft.Sql/servers/virtualNetworkRules",
+            "apiVersion": "2020-08-01-preview",
+            "name": "[concat(variables('sql_server_name'), '/', variables('sql_server_name'), '-VnetRule')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', variables('sql_server_name'))]"
+            ],
+            "properties": {
+                "virtualNetworkSubnetId": "[resourceId(parameters('endpointVnetRG'),'Microsoft.Network/virtualNetworks/subnets', parameters('endpointVnetName'), parameters('endpointSubnetName'))]",
+                "ignoreMissingVnetServiceEndpoint": false
+            }
         }
     ],
     "outputs": {
