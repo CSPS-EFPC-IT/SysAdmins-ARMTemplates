@@ -497,7 +497,8 @@
             "name": "[concat(variables('sql_server_privatednszone_name'), '/networkingarchitecture-dev-vn-link')]",
             "location": "global",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/privateDnsZones', variables('sql_server_privatednszone_name'))]"
+                "[resourceId('Microsoft.Network/privateDnsZones', variables('sql_server_privatednszone_name'))]",
+                "[resourceId('Microsoft.Network/privateEndpoints', variables('sql_server_privateendpoint_name'))]"
             ],
             "tags": {
             },
