@@ -502,7 +502,7 @@
             "tags": {
             },
             "properties": {
-                "registrationEnabled": false,
+                "registrationEnabled": true,
                 "virtualNetwork": {
                     "id": "[resourceId(parameters('endpointVnetRG'),'Microsoft.Network/virtualNetworks', parameters('endpointVnetName'))]"
                 }
@@ -519,7 +519,7 @@
             "properties": {
                 "privateDnsZoneConfigs": [
                     {
-                        "name": "TeleworkForm-DEV-SQLServer-PrivateLinkDNSConfig",
+                        "name": "[concat(variables('sql_server_privateendpoint_name'), '-PrivateLinkDNSConfig')]",
                         "properties": {
                             "privateDnsZoneId": "[resourceId('Microsoft.Network/privateDnsZones', variables('sql_server_privatednszone_name'))]"
                         }
