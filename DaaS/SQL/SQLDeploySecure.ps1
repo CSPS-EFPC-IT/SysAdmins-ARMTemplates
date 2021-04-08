@@ -1,4 +1,4 @@
-$resourceGroupName=$args[1]
-$serverName=$args[0]
+$resourceGroupName=$args[0]
+$serverName=$args[1]
 
-az sql server update --admin-password myadminpassword --name $serverName --resource-group $resourceGroupName --enable-public-network false
+az sql server update --name $serverName --resource-group $resourceGroupName --enable-public-network false
