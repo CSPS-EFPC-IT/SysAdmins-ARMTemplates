@@ -1,4 +1,4 @@
 $resourceGroupName=$args[1]
 $serverName=$args[0]
 
-Set-AzSqlServer -ResourceGroupName $resourceGroupName -ServerName $serverName -PublicNetworkAccess 'Disabled'
+az sql server update --admin-password myadminpassword --name $serverName --resource-group $resourceGroupName --enable-public-network false
