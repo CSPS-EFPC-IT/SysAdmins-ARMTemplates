@@ -474,11 +474,7 @@
                 "subnet": {
                     "id": "[resourceId(parameters('endpointVnetRG'),'Microsoft.Network/virtualNetworks/subnets', parameters('endpointVnetName'), parameters('endpointSubnetName'))]"
                 },
-                "customDnsConfigs": [
-                    {
-                        "fqdn": "[concat(variables('sql_server_name'),'.database.windows.net')]"
-                    }
-                ]
+                "customDnsConfigs": []
             }
         },
         {
