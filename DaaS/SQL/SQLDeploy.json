@@ -503,7 +503,7 @@
             "tags": {
             },
             "properties": {
-                "registrationEnabled": true,
+                "registrationEnabled": false,
                 "virtualNetwork": {
                     "id": "[resourceId(parameters('endpointVnetRG'),'Microsoft.Network/virtualNetworks', parameters('endpointVnetName'))]"
                 }
