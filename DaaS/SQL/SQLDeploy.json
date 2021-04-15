@@ -223,7 +223,7 @@
         "sql_server_laws_name": "[concat(name.clean(parameters('projectName')),  env.transform(parameters('environmentName')), '-SQLServer-LAWS')]",
         "sql_db_name": "[concat(name.clean(parameters('projectName')),  env.transform(parameters('environmentName')), '-SQL')]",
         "sql_db_auditing": "[concat(name.clean(parameters('projectName')),  env.transform(parameters('environmentName')), '-SQL-Audit')]",
-        "sql_server_privatednszone_name": "[concat(replace(tolower(env.transform(parameters('environmentName'))), '-', ''), '.', tolower(name.clean(parameters('projectName'))),'.privatelink.database.windows.net')]"
+        "sql_server_privatednszone_name": "privatelink.database.windows.net"
     },
     "resources": [
         {
