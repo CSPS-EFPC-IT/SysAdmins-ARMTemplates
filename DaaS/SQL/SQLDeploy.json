@@ -300,7 +300,10 @@
                     "name": "pergb2018"
                 },
                 "retentionInDays": "[parameters('sqlServerLAWSRetention')]"
-            }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', variables('sql_server_name'))]"
+            ]
         },
         {
             "type": "Microsoft.Sql/servers",
