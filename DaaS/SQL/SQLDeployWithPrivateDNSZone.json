@@ -67,9 +67,9 @@
         },
         "dbMaxSize": {
             "type": "int",
-            "defaultValue": 100000000000,
+            "defaultValue": 107374182400,
             "metadata": {
-                "description": "The size of the database (Bytes)."
+                "description": "The size of the database (Bytes). . This value is best found via the portal (create a DaaS with desired value which can be found in the deployment ARM template)."
             }
         },
         "sqlServerSASub": {
@@ -128,7 +128,7 @@
             "type": "int",
             "defaultValue": 90,
             "metadata": {
-                "description": "Retention period (days) for SQL Server storage account."
+                "description": "Retention period (days) for SQL Server database data (in storage account)."
             }
         },
         "sqlServerLAWSRetention": {
@@ -602,6 +602,14 @@
         "sqlDBID": {
             "type": "string",
             "value": "[resourceId('Microsoft.Sql/servers/databases',variables('sql_server_name'),variables('sql_db_name'))]"
+        },
+        "sqlServerPrivateDNSZoneName":{
+            "type": "string",
+            "value": "[variables('sql_server_privatednszone_name')]"
+        },
+        "sqlServerPrivateDNSZoneID":{
+            "type": "string",
+            "value": "[resourceId('Microsoft.Network/privateDnsZones', variables('sql_server_privatednszone_name'))]"   
         }
     }
 }
