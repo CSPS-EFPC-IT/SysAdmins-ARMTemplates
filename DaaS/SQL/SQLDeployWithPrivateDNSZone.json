@@ -69,7 +69,7 @@
             "type": "int",
             "defaultValue": 107374182400,
             "metadata": {
-                "description": "The size of the database (Bytes). This value is best found via the portal (create a DaaS with desired value which can be found in the deployment ARM template)."
+                "description": "The size of the database (Bytes). . This value is best found via the portal (create a DaaS with desired value which can be found in the deployment ARM template)."
             }
         },
         "sqlServerSASub": {
@@ -222,7 +222,8 @@
         "sql_server_privateendpoint_name": "[concat(name.clean(parameters('projectName')),  env.transform(parameters('environmentName')), '-SQLServer-PrivateEndpoint')]",
         "sql_server_laws_name": "[concat(name.clean(parameters('projectName')),  env.transform(parameters('environmentName')), '-SQLServer-LAWS')]",
         "sql_db_name": "[concat(name.clean(parameters('projectName')),  env.transform(parameters('environmentName')), '-SQL')]",
-        "sql_db_auditing": "[concat(name.clean(parameters('projectName')),  env.transform(parameters('environmentName')), '-SQL-Audit')]"
+        "sql_db_auditing": "[concat(name.clean(parameters('projectName')),  env.transform(parameters('environmentName')), '-SQL-Audit')]",
+        "sql_server_privatednszone_name": "privatelink.database.windows.net"
     },
     "resources": [
         {
@@ -480,18 +481,47 @@
             }
         },
         {
+            "type": "Microsoft.Network/privateDnsZones",
+            "apiVersion": "2018-09-01",
+            "name": "[variables('sql_server_privatednszone_name')]",
+            "location": "global",
+            "tags": {
+            },
+            "properties": {
+            }
+        },
+        {
+            "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
+            "apiVersion": "2018-09-01",
+            "name": "[concat(variables('sql_server_privatednszone_name'), '/networkingarchitecture-dev-vn-link')]",
+            "location": "global",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/privateDnsZones', variables('sql_server_privatednszone_name'))]",
+                "[resourceId('Microsoft.Network/privateEndpoints', variables('sql_server_privateendpoint_name'))]"
+            ],
+            "tags": {
+            },
+            "properties": {
+                "registrationEnabled": false,
+                "virtualNetwork": {
+                    "id": "[resourceId(parameters('endpointVnetRG'),'Microsoft.Network/virtualNetworks', parameters('endpointVnetName'))]"
+                }
+            }
+        },
+        {
             "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
             "apiVersion": "2020-03-01",
             "name": "[concat(variables('sql_server_privateendpoint_name'), '/default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/privateEndpoints', variables('sql_server_privateendpoint_name'))]"
+                "[resourceId('Microsoft.Network/privateEndpoints', variables('sql_server_privateendpoint_name'))]",
+                "[resourceId('Microsoft.Network/privateDnsZones', variables('sql_server_privatednszone_name'))]"
             ],
             "properties": {
                 "privateDnsZoneConfigs": [
                     {
                         "name": "[concat(variables('sql_server_privateendpoint_name'), '-PrivateLinkDNSConfig')]",
                         "properties": {
-                            "privateDnsZoneId": "[resourceId(parameters('endpointVnetRG'), 'Microsoft.Network/privateDnsZones', 'privatelink.database.windows.net')]"
+                            "privateDnsZoneId": "[resourceId('Microsoft.Network/privateDnsZones', variables('sql_server_privatednszone_name'))]"
                         }
                     }
                 ]
@@ -572,6 +602,14 @@
         "sqlDBID": {
             "type": "string",
             "value": "[resourceId('Microsoft.Sql/servers/databases',variables('sql_server_name'),variables('sql_db_name'))]"
+        },
+        "sqlServerPrivateDNSZoneName":{
+            "type": "string",
+            "value": "[variables('sql_server_privatednszone_name')]"
+        },
+        "sqlServerPrivateDNSZoneID":{
+            "type": "string",
+            "value": "[resourceId('Microsoft.Network/privateDnsZones', variables('sql_server_privatednszone_name'))]"   
         }
     }
 }

@@ -1,0 +1,66 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "projectName": {
+            "value": "Testing Something"
+        },
+        "projectShortName": {
+            "value": "Testing"
+        },
+        "environmentName": {
+            "value": "dev"
+        },
+        "administratorLogin": {
+            "value": "administration"
+        },
+        "administratorLoginPassword": {
+            "value": "************"
+        },
+        "dbTier": {
+            "value": "Standard"
+        },
+        "dbSkuName": {
+            "value": "S1"
+        },
+        "dbMaxSize": {
+            "value": 107374182400
+        },
+        "sqlServerSASub": {
+            "value": "testingsqlsa"
+        },
+        "endpointVnetRG": {
+            "value": "testing-dev-vnet-rg"
+        },
+        "endpointVnetName": {
+            "value": "testing-dev-vnet"
+        },
+        "endpointSubnetName": {
+            "value": "testing-dev-vnet-sub"
+        },
+        "dbSARetention": {
+            "value": 90
+        },
+        "sqlServerLAWSRetention": {
+            "value": 90
+        },
+        "sqlServerSARetention": {
+            "value": 90
+        },
+        "sqlServerEnableVA": {
+            "value": false
+        },
+        "sqlServerUseVAManagedIdentity": {
+            "value": false
+        },
+        "sqlEnableADS": {
+            "value": true
+        },
+        "adminGroup": {
+            "value": "SysAdmins"
+        },
+        "adminGroupID": {
+            "value": "***"
+        }
+    }
+}
