@@ -51,6 +51,13 @@
                 "description": "Tag - Establishes a resource’s phase in its project development. Also used to name the resource group."
             }
         },
+        "SubEnvironment": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Used to name the resource group if a solution needs the same environment twice (i.e. two DEV environments)."
+            }
+        },
         "Group": {
             "type": "string",
             "metadata": {
@@ -155,10 +162,27 @@
                     }
                 }
             }
+        },
+        {
+            "namespace": "env",
+            "members": {
+                "subenv": {
+                    "parameters": [
+                        {
+                            "name": "env",
+                            "type": "string"
+                        }
+                    ],
+                    "output": {
+                        "type": "string",
+                        "value": "[if(equals(toUpper(parameters('env')), ''), '', concat('-', parameters('env')))]"
+                    }
+                }
+            }
         }
     ],
     "variables": {
-        "rg_name": "[concat(name.clean(parameters('project')), env.transform(parameters('environment')), '-RG')]",
+        "rg_name": "[concat(name.clean(parameters('project')), env.subenv(parameters('subenvironment')),env.transform(parameters('environment')), '-RG')]",
         "rg_tags":{
             "Audience": "[parameters('Audience')]",
             "Backups": "[parameters('Backups')]",
